@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
+import AddRoutineForm from "./AddRoutineForm";
 
 interface Client {
   clienteId: number;
@@ -18,7 +19,10 @@ const ClientList: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [selectedClientForRoutine, setSelectedClientForRoutine] =
+    useState<Client | null>(null);
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [isAddingRoutine, setIsAddingRoutine] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -41,7 +45,6 @@ const ClientList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Filtrar clientes según el término de búsqueda
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const filtered = clients.filter(
       (client) =>
@@ -61,6 +64,11 @@ const ClientList: React.FC = () => {
     setIsAdding(true);
   };
 
+  const handleAddRoutineClick = (client: Client) => {
+    setSelectedClientForRoutine(client);
+    setIsAddingRoutine(true);
+  };
+
   const handleDeleteClick = async (clientId: number) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
       try {
@@ -68,7 +76,7 @@ const ClientList: React.FC = () => {
         await axios.delete(`http://localhost:5267/api/Cliente/${clientId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        fetchClients(); // Refrescar la lista después de eliminar
+        fetchClients();
       } catch (err) {
         setError("Error al eliminar el cliente");
         console.error(err);
@@ -79,14 +87,14 @@ const ClientList: React.FC = () => {
   const handleSave = () => {
     setSelectedClient(null);
     setIsAdding(false);
-    fetchClients(); // Refrescar la lista de clientes
+    setIsAddingRoutine(false);
+    fetchClients();
   };
 
   return (
     <div>
       <h2>Lista de Clientes</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-
       <input
         type="text"
         placeholder="Buscar por nombre, apellido, email o teléfono..."
@@ -94,11 +102,9 @@ const ClientList: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
       />
-
       <button onClick={handleAddClick} style={{ marginBottom: "1rem" }}>
         Agregar Cliente
       </button>
-
       <table>
         <thead>
           <tr>
@@ -125,12 +131,14 @@ const ClientList: React.FC = () => {
                 <button onClick={() => handleDeleteClick(client.clienteId)}>
                   Eliminar
                 </button>
+                <button onClick={() => handleAddRoutineClick(client)}>
+                  Agregar Rutina
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
       {selectedClient && (
         <EditClientForm
           client={selectedClient}
@@ -138,9 +146,16 @@ const ClientList: React.FC = () => {
           onSave={handleSave}
         />
       )}
-
       {isAdding && (
         <AddClientForm onClose={() => setIsAdding(false)} onSave={handleSave} />
+      )}
+      {isAddingRoutine && selectedClientForRoutine && (
+        <AddRoutineForm
+          clienteId={selectedClientForRoutine.clienteId}
+          usuarioId={selectedClientForRoutine.usuarioId}
+          onClose={() => setIsAddingRoutine(false)}
+          onRoutineAdded={handleSave}
+        />
       )}
     </div>
   );
