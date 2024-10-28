@@ -1,6 +1,7 @@
 // src/components/RoutineList.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Routine {
   rutinaId: number;
@@ -17,6 +18,7 @@ interface RoutineListProps {
 const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoutines = async () => {
@@ -66,7 +68,6 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
         }
       );
 
-      // Crear un enlace de descarga para el archivo PDF
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -78,6 +79,10 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
       console.error("Error al descargar el PDF:", error);
       setError("Error al descargar el PDF.");
     }
+  };
+
+  const handleViewRoutine = (rutinaId: number) => {
+    navigate(`/rutina/${rutinaId}`);
   };
 
   return (
@@ -105,6 +110,9 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
                 <td>
                   <button onClick={() => handleDownloadPdf(routine.rutinaId)}>
                     Descargar PDF
+                  </button>
+                  <button onClick={() => handleViewRoutine(routine.rutinaId)}>
+                    Ver Rutina
                   </button>
                 </td>
               </tr>

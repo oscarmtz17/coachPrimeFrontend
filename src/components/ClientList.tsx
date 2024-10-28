@@ -4,7 +4,7 @@ import axios from "axios";
 import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
-import RoutineList from "./RoutineList"; // Nuevo componente para mostrar rutinas
+import RoutineList from "./RoutineList"; // Componente para mostrar rutinas
 
 interface Client {
   clienteId: number;
@@ -39,6 +39,7 @@ const ClientList: React.FC = () => {
       });
       setClients(response.data);
       setFilteredClients(response.data); // Initialize filtered clients
+      setError(null); // Clear any previous error
     } catch (err) {
       setError("Error al cargar la lista de clientes");
       console.error(err);
@@ -101,6 +102,10 @@ const ClientList: React.FC = () => {
     fetchClients();
   };
 
+  const handleRefresh = () => {
+    fetchClients();
+  };
+
   return (
     <div>
       <h2>Lista de Clientes</h2>
@@ -114,6 +119,9 @@ const ClientList: React.FC = () => {
       />
       <button onClick={handleAddClick} style={{ marginBottom: "1rem" }}>
         Agregar Cliente
+      </button>
+      <button onClick={handleRefresh} style={{ marginLeft: "1rem" }}>
+        Refrescar Lista
       </button>
       <table>
         <thead>
@@ -173,7 +181,10 @@ const ClientList: React.FC = () => {
       {selectedClientForViewingRoutines && (
         <RoutineList
           clienteId={selectedClientForViewingRoutines.clienteId}
-          onClose={() => setSelectedClientForViewingRoutines(null)}
+          onClose={() => {
+            setSelectedClientForViewingRoutines(null);
+            fetchClients(); // Asegura que la lista se actualiza al volver
+          }}
         />
       )}
     </div>

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ViewRoutine from "./components/ViewRoutine";
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -20,6 +21,7 @@ const App: React.FC = () => (
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/rutina/:rutinaId" element={<ViewRoutine />} />
         </Route>
       </Routes>
     </Router>
