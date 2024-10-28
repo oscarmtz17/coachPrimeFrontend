@@ -4,6 +4,7 @@ import axios from "axios";
 import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
+import RoutineList from "./RoutineList"; // Nuevo componente para mostrar rutinas
 
 interface Client {
   clienteId: number;
@@ -23,6 +24,10 @@ const ClientList: React.FC = () => {
     useState<Client | null>(null);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isAddingRoutine, setIsAddingRoutine] = useState<boolean>(false);
+  const [
+    selectedClientForViewingRoutines,
+    setSelectedClientForViewingRoutines,
+  ] = useState<Client | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -69,6 +74,10 @@ const ClientList: React.FC = () => {
     setIsAddingRoutine(true);
   };
 
+  const handleViewRoutinesClick = (client: Client) => {
+    setSelectedClientForViewingRoutines(client);
+  };
+
   const handleDeleteClick = async (clientId: number) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
       try {
@@ -88,6 +97,7 @@ const ClientList: React.FC = () => {
     setSelectedClient(null);
     setIsAdding(false);
     setIsAddingRoutine(false);
+    setSelectedClientForViewingRoutines(null);
     fetchClients();
   };
 
@@ -134,6 +144,9 @@ const ClientList: React.FC = () => {
                 <button onClick={() => handleAddRoutineClick(client)}>
                   Agregar Rutina
                 </button>
+                <button onClick={() => handleViewRoutinesClick(client)}>
+                  Ver Rutinas
+                </button>
               </td>
             </tr>
           ))}
@@ -155,6 +168,12 @@ const ClientList: React.FC = () => {
           usuarioId={selectedClientForRoutine.usuarioId}
           onClose={() => setIsAddingRoutine(false)}
           onRoutineAdded={handleSave}
+        />
+      )}
+      {selectedClientForViewingRoutines && (
+        <RoutineList
+          clienteId={selectedClientForViewingRoutines.clienteId}
+          onClose={() => setSelectedClientForViewingRoutines(null)}
         />
       )}
     </div>
