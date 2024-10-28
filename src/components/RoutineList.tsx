@@ -38,7 +38,6 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           console.error("Respuesta inesperada de la API:", response.data);
         }
       } catch (err: any) {
-        // Manejar el error 404 específicamente
         if (err.response && err.response.status === 404) {
           setError(
             err.response.data || "No se encontraron rutinas para este cliente."
@@ -54,6 +53,33 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
     fetchRoutines();
   }, [clienteId]);
 
+  const handleDownloadPdf = async (rutinaId: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `http://localhost:5267/api/rutina/${clienteId}/${rutinaId}/pdf`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob", // Para manejar la respuesta como un archivo binario
+        }
+      );
+
+      // Crear un enlace de descarga para el archivo PDF
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Rutina_${rutinaId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error al descargar el PDF:", error);
+      setError("Error al descargar el PDF.");
+    }
+  };
+
   return (
     <div>
       <h3>Rutinas del Cliente</h3>
@@ -66,6 +92,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Fecha Inicio</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -75,6 +102,11 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
                 <td>{routine.nombre}</td>
                 <td>{routine.descripcion}</td>
                 <td>{new Date(routine.fechaInicio).toLocaleDateString()}</td>
+                <td>
+                  <button onClick={() => handleDownloadPdf(routine.rutinaId)}>
+                    Descargar PDF
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
