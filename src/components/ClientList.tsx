@@ -5,6 +5,7 @@ import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
 import RoutineList from "./RoutineList"; // Componente para mostrar rutinas
+import AddDietForm from "./AddDietForm"; // Asegúrate de que esta línea esté presente
 
 interface Client {
   clienteId: number;
@@ -30,6 +31,9 @@ const ClientList: React.FC = () => {
   ] = useState<Client | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isAddingDiet, setIsAddingDiet] = useState<boolean>(false);
+  const [selectedClientForDiet, setSelectedClientForDiet] =
+    useState<Client | null>(null);
 
   const fetchClients = async () => {
     try {
@@ -106,6 +110,10 @@ const ClientList: React.FC = () => {
     fetchClients();
   };
 
+  const handleAddDietClick = (client: Client) => {
+    setSelectedClientForDiet(client);
+    setIsAddingDiet(true);
+  };
   return (
     <div>
       <h2>Lista de Clientes</h2>
@@ -155,6 +163,9 @@ const ClientList: React.FC = () => {
                 <button onClick={() => handleViewRoutinesClick(client)}>
                   Ver Rutinas
                 </button>
+                <button onClick={() => handleAddDietClick(client)}>
+                  Agregar Dieta
+                </button>
               </td>
             </tr>
           ))}
@@ -176,6 +187,14 @@ const ClientList: React.FC = () => {
           usuarioId={selectedClientForRoutine.usuarioId}
           onClose={() => setIsAddingRoutine(false)}
           onRoutineAdded={handleSave}
+        />
+      )}
+      {/* Renderizado condicional para AddDietForm */}
+      {isAddingDiet && selectedClientForDiet && (
+        <AddDietForm
+          clienteId={selectedClientForDiet.clienteId}
+          onDietAdded={handleSave}
+          onClose={() => setIsAddingDiet(false)}
         />
       )}
       {selectedClientForViewingRoutines && (
