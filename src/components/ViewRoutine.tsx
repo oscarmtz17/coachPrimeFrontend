@@ -1,7 +1,7 @@
 // src/components/ViewRoutine.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface Ejercicio {
   nombre: string;
@@ -29,6 +29,7 @@ interface RoutineDetails {
 
 const ViewRoutine: React.FC = () => {
   const { rutinaId } = useParams<{ rutinaId: string }>();
+  const navigate = useNavigate();
   const [routine, setRoutine] = useState<RoutineDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +44,7 @@ const ViewRoutine: React.FC = () => {
           }
         );
 
-        // Adaptar la estructura de la respuesta para convertir $values en arrays normales
+        // Adaptar la estructura de la respuesta
         const adaptedRoutine = {
           ...response.data,
           diasEntrenamiento: response.data.diasEntrenamiento.$values.map(
@@ -80,7 +81,7 @@ const ViewRoutine: React.FC = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          responseType: "blob", // Importante para manejar el PDF
+          responseType: "blob",
         }
       );
 
@@ -99,6 +100,29 @@ const ViewRoutine: React.FC = () => {
     }
   };
 
+  const handleEditRoutine = () => {
+    if (rutinaId) {
+      navigate(`/editar-rutina/${rutinaId}`);
+    }
+  };
+
+  const handleDeleteRoutine = async () => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta rutina?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:5267/api/rutina/${rutinaId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        alert("Rutina eliminada exitosamente.");
+        navigate("/dashboard"); // Redirige al dashboard
+      } catch (error) {
+        console.error("Error al eliminar la rutina:", error);
+        setError("Error al eliminar la rutina.");
+      }
+    }
+  };
+
   return (
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -107,6 +131,8 @@ const ViewRoutine: React.FC = () => {
           <h3>{routine.nombre}</h3>
           <p>{routine.descripcion}</p>
           <button onClick={handleDownloadPdf}>Descargar PDF</button>
+          <button onClick={handleEditRoutine}>Editar Rutina</button>
+          <button onClick={handleDeleteRoutine}>Eliminar Rutina</button>
           {routine.diasEntrenamiento.map((dia, diaIndex) => (
             <div key={diaIndex}>
               <h4>{dia.diaSemana}</h4>

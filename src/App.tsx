@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewRoutine from "./components/ViewRoutine";
+import EditRoutineFormWrapper from "./components/EditRoutineFormWrapper"; // Usa un envoltorio para manejar la navegación
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -22,6 +23,11 @@ const App: React.FC = () => (
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/rutina/:rutinaId" element={<ViewRoutine />} />
+          <Route
+            path="/editar-rutina/:rutinaId"
+            element={<EditRoutineFormWrapper />}
+          />{" "}
+          {/* Nueva ruta usando un componente envoltorio */}
         </Route>
       </Routes>
     </Router>

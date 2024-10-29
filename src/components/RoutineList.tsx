@@ -55,6 +55,25 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
     fetchRoutines();
   }, [clienteId]);
 
+  const handleDeleteRoutine = async (rutinaId: number) => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta rutina?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:5267/api/rutina/${rutinaId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.filter((routine) => routine.rutinaId !== rutinaId)
+        );
+        alert("Rutina eliminada exitosamente.");
+      } catch (error) {
+        console.error("Error al eliminar la rutina:", error);
+        setError("Error al eliminar la rutina.");
+      }
+    }
+  };
+
   const handleDownloadPdf = async (rutinaId: number) => {
     try {
       const token = localStorage.getItem("token");
@@ -85,6 +104,10 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
     navigate(`/rutina/${rutinaId}`);
   };
 
+  const handleEditRoutine = (rutinaId: number) => {
+    navigate(`/editar-rutina/${rutinaId}`);
+  };
+
   return (
     <div>
       <h3>Rutinas del Cliente</h3>
@@ -113,6 +136,12 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
                   </button>
                   <button onClick={() => handleViewRoutine(routine.rutinaId)}>
                     Ver Rutina
+                  </button>
+                  <button onClick={() => handleEditRoutine(routine.rutinaId)}>
+                    Editar Rutina
+                  </button>
+                  <button onClick={() => handleDeleteRoutine(routine.rutinaId)}>
+                    Eliminar Rutina
                   </button>
                 </td>
               </tr>
