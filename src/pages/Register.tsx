@@ -1,4 +1,3 @@
-// src/pages/Register.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,7 +27,6 @@ const Register: React.FC = () => {
         }
       );
 
-      // Manejar respuesta exitosa
       setSuccessMessage("Registro exitoso. Redirigiendo al login...");
       setTimeout(() => {
         navigate("/login");
@@ -40,53 +38,168 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Registrar</h2>
-      <form onSubmit={handleRegister}>
-        <div>
-          <label htmlFor="nombre">Nombre</label>
-          <input
-            id="nombre"
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Contraseña</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phone">Teléfono</label>
-          <input
-            id="phone"
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-        <button type="submit">Registrar</button>
-      </form>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#222", // Fondo oscuro consistente con la paleta
+        color: "#fff",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: "2rem",
+          borderRadius: "10px",
+          width: "100%",
+          maxWidth: "400px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+          textAlign: "center",
+        }}
+      >
+        <h2
+          style={{ marginBottom: "1rem", fontSize: "1.8rem", color: "#ffcc00" }}
+        >
+          Registrarse
+        </h2>
+        <form
+          onSubmit={handleRegister}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div style={{ marginBottom: "1rem" }}>
+            <label
+              htmlFor="nombre"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Nombre
+            </label>
+            <input
+              id="nombre"
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            <label
+              htmlFor="email"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            <label
+              htmlFor="password"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Contraseña
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            <label
+              htmlFor="phone"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Teléfono
+            </label>
+            <input
+              id="phone"
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+          </div>
+          {error && (
+            <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
+          )}
+          {successMessage && (
+            <p style={{ color: "green", marginBottom: "1rem" }}>
+              {successMessage}
+            </p>
+          )}
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#ffcc00",
+              color: "#000",
+              padding: "0.75rem",
+              border: "none",
+              borderRadius: "5px",
+              fontSize: "1.2rem",
+              cursor: "pointer",
+            }}
+          >
+            Registrar
+          </button>
+        </form>
+        <p
+          onClick={() => navigate("/login")}
+          style={{
+            marginTop: "1rem",
+            color: "#bbb",
+            fontSize: "0.9rem",
+            cursor: "pointer",
+            textDecoration: "underline",
+          }}
+        >
+          Ya tienes una cuenta? Iniciar sesión
+        </p>
+      </div>
     </div>
   );
 };
