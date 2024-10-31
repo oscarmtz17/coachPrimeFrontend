@@ -7,6 +7,8 @@ import AddRoutineForm from "./AddRoutineForm";
 import RoutineList from "./RoutineList"; // Componente para mostrar rutinas
 import AddDietForm from "./AddDietForm"; // Asegúrate de que esta línea esté presente
 import DietList from "./DietList";
+import AddProgressForm from "./AddProgressForm";
+import ProgressList from "./ProgressList";
 
 interface Client {
   clienteId: number;
@@ -37,7 +39,13 @@ const ClientList: React.FC = () => {
     useState<Client | null>(null);
   const [selectedClientForViewingDiets, setSelectedClientForViewingDiets] =
     useState<Client | null>(null);
-
+  const [selectedClientForProgress, setSelectedClientForProgress] =
+    useState<Client | null>(null);
+  const [isAddingProgress, setIsAddingProgress] = useState<boolean>(false);
+  const [selectedClientForProgressList, setSelectedClientForProgressList] =
+    useState<Client | null>(null);
+  const [isViewingProgressList, setIsViewingProgressList] =
+    useState<boolean>(false);
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -120,6 +128,22 @@ const ClientList: React.FC = () => {
   const handleViewDietsClick = (client: Client) => {
     setSelectedClientForViewingDiets(client);
   };
+  const handleAddProgressClick = (client: Client) => {
+    setSelectedClientForProgress(client);
+    setIsAddingProgress(true);
+  };
+
+  const handleProgressSaved = () => {
+    setSelectedClientForProgress(null);
+    setIsAddingProgress(false);
+    fetchClients(); // Refresca la lista después de guardar
+  };
+
+  const handleViewProgressListClick = (client: Client) => {
+    setSelectedClientForProgressList(client);
+    setIsViewingProgressList(true);
+  };
+
   return (
     <div>
       <h2>Lista de Clientes</h2>
@@ -175,6 +199,12 @@ const ClientList: React.FC = () => {
                 <button onClick={() => handleViewDietsClick(client)}>
                   Ver Dietas
                 </button>
+                <button onClick={() => handleAddProgressClick(client)}>
+                  Agregar Progreso
+                </button>
+                <button onClick={() => handleViewProgressListClick(client)}>
+                  Ver Progresos
+                </button>
               </td>
             </tr>
           ))}
@@ -220,6 +250,20 @@ const ClientList: React.FC = () => {
         <DietList
           clienteId={selectedClientForViewingDiets.clienteId}
           onClose={() => setSelectedClientForViewingDiets(null)}
+        />
+      )}
+      {isAddingProgress && selectedClientForProgress && (
+        <AddProgressForm
+          clienteId={selectedClientForProgress.clienteId}
+          onProgressAdded={handleProgressSaved}
+          onClose={() => setIsAddingProgress(false)}
+        />
+      )}
+      {/* Renderiza ProgressList de manera condicional */}
+      {isViewingProgressList && selectedClientForProgressList && (
+        <ProgressList
+          clienteId={selectedClientForProgressList.clienteId}
+          onClose={() => setIsViewingProgressList(false)}
         />
       )}
     </div>
