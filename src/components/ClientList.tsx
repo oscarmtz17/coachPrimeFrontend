@@ -6,6 +6,7 @@ import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
 import RoutineList from "./RoutineList"; // Componente para mostrar rutinas
 import AddDietForm from "./AddDietForm"; // Asegúrate de que esta línea esté presente
+import DietList from "./DietList";
 
 interface Client {
   clienteId: number;
@@ -33,6 +34,8 @@ const ClientList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isAddingDiet, setIsAddingDiet] = useState<boolean>(false);
   const [selectedClientForDiet, setSelectedClientForDiet] =
+    useState<Client | null>(null);
+  const [selectedClientForViewingDiets, setSelectedClientForViewingDiets] =
     useState<Client | null>(null);
 
   const fetchClients = async () => {
@@ -114,6 +117,9 @@ const ClientList: React.FC = () => {
     setSelectedClientForDiet(client);
     setIsAddingDiet(true);
   };
+  const handleViewDietsClick = (client: Client) => {
+    setSelectedClientForViewingDiets(client);
+  };
   return (
     <div>
       <h2>Lista de Clientes</h2>
@@ -166,6 +172,9 @@ const ClientList: React.FC = () => {
                 <button onClick={() => handleAddDietClick(client)}>
                   Agregar Dieta
                 </button>
+                <button onClick={() => handleViewDietsClick(client)}>
+                  Ver Dietas
+                </button>
               </td>
             </tr>
           ))}
@@ -204,6 +213,13 @@ const ClientList: React.FC = () => {
             setSelectedClientForViewingRoutines(null);
             fetchClients(); // Asegura que la lista se actualiza al volver
           }}
+        />
+      )}
+      {/* Render the DietList component conditionally */}
+      {selectedClientForViewingDiets && (
+        <DietList
+          clienteId={selectedClientForViewingDiets.clienteId}
+          onClose={() => setSelectedClientForViewingDiets(null)}
         />
       )}
     </div>

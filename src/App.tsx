@@ -8,7 +8,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewRoutine from "./components/ViewRoutine";
-import EditRoutineFormWrapper from "./components/EditRoutineFormWrapper"; // Usa un envoltorio para manejar la navegación
+import EditRoutineFormWrapper from "./components/EditRoutineFormWrapper";
+import ViewDiet from "./components/ViewDiet";
+import EditDietFormWrapper from "./components/EditDietFormWrapper"; // Nuevo componente para manejar la edición de dietas
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -23,11 +25,16 @@ const App: React.FC = () => (
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/rutina/:rutinaId" element={<ViewRoutine />} />
+          <Route path="/dieta/:clienteId/:dietaId" element={<ViewDiet />} />
           <Route
             path="/editar-rutina/:rutinaId"
             element={<EditRoutineFormWrapper />}
+          />
+          <Route
+            path="/editar-dieta/:clienteId/:dietaId"
+            element={<EditDietFormWrapper />}
           />{" "}
-          {/* Nueva ruta usando un componente envoltorio */}
+          {/* Nueva ruta para editar dieta */}
         </Route>
       </Routes>
     </Router>
