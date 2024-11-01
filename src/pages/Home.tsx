@@ -74,7 +74,14 @@ const Home: React.FC = () => {
         Tu plataforma para alcanzar tus objetivos de fitness y bienestar.
       </p>
 
-      {!showOptions ? (
+      {/* Botón "Get Started" con transición de desvanecimiento */}
+      <div
+        style={{
+          opacity: !showOptions ? 1 : 0,
+          transition: "opacity 0.5s ease",
+          zIndex: 2,
+        }}
+      >
         <button
           onClick={() => setShowOptions(true)}
           style={{
@@ -87,45 +94,53 @@ const Home: React.FC = () => {
             cursor: "pointer",
             maxWidth: "90%",
             width: "300px",
-            zIndex: 2,
           }}
         >
           Get Started
         </button>
-      ) : (
-        <div style={{ marginTop: "1.5rem", zIndex: 2 }}>
-          <button
-            onClick={() => navigate("/login")}
-            style={{
-              backgroundColor: "#ffcc00",
-              color: "#000",
-              padding: "1rem 2rem",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "1.2rem",
-              cursor: "pointer",
-              marginBottom: "1rem",
-              maxWidth: "90%",
-              width: "300px",
-              zIndex: 2,
-            }}
-          >
-            Iniciar sesión
-          </button>
-          <p
-            onClick={() => navigate("/register")}
-            style={{
-              color: "#fff",
-              fontSize: "0.9rem",
-              cursor: "pointer",
-              textDecoration: "underline",
-              zIndex: 2,
-            }}
-          >
-            Crear cuenta
-          </p>
-        </div>
-      )}
+      </div>
+
+      {/* Opciones "Iniciar sesión" y "Crear cuenta" con transición de desvanecimiento y desplazamiento */}
+      <div
+        style={{
+          marginTop: "1.5rem",
+          zIndex: 2,
+          opacity: showOptions ? 1 : 0,
+          transform: showOptions ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.5s ease, transform 0.5s ease",
+          position: "absolute",
+          top: "60%",
+        }}
+      >
+        <button
+          onClick={() => navigate("/login")}
+          style={{
+            backgroundColor: "#ffcc00",
+            color: "#000",
+            padding: "1rem 2rem",
+            border: "none",
+            borderRadius: "5px",
+            fontSize: "1.2rem",
+            cursor: "pointer",
+            marginBottom: "1rem",
+            maxWidth: "90%",
+            width: "300px",
+          }}
+        >
+          Iniciar sesión
+        </button>
+        <p
+          onClick={() => navigate("/register")}
+          style={{
+            color: "#fff",
+            fontSize: "0.9rem",
+            cursor: "pointer",
+            textDecoration: "underline",
+          }}
+        >
+          Crear cuenta
+        </p>
+      </div>
     </div>
   );
 };
