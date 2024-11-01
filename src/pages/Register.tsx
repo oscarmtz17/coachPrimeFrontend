@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Register: React.FC = () => {
   const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,6 +16,9 @@ const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const isFormValid =
+    nombre && apellido && email && password && confirmPassword && phone;
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +34,7 @@ const Register: React.FC = () => {
     try {
       await axios.post("http://localhost:5267/api/auth/register", {
         nombre,
+        apellido,
         email,
         password,
         phone,
@@ -39,9 +44,13 @@ const Register: React.FC = () => {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-    } catch (error) {
-      setError("Error al registrarse. Por favor intenta de nuevo.");
-      console.error(error);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data || "Ocurrió un error al registrarse.");
+      } else {
+        setError("Error al registrarse. Por favor intenta de nuevo.");
+      }
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -120,6 +129,30 @@ const Register: React.FC = () => {
           </div>
           <div style={{ marginBottom: "1rem" }}>
             <label
+              htmlFor="apellido"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Apellido
+            </label>
+            <input
+              id="apellido"
+              type="text"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            <label
               htmlFor="email"
               style={{ display: "block", marginBottom: "0.5rem" }}
             >
@@ -178,6 +211,7 @@ const Register: React.FC = () => {
                 border: "none",
                 color: "#bbb",
                 cursor: "pointer",
+                fontSize: "0.9rem",
               }}
             >
               {showPassword ? "Ocultar" : "Mostrar"}
@@ -219,6 +253,7 @@ const Register: React.FC = () => {
                 border: "none",
                 color: "#bbb",
                 cursor: "pointer",
+                fontSize: "0.9rem",
               }}
             >
               {showConfirmPassword ? "Ocultar" : "Mostrar"}
@@ -238,9 +273,14 @@ const Register: React.FC = () => {
             </label>
             <input
               id="phone"
-              type="text"
+              type="tel"
+              inputMode="numeric"
+              maxLength={10}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/[^0-9]/g, ""); // Filtra caracteres no numéricos
+                setPhone(numericValue);
+              }}
               required
               style={{
                 width: "100%",
@@ -276,14 +316,15 @@ const Register: React.FC = () => {
           )}
           <button
             type="submit"
+            disabled={!isFormValid}
             style={{
-              backgroundColor: "#ffcc00",
+              backgroundColor: isFormValid ? "#ffcc00" : "#bbb",
               color: "#000",
               padding: "0.75rem",
               border: "none",
               borderRadius: "5px",
               fontSize: "1.2rem",
-              cursor: "pointer",
+              cursor: isFormValid ? "pointer" : "not-allowed",
             }}
           >
             Registrar
