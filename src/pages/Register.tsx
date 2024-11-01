@@ -6,9 +6,14 @@ const Register: React.FC = () => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -16,16 +21,19 @@ const Register: React.FC = () => {
     setError(null);
     setSuccessMessage(null);
 
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden. Por favor, verifica.");
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5267/api/auth/register",
-        {
-          nombre,
-          email,
-          password,
-          phone,
-        }
-      );
+      await axios.post("http://localhost:5267/api/auth/register", {
+        nombre,
+        email,
+        password,
+        phone,
+      });
 
       setSuccessMessage("Registro exitoso. Redirigiendo al login...");
       setTimeout(() => {
@@ -34,6 +42,24 @@ const Register: React.FC = () => {
     } catch (error) {
       setError("Error al registrarse. Por favor intenta de nuevo.");
       console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordBlur = () => {
+    if (confirmPassword && password !== confirmPassword) {
+      setPasswordError("Las contraseñas no coinciden.");
+    } else {
+      setPasswordError(null);
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    if (password && password !== confirmPassword) {
+      setPasswordError("Las contraseñas no coinciden.");
+    } else {
+      setPasswordError(null);
     }
   };
 
@@ -44,7 +70,7 @@ const Register: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundColor: "#222", // Fondo oscuro consistente con la paleta
+        backgroundColor: "#222",
         color: "#fff",
       }}
     >
@@ -116,7 +142,7 @@ const Register: React.FC = () => {
               }}
             />
           </div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div style={{ marginBottom: "1rem", position: "relative" }}>
             <label
               htmlFor="password"
               style={{ display: "block", marginBottom: "0.5rem" }}
@@ -125,9 +151,10 @@ const Register: React.FC = () => {
             </label>
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={handlePasswordBlur}
               required
               style={{
                 width: "100%",
@@ -139,6 +166,68 @@ const Register: React.FC = () => {
                 color: "#fff",
               }}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "0px",
+                top: "70%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                color: "#bbb",
+                cursor: "pointer",
+              }}
+            >
+              {showPassword ? "Ocultar" : "Mostrar"}
+            </button>
+          </div>
+          <div style={{ marginBottom: "1rem", position: "relative" }}>
+            <label
+              htmlFor="confirmPassword"
+              style={{ display: "block", marginBottom: "0.5rem" }}
+            >
+              Confirmar Contraseña
+            </label>
+            <input
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onBlur={handleConfirmPasswordBlur}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "5px",
+                border: "1px solid #bbb",
+                outline: "none",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                position: "absolute",
+                right: "0px",
+                top: "70%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                color: "#bbb",
+                cursor: "pointer",
+              }}
+            >
+              {showConfirmPassword ? "Ocultar" : "Mostrar"}
+            </button>
+            {passwordError && (
+              <small style={{ color: "red", fontSize: "0.9rem" }}>
+                {passwordError}
+              </small>
+            )}
           </div>
           <div style={{ marginBottom: "1rem" }}>
             <label
@@ -168,9 +257,22 @@ const Register: React.FC = () => {
             <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
           )}
           {successMessage && (
-            <p style={{ color: "green", marginBottom: "1rem" }}>
-              {successMessage}
-            </p>
+            <div
+              style={{
+                marginBottom: "1rem",
+                color: "green",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <p style={{ margin: 0 }}>{successMessage}</p>
+              {loading && (
+                <span
+                  className="loader"
+                  style={{ marginLeft: "0.5rem" }}
+                ></span>
+              )}
+            </div>
           )}
           <button
             type="submit"
@@ -197,9 +299,27 @@ const Register: React.FC = () => {
             textDecoration: "underline",
           }}
         >
-          Ya tienes una cuenta? Iniciar sesión
+          ¿Ya tienes una cuenta? Iniciar sesión
         </p>
       </div>
+
+      <style>
+        {`
+          .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
     </div>
   );
 };
