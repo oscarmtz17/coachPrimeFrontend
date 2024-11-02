@@ -33,10 +33,10 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
 
         if (response.data && Array.isArray(response.data.$values)) {
           setRoutines(response.data.$values);
-          setError(null); // Limpiar cualquier error previo
+          setError(null);
         } else {
           setError("Error: La respuesta no es una lista de rutinas.");
-          setRoutines([]); // Vaciar la lista si la respuesta no es válida
+          setRoutines([]);
           console.error("Respuesta inesperada de la API:", response.data);
         }
       } catch (err: any) {
@@ -48,7 +48,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           setError("Error al cargar las rutinas");
           console.error(err);
         }
-        setRoutines([]); // Vaciar la lista si ocurre un error
+        setRoutines([]);
       }
     };
 
@@ -83,7 +83,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          responseType: "blob", // Para manejar la respuesta como un archivo binario
+          responseType: "blob",
         }
       );
 
@@ -109,13 +109,13 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
   };
 
   return (
-    <div>
-      <h3>Rutinas del Cliente</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={containerStyle}>
+      <h3 style={titleStyle}>Rutinas del Cliente</h3>
+      {error && <p style={errorStyle}>{error}</p>}
       {!error && (
-        <table>
+        <table style={tableStyle}>
           <thead>
-            <tr>
+            <tr style={headerRowStyle}>
               <th>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
@@ -125,22 +125,36 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           </thead>
           <tbody>
             {routines.map((routine) => (
-              <tr key={routine.rutinaId}>
-                <td>{routine.rutinaId}</td>
-                <td>{routine.nombre}</td>
-                <td>{routine.descripcion}</td>
-                <td>{new Date(routine.fechaInicio).toLocaleDateString()}</td>
-                <td>
-                  <button onClick={() => handleDownloadPdf(routine.rutinaId)}>
+              <tr key={routine.rutinaId} style={rowStyle}>
+                <td style={cellStyle}>{routine.rutinaId}</td>
+                <td style={cellStyle}>{routine.nombre}</td>
+                <td style={cellStyle}>{routine.descripcion}</td>
+                <td style={cellStyle}>
+                  {new Date(routine.fechaInicio).toLocaleDateString()}
+                </td>
+                <td style={actionCellStyle}>
+                  <button
+                    onClick={() => handleDownloadPdf(routine.rutinaId)}
+                    style={actionButtonStyle("#007bff")}
+                  >
                     Descargar PDF
                   </button>
-                  <button onClick={() => handleViewRoutine(routine.rutinaId)}>
+                  <button
+                    onClick={() => handleViewRoutine(routine.rutinaId)}
+                    style={actionButtonStyle("#28a745")}
+                  >
                     Ver Rutina
                   </button>
-                  <button onClick={() => handleEditRoutine(routine.rutinaId)}>
+                  <button
+                    onClick={() => handleEditRoutine(routine.rutinaId)}
+                    style={actionButtonStyle("#ffc107")}
+                  >
                     Editar Rutina
                   </button>
-                  <button onClick={() => handleDeleteRoutine(routine.rutinaId)}>
+                  <button
+                    onClick={() => handleDeleteRoutine(routine.rutinaId)}
+                    style={actionButtonStyle("#dc3545")}
+                  >
                     Eliminar Rutina
                   </button>
                 </td>
@@ -149,9 +163,85 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           </tbody>
         </table>
       )}
-      <button onClick={onClose}>Cerrar</button>
+      <button onClick={onClose} style={closeButtonStyle}>
+        Cerrar
+      </button>
     </div>
   );
+};
+
+const containerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  maxWidth: "800px",
+  margin: "0 auto",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.8rem",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const tableStyle: React.CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+};
+
+const headerRowStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  color: "#ffcc00",
+  textAlign: "center",
+};
+
+const rowStyle: React.CSSProperties = {
+  textAlign: "center",
+  borderBottom: "1px solid #555",
+};
+
+const cellStyle: React.CSSProperties = {
+  padding: "0.8rem",
+  color: "#fff",
+};
+
+const actionCellStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "0.3rem",
+  flexWrap: "wrap",
+};
+
+const actionButtonStyle = (bgColor: string): React.CSSProperties => ({
+  backgroundColor: bgColor,
+  color: "#fff",
+  border: "none",
+  padding: "0.3rem 0.6rem",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+  marginTop: "0.3rem",
+});
+
+const closeButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  border: "none",
+  padding: "0.5rem 1rem",
+  borderRadius: "5px",
+  cursor: "pointer",
+  display: "block",
+  margin: "0 auto",
 };
 
 export default RoutineList;
