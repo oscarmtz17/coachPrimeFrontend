@@ -9,6 +9,7 @@ import AddDietForm from "./AddDietForm";
 import DietList from "./DietList";
 import AddProgressForm from "./AddProgressForm";
 import ProgressList from "./ProgressList";
+import Modal from "./Modal";
 
 interface Client {
   clienteId: number;
@@ -26,26 +27,10 @@ const ClientList: React.FC = () => {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [selectedClientForRoutine, setSelectedClientForRoutine] =
     useState<Client | null>(null);
-  const [isAdding, setIsAdding] = useState<boolean>(false);
-  const [isAddingRoutine, setIsAddingRoutine] = useState<boolean>(false);
-  const [
-    selectedClientForViewingRoutines,
-    setSelectedClientForViewingRoutines,
-  ] = useState<Client | null>(null);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isAddingDiet, setIsAddingDiet] = useState<boolean>(false);
-  const [selectedClientForDiet, setSelectedClientForDiet] =
-    useState<Client | null>(null);
-  const [selectedClientForViewingDiets, setSelectedClientForViewingDiets] =
-    useState<Client | null>(null);
-  const [selectedClientForProgress, setSelectedClientForProgress] =
-    useState<Client | null>(null);
-  const [isAddingProgress, setIsAddingProgress] = useState<boolean>(false);
-  const [selectedClientForProgressList, setSelectedClientForProgressList] =
-    useState<Client | null>(null);
-  const [isViewingProgressList, setIsViewingProgressList] =
-    useState<boolean>(false);
 
   const fetchClients = async () => {
     try {
@@ -78,21 +63,24 @@ const ClientList: React.FC = () => {
     setFilteredClients(filtered);
   }, [searchTerm, clients]);
 
+  const openModal = (content: React.ReactNode) => {
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+  };
+
   const handleEditClick = (client: Client) => {
-    setSelectedClient(client);
-  };
-
-  const handleAddClick = () => {
-    setIsAdding(true);
-  };
-
-  const handleAddRoutineClick = (client: Client) => {
-    setSelectedClientForRoutine(client);
-    setIsAddingRoutine(true);
-  };
-
-  const handleViewRoutinesClick = (client: Client) => {
-    setSelectedClientForViewingRoutines(client);
+    openModal(
+      <EditClientForm
+        client={client}
+        onClose={closeModal}
+        onSave={handleSave}
+      />
+    );
   };
 
   const handleDeleteClick = async (clientId: number) => {
@@ -102,7 +90,7 @@ const ClientList: React.FC = () => {
         await axios.delete(`http://localhost:5267/api/Cliente/${clientId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        fetchClients();
+        fetchClients(); // Vuelve a cargar la lista de clientes después de la eliminación
       } catch (err) {
         setError("Error al eliminar el cliente");
         console.error(err);
@@ -110,41 +98,67 @@ const ClientList: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
-    setSelectedClient(null);
-    setIsAdding(false);
-    setIsAddingRoutine(false);
-    setSelectedClientForViewingRoutines(null);
-    fetchClients();
+  const handleAddClick = () => {
+    openModal(<AddClientForm onClose={closeModal} onSave={handleSave} />);
   };
 
-  const handleRefresh = () => {
-    fetchClients();
+  const handleAddRoutineClick = (client: Client) => {
+    setSelectedClientForRoutine(client);
+    openModal(
+      <AddRoutineForm
+        clienteId={client.clienteId}
+        usuarioId={client.usuarioId}
+        onClose={closeModal}
+        onRoutineAdded={handleSave}
+      />
+    );
+  };
+
+  const handleViewRoutinesClick = (client: Client) => {
+    openModal(
+      <RoutineList
+        clienteId={client.clienteId}
+        onClose={() => {
+          closeModal();
+          fetchClients();
+        }}
+      />
+    );
   };
 
   const handleAddDietClick = (client: Client) => {
-    setSelectedClientForDiet(client);
-    setIsAddingDiet(true);
+    openModal(
+      <AddDietForm
+        clienteId={client.clienteId}
+        onDietAdded={handleSave}
+        onClose={closeModal}
+      />
+    );
   };
 
   const handleViewDietsClick = (client: Client) => {
-    setSelectedClientForViewingDiets(client);
+    openModal(<DietList clienteId={client.clienteId} onClose={closeModal} />);
   };
 
   const handleAddProgressClick = (client: Client) => {
-    setSelectedClientForProgress(client);
-    setIsAddingProgress(true);
-  };
-
-  const handleProgressSaved = () => {
-    setSelectedClientForProgress(null);
-    setIsAddingProgress(false);
-    fetchClients();
+    openModal(
+      <AddProgressForm
+        clienteId={client.clienteId}
+        onProgressAdded={handleSave}
+        onClose={closeModal}
+      />
+    );
   };
 
   const handleViewProgressListClick = (client: Client) => {
-    setSelectedClientForProgressList(client);
-    setIsViewingProgressList(true);
+    openModal(
+      <ProgressList clienteId={client.clienteId} onClose={closeModal} />
+    );
+  };
+
+  const handleSave = () => {
+    closeModal();
+    fetchClients();
   };
 
   return (
@@ -186,7 +200,7 @@ const ClientList: React.FC = () => {
           Agregar Cliente
         </button>
         <button
-          onClick={handleRefresh}
+          onClick={fetchClients}
           style={{
             backgroundColor: "#bbb",
             color: "#333",
@@ -288,60 +302,10 @@ const ClientList: React.FC = () => {
           ))}
         </tbody>
       </table>
-      {/* Renderizado condicional de formularios y listas */}
-      {selectedClient && (
-        <EditClientForm
-          client={selectedClient}
-          onClose={() => setSelectedClient(null)}
-          onSave={handleSave}
-        />
-      )}
-      {isAdding && (
-        <AddClientForm onClose={() => setIsAdding(false)} onSave={handleSave} />
-      )}
-      {isAddingRoutine && selectedClientForRoutine && (
-        <AddRoutineForm
-          clienteId={selectedClientForRoutine.clienteId}
-          usuarioId={selectedClientForRoutine.usuarioId}
-          onClose={() => setIsAddingRoutine(false)}
-          onRoutineAdded={handleSave}
-        />
-      )}
-      {isAddingDiet && selectedClientForDiet && (
-        <AddDietForm
-          clienteId={selectedClientForDiet.clienteId}
-          onDietAdded={handleSave}
-          onClose={() => setIsAddingDiet(false)}
-        />
-      )}
-      {selectedClientForViewingRoutines && (
-        <RoutineList
-          clienteId={selectedClientForViewingRoutines.clienteId}
-          onClose={() => {
-            setSelectedClientForViewingRoutines(null);
-            fetchClients();
-          }}
-        />
-      )}
-      {selectedClientForViewingDiets && (
-        <DietList
-          clienteId={selectedClientForViewingDiets.clienteId}
-          onClose={() => setSelectedClientForViewingDiets(null)}
-        />
-      )}
-      {isAddingProgress && selectedClientForProgress && (
-        <AddProgressForm
-          clienteId={selectedClientForProgress.clienteId}
-          onProgressAdded={handleProgressSaved}
-          onClose={() => setIsAddingProgress(false)}
-        />
-      )}
-      {isViewingProgressList && selectedClientForProgressList && (
-        <ProgressList
-          clienteId={selectedClientForProgressList.clienteId}
-          onClose={() => setIsViewingProgressList(false)}
-        />
-      )}
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        {modalContent}
+      </Modal>
     </div>
   );
 };
