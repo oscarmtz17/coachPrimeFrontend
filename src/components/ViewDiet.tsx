@@ -1,4 +1,3 @@
-// src/components/ViewDiet.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -45,7 +44,6 @@ const ViewDiet: React.FC = () => {
           }
         );
 
-        // Adaptar la estructura de la respuesta
         const adaptedDiet = {
           ...response.data,
           comidas: response.data.comidas.$values.map((comida: any) => ({
@@ -106,7 +104,7 @@ const ViewDiet: React.FC = () => {
         );
 
         alert("Dieta eliminada exitosamente.");
-        navigate("/dashboard"); // Redirige al dashboard
+        navigate("/dashboard");
       } catch (error) {
         console.error("Error al eliminar la dieta:", error);
         setError("Error al eliminar la dieta.");
@@ -121,45 +119,180 @@ const ViewDiet: React.FC = () => {
   };
 
   return (
-    <div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={backgroundStyle}>
+      {error && <p style={errorStyle}>{error}</p>}
       {diet && (
-        <>
-          <h3>{diet.nombre}</h3>
-          <p>{diet.descripcion}</p>
-          <button onClick={handleDownloadPdf}>Descargar PDF</button>
-          <button onClick={handleEditDiet}>Editar Dieta</button>
-          <button onClick={handleDeleteDiet}>Eliminar Dieta</button>
+        <div style={containerStyle}>
+          <h3 style={titleStyle}>{diet.nombre}</h3>
+          <p style={descriptionStyle}>{diet.descripcion}</p>
+          <div style={buttonContainerStyle}>
+            <button onClick={handleDownloadPdf} style={downloadButtonStyle}>
+              Descargar PDF
+            </button>
+            <button onClick={handleEditDiet} style={editButtonStyle}>
+              Editar Dieta
+            </button>
+            <button onClick={handleDeleteDiet} style={deleteButtonStyle}>
+              Eliminar Dieta
+            </button>
+          </div>
           {diet.comidas.map((comida, index) => (
-            <div key={index}>
-              <h4>{`Comida ${comida.orden} - ${comida.hora}`}</h4>
-              <h5>{comida.nombre}</h5>
-              <table>
+            <div key={index} style={mealContainerStyle}>
+              <h4
+                style={mealTitleStyle}
+              >{`Comida ${comida.orden} - ${comida.hora}`}</h4>
+              <h5 style={mealSubtitleStyle}>{comida.nombre}</h5>
+              <table style={tableStyle}>
                 <thead>
                   <tr>
-                    <th>Alimento</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
+                    <th style={tableHeaderStyle}>Alimento</th>
+                    <th style={tableHeaderStyle}>Cantidad</th>
+                    <th style={tableHeaderStyle}>Unidad</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comida.alimentos.map((alimento, idx) => (
-                    <tr key={idx}>
-                      <td>{alimento.nombre}</td>
-                      <td>{alimento.cantidad}</td>
-                      <td>{alimento.unidad}</td>
+                    <tr key={idx} style={tableRowStyle}>
+                      <td style={tableCellStyle}>{alimento.nombre}</td>
+                      <td style={tableCellStyle}>{alimento.cantidad}</td>
+                      <td style={tableCellStyle}>{alimento.unidad}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ))}
-          <h4>Notas</h4>
-          <p>{diet.notas}</p>
-        </>
+          <h4 style={notesTitleStyle}>Notas</h4>
+          <p style={notesStyle}>{diet.notas}</p>
+        </div>
       )}
     </div>
   );
+};
+
+// Estilos
+const backgroundStyle: React.CSSProperties = {
+  backgroundColor: "#222",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "2rem",
+};
+
+const containerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  maxWidth: "800px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.8rem",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const descriptionStyle: React.CSSProperties = {
+  color: "#bbb",
+  fontSize: "1rem",
+  marginBottom: "1rem",
+  textAlign: "center",
+};
+
+const buttonContainerStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "1rem",
+  marginBottom: "1.5rem",
+};
+
+const downloadButtonStyle: React.CSSProperties = {
+  backgroundColor: "#007bff",
+  color: "#fff",
+  padding: "0.5rem 1rem",
+  borderRadius: "4px",
+  border: "none",
+  cursor: "pointer",
+};
+
+const editButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  padding: "0.5rem 1rem",
+  borderRadius: "4px",
+  border: "none",
+  cursor: "pointer",
+};
+
+const deleteButtonStyle: React.CSSProperties = {
+  backgroundColor: "#dc3545",
+  color: "#fff",
+  padding: "0.5rem 1rem",
+  borderRadius: "4px",
+  border: "none",
+  cursor: "pointer",
+};
+
+const mealContainerStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  padding: "1rem",
+  borderRadius: "8px",
+  marginBottom: "1rem",
+};
+
+const mealTitleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.2rem",
+  marginBottom: "0.5rem",
+};
+
+const mealSubtitleStyle: React.CSSProperties = {
+  color: "#bbb",
+  fontSize: "1rem",
+  marginBottom: "0.5rem",
+};
+
+const tableStyle: React.CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+};
+
+const tableHeaderStyle: React.CSSProperties = {
+  backgroundColor: "#555",
+  color: "#ffcc00",
+  padding: "0.5rem",
+  textAlign: "left",
+};
+
+const tableRowStyle: React.CSSProperties = {
+  borderBottom: "1px solid #666",
+};
+
+const tableCellStyle: React.CSSProperties = {
+  padding: "0.5rem",
+  color: "#fff",
+};
+
+const notesTitleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.2rem",
+  marginTop: "1rem",
+};
+
+const notesStyle: React.CSSProperties = {
+  color: "#bbb",
+  fontSize: "1rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
 };
 
 export default ViewDiet;
