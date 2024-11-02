@@ -1,4 +1,3 @@
-// src/components/AddProgressForm.tsx
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -13,15 +12,15 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
   onProgressAdded,
   onClose,
 }) => {
-  const [pesoKg, setPesoKg] = useState<number>(0);
-  const [estaturaCm, setEstaturaCm] = useState<number>(0);
+  const [pesoKg, setPesoKg] = useState<number>(1);
+  const [estaturaCm, setEstaturaCm] = useState<number>(1);
   const [nivelActividad, setNivelActividad] = useState<string>("");
   const [factorActividad, setFactorActividad] = useState<number>(1.2);
-  const [cinturaCm, setCinturaCm] = useState<number>(0);
-  const [caderaCm, setCaderaCm] = useState<number>(0);
-  const [pechoCm, setPechoCm] = useState<number>(0);
-  const [brazoCm, setBrazoCm] = useState<number>(0);
-  const [piernaCm, setPiernaCm] = useState<number>(0);
+  const [cinturaCm, setCinturaCm] = useState<number>(1);
+  const [caderaCm, setCaderaCm] = useState<number>(1);
+  const [pechoCm, setPechoCm] = useState<number>(1);
+  const [brazoCm, setBrazoCm] = useState<number>(1);
+  const [piernaCm, setPiernaCm] = useState<number>(1);
   const [notas, setNotas] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
@@ -57,28 +56,39 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
     }
   };
 
+  const handlePositiveInputChange =
+    (setter: React.Dispatch<React.SetStateAction<number>>) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Math.max(1, Number(event.target.value));
+      setter(value);
+    };
+
   return (
-    <div>
-      <h3>Registrar Progreso</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <label>Peso (kg):</label>
+    <div style={formContainerStyle}>
+      <h3 style={titleStyle}>Registrar Progreso</h3>
+      {error && <p style={errorStyle}>{error}</p>}
+
+      <label style={labelStyle}>Peso (kg):</label>
       <input
         type="number"
         value={pesoKg}
-        onChange={(e) => setPesoKg(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setPesoKg)}
+        style={inputStyle}
       />
 
-      <label>Estatura (cm):</label>
+      <label style={labelStyle}>Estatura (cm):</label>
       <input
         type="number"
         value={estaturaCm}
-        onChange={(e) => setEstaturaCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setEstaturaCm)}
+        style={inputStyle}
       />
 
-      <label>Nivel de Actividad:</label>
+      <label style={labelStyle}>Nivel de Actividad:</label>
       <select
         value={nivelActividad}
         onChange={(e) => setNivelActividad(e.target.value)}
+        style={selectStyle}
       >
         <option value="">Selecciona nivel</option>
         <option value="Sedentario">Sedentario</option>
@@ -87,55 +97,162 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         <option value="Muy activo">Muy activo</option>
       </select>
 
-      <label>Factor de Actividad:</label>
+      <label style={labelStyle}>Factor de Actividad:</label>
       <input
         type="number"
         value={factorActividad}
-        onChange={(e) => setFactorActividad(Number(e.target.value))}
+        onChange={(e) =>
+          setFactorActividad(Math.max(1.2, Number(e.target.value)))
+        }
+        style={inputStyle}
       />
 
-      <label>Cintura (cm):</label>
+      <label style={labelStyle}>Cintura (cm):</label>
       <input
         type="number"
         value={cinturaCm}
-        onChange={(e) => setCinturaCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setCinturaCm)}
+        style={inputStyle}
       />
 
-      <label>Cadera (cm):</label>
+      <label style={labelStyle}>Cadera (cm):</label>
       <input
         type="number"
         value={caderaCm}
-        onChange={(e) => setCaderaCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setCaderaCm)}
+        style={inputStyle}
       />
 
-      <label>Pecho (cm):</label>
+      <label style={labelStyle}>Pecho (cm):</label>
       <input
         type="number"
         value={pechoCm}
-        onChange={(e) => setPechoCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setPechoCm)}
+        style={inputStyle}
       />
 
-      <label>Brazo (cm):</label>
+      <label style={labelStyle}>Brazo (cm):</label>
       <input
         type="number"
         value={brazoCm}
-        onChange={(e) => setBrazoCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setBrazoCm)}
+        style={inputStyle}
       />
 
-      <label>Pierna (cm):</label>
+      <label style={labelStyle}>Pierna (cm):</label>
       <input
         type="number"
         value={piernaCm}
-        onChange={(e) => setPiernaCm(Number(e.target.value))}
+        onChange={handlePositiveInputChange(setPiernaCm)}
+        style={inputStyle}
       />
 
-      <label>Notas:</label>
-      <textarea value={notas} onChange={(e) => setNotas(e.target.value)} />
+      <label style={labelStyle}>Notas:</label>
+      <textarea
+        value={notas}
+        onChange={(e) => setNotas(e.target.value)}
+        style={textareaStyle}
+      />
 
-      <button onClick={handleSaveProgress}>Guardar Progreso</button>
-      <button onClick={onClose}>Cancelar</button>
+      <div style={buttonContainerStyle}>
+        <button onClick={handleSaveProgress} style={saveButtonStyle}>
+          Guardar Progreso
+        </button>
+        <button onClick={onClose} style={cancelButtonStyle}>
+          Cancelar
+        </button>
+      </div>
     </div>
   );
+};
+
+// Estilos
+const formContainerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "1.5rem",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+  maxWidth: "500px",
+  margin: "0 auto",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  textAlign: "center",
+  fontSize: "1.8rem",
+  marginBottom: "1rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const labelStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontWeight: "bold",
+  display: "block",
+  marginTop: "0.8rem",
+};
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+  marginBottom: "0.8rem",
+};
+
+const selectStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+  marginBottom: "0.8rem",
+};
+
+const textareaStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+  resize: "vertical",
+  marginBottom: "0.8rem",
+};
+
+const buttonContainerStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "1rem",
+  marginTop: "1rem",
+};
+
+const saveButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  flex: 1,
+};
+
+const cancelButtonStyle: React.CSSProperties = {
+  backgroundColor: "#bbb",
+  color: "#333",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  flex: 1,
 };
 
 export default AddProgressForm;
