@@ -4,8 +4,8 @@ import axios from "axios";
 import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
-import RoutineList from "./RoutineList"; // Componente para mostrar rutinas
-import AddDietForm from "./AddDietForm"; // Asegúrate de que esta línea esté presente
+import RoutineList from "./RoutineList";
+import AddDietForm from "./AddDietForm";
 import DietList from "./DietList";
 import AddProgressForm from "./AddProgressForm";
 import ProgressList from "./ProgressList";
@@ -46,6 +46,7 @@ const ClientList: React.FC = () => {
     useState<Client | null>(null);
   const [isViewingProgressList, setIsViewingProgressList] =
     useState<boolean>(false);
+
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -53,8 +54,8 @@ const ClientList: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setClients(response.data);
-      setFilteredClients(response.data); // Initialize filtered clients
-      setError(null); // Clear any previous error
+      setFilteredClients(response.data);
+      setError(null);
     } catch (err) {
       setError("Error al cargar la lista de clientes");
       console.error(err);
@@ -125,9 +126,11 @@ const ClientList: React.FC = () => {
     setSelectedClientForDiet(client);
     setIsAddingDiet(true);
   };
+
   const handleViewDietsClick = (client: Client) => {
     setSelectedClientForViewingDiets(client);
   };
+
   const handleAddProgressClick = (client: Client) => {
     setSelectedClientForProgress(client);
     setIsAddingProgress(true);
@@ -136,7 +139,7 @@ const ClientList: React.FC = () => {
   const handleProgressSaved = () => {
     setSelectedClientForProgress(null);
     setIsAddingProgress(false);
-    fetchClients(); // Refresca la lista después de guardar
+    fetchClients();
   };
 
   const handleViewProgressListClick = (client: Client) => {
@@ -145,25 +148,60 @@ const ClientList: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Lista de Clientes</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={{ padding: "2rem", backgroundColor: "#333", color: "#fff" }}>
+      <h2 style={{ color: "#ffcc00", fontSize: "2.5rem", textAlign: "center" }}>
+        Lista de Clientes
+      </h2>
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       <input
         type="text"
         placeholder="Buscar por nombre, apellido, email o teléfono..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+        style={{
+          marginBottom: "1rem",
+          padding: "0.5rem",
+          width: "100%",
+          maxWidth: "600px",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          borderRadius: "5px",
+          border: "1px solid #ccc",
+        }}
       />
-      <button onClick={handleAddClick} style={{ marginBottom: "1rem" }}>
-        Agregar Cliente
-      </button>
-      <button onClick={handleRefresh} style={{ marginLeft: "1rem" }}>
-        Refrescar Lista
-      </button>
-      <table>
+      <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+        <button
+          onClick={handleAddClick}
+          style={{
+            backgroundColor: "#ffcc00",
+            color: "#000",
+            border: "none",
+            padding: "0.5rem 1rem",
+            cursor: "pointer",
+            borderRadius: "5px",
+            marginRight: "0.5rem",
+          }}
+        >
+          Agregar Cliente
+        </button>
+        <button
+          onClick={handleRefresh}
+          style={{
+            backgroundColor: "#bbb",
+            color: "#333",
+            border: "none",
+            padding: "0.5rem 1rem",
+            cursor: "pointer",
+            borderRadius: "5px",
+          }}
+        >
+          Refrescar Lista
+        </button>
+      </div>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
-          <tr>
+          <tr style={{ backgroundColor: "#333", color: "#ffcc00" }}>
             <th>ID</th>
             <th>Nombre</th>
             <th>Apellido</th>
@@ -175,7 +213,13 @@ const ClientList: React.FC = () => {
         </thead>
         <tbody>
           {filteredClients.map((client) => (
-            <tr key={client.clienteId}>
+            <tr
+              key={client.clienteId}
+              style={{
+                borderBottom: "1px solid #555",
+                textAlign: "center",
+              }}
+            >
               <td>{client.clienteId}</td>
               <td>{client.nombre}</td>
               <td>{client.apellido}</td>
@@ -183,33 +227,68 @@ const ClientList: React.FC = () => {
               <td>{client.telefono}</td>
               <td>{client.sexo}</td>
               <td>
-                <button onClick={() => handleEditClick(client)}>Editar</button>
-                <button onClick={() => handleDeleteClick(client.clienteId)}>
-                  Eliminar
-                </button>
-                <button onClick={() => handleAddRoutineClick(client)}>
-                  Agregar Rutina
-                </button>
-                <button onClick={() => handleViewRoutinesClick(client)}>
-                  Ver Rutinas
-                </button>
-                <button onClick={() => handleAddDietClick(client)}>
-                  Agregar Dieta
-                </button>
-                <button onClick={() => handleViewDietsClick(client)}>
-                  Ver Dietas
-                </button>
-                <button onClick={() => handleAddProgressClick(client)}>
-                  Agregar Progreso
-                </button>
-                <button onClick={() => handleViewProgressListClick(client)}>
-                  Ver Progresos
-                </button>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button
+                    onClick={() => handleEditClick(client)}
+                    style={buttonStyle("#007bff", "#fff")}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(client.clienteId)}
+                    style={buttonStyle("#dc3545", "#fff")}
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    onClick={() => handleAddRoutineClick(client)}
+                    style={buttonStyle("#28a745", "#fff")}
+                  >
+                    Agregar Rutina
+                  </button>
+                  <button
+                    onClick={() => handleViewRoutinesClick(client)}
+                    style={buttonStyle("#17a2b8", "#fff")}
+                  >
+                    Ver Rutinas
+                  </button>
+                  <button
+                    onClick={() => handleAddDietClick(client)}
+                    style={buttonStyle("#ffcc00", "#000")}
+                  >
+                    Agregar Dieta
+                  </button>
+                  <button
+                    onClick={() => handleViewDietsClick(client)}
+                    style={buttonStyle("#6c757d", "#fff")}
+                  >
+                    Ver Dietas
+                  </button>
+                  <button
+                    onClick={() => handleAddProgressClick(client)}
+                    style={buttonStyle("#ffc107", "#000")}
+                  >
+                    Agregar Progreso
+                  </button>
+                  <button
+                    onClick={() => handleViewProgressListClick(client)}
+                    style={buttonStyle("#6610f2", "#fff")}
+                  >
+                    Ver Progresos
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/* Renderizado condicional de formularios y listas */}
       {selectedClient && (
         <EditClientForm
           client={selectedClient}
@@ -228,7 +307,6 @@ const ClientList: React.FC = () => {
           onRoutineAdded={handleSave}
         />
       )}
-      {/* Renderizado condicional para AddDietForm */}
       {isAddingDiet && selectedClientForDiet && (
         <AddDietForm
           clienteId={selectedClientForDiet.clienteId}
@@ -241,11 +319,10 @@ const ClientList: React.FC = () => {
           clienteId={selectedClientForViewingRoutines.clienteId}
           onClose={() => {
             setSelectedClientForViewingRoutines(null);
-            fetchClients(); // Asegura que la lista se actualiza al volver
+            fetchClients();
           }}
         />
       )}
-      {/* Render the DietList component conditionally */}
       {selectedClientForViewingDiets && (
         <DietList
           clienteId={selectedClientForViewingDiets.clienteId}
@@ -259,7 +336,6 @@ const ClientList: React.FC = () => {
           onClose={() => setIsAddingProgress(false)}
         />
       )}
-      {/* Renderiza ProgressList de manera condicional */}
       {isViewingProgressList && selectedClientForProgressList && (
         <ProgressList
           clienteId={selectedClientForProgressList.clienteId}
@@ -269,5 +345,16 @@ const ClientList: React.FC = () => {
     </div>
   );
 };
+
+const buttonStyle = (bgColor: string, color: string) => ({
+  backgroundColor: bgColor,
+  color: color,
+  border: "none",
+  padding: "0.5rem",
+  margin: "0.2rem",
+  borderRadius: "3px",
+  cursor: "pointer",
+  width: "auto",
+});
 
 export default ClientList;
