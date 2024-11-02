@@ -1,4 +1,3 @@
-// src/components/ViewRoutine.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -44,7 +43,6 @@ const ViewRoutine: React.FC = () => {
           }
         );
 
-        // Adaptar la estructura de la respuesta
         const adaptedRoutine = {
           ...response.data,
           diasEntrenamiento: response.data.diasEntrenamiento.$values.map(
@@ -115,7 +113,7 @@ const ViewRoutine: React.FC = () => {
         });
 
         alert("Rutina eliminada exitosamente.");
-        navigate("/dashboard"); // Redirige al dashboard
+        navigate("/dashboard");
       } catch (error) {
         console.error("Error al eliminar la rutina:", error);
         setError("Error al eliminar la rutina.");
@@ -124,59 +122,191 @@ const ViewRoutine: React.FC = () => {
   };
 
   return (
-    <div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {routine && (
-        <>
-          <h3>{routine.nombre}</h3>
-          <p>{routine.descripcion}</p>
-          <button onClick={handleDownloadPdf}>Descargar PDF</button>
-          <button onClick={handleEditRoutine}>Editar Rutina</button>
-          <button onClick={handleDeleteRoutine}>Eliminar Rutina</button>
-          {routine.diasEntrenamiento.map((dia, diaIndex) => (
-            <div key={diaIndex}>
-              <h4>{dia.diaSemana}</h4>
-              {dia.agrupaciones.map((agrupacion, groupIndex) => (
-                <div key={groupIndex}>
-                  <h5>{agrupacion.tipo}</h5>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Nombre</th>
-                        <th>Series</th>
-                        <th>Repeticiones</th>
-                        <th>Imagen</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {agrupacion.ejercicios.map((ejercicio, exIndex) => (
-                        <tr key={exIndex}>
-                          <td>{ejercicio.nombre}</td>
-                          <td>{ejercicio.series}</td>
-                          <td>{ejercicio.repeticiones}</td>
-                          <td>
-                            {ejercicio.imagenUrl ? (
-                              <img
-                                src={ejercicio.imagenUrl}
-                                alt={ejercicio.nombre}
-                                style={{ width: "100px", height: "auto" }}
-                              />
-                            ) : (
-                              <p>Imagen no disponible</p>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ))}
+    <div style={backgroundStyle}>
+      <div style={containerStyle}>
+        {error && <p style={errorStyle}>{error}</p>}
+        {routine && (
+          <>
+            <h3 style={titleStyle}>{routine.nombre}</h3>
+            <p style={descriptionStyle}>{routine.descripcion}</p>
+            <div style={buttonContainerStyle}>
+              <button
+                onClick={handleDownloadPdf}
+                style={actionButtonStyle("#007bff")}
+              >
+                Descargar PDF
+              </button>
+              <button
+                onClick={handleEditRoutine}
+                style={actionButtonStyle("#ffc107")}
+              >
+                Editar Rutina
+              </button>
+              <button
+                onClick={handleDeleteRoutine}
+                style={actionButtonStyle("#dc3545")}
+              >
+                Eliminar Rutina
+              </button>
             </div>
-          ))}
-        </>
-      )}
+            {routine.diasEntrenamiento.map((dia, diaIndex) => (
+              <div key={diaIndex} style={dayContainerStyle}>
+                <h4 style={dayTitleStyle}>{dia.diaSemana}</h4>
+                {dia.agrupaciones.map((agrupacion, groupIndex) => (
+                  <div key={groupIndex} style={groupContainerStyle}>
+                    <h5 style={groupTitleStyle}>{agrupacion.tipo}</h5>
+                    <table style={tableStyle}>
+                      <thead>
+                        <tr style={headerRowStyle}>
+                          <th>Nombre</th>
+                          <th>Series</th>
+                          <th>Repeticiones</th>
+                          <th>Imagen</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {agrupacion.ejercicios.map((ejercicio, exIndex) => (
+                          <tr key={exIndex} style={rowStyle}>
+                            <td style={cellStyle}>{ejercicio.nombre}</td>
+                            <td style={cellStyle}>{ejercicio.series}</td>
+                            <td style={cellStyle}>{ejercicio.repeticiones}</td>
+                            <td style={cellStyle}>
+                              {ejercicio.imagenUrl ? (
+                                <img
+                                  src={ejercicio.imagenUrl}
+                                  alt={ejercicio.nombre}
+                                  style={imageStyle}
+                                />
+                              ) : (
+                                <p style={noImageStyle}>Imagen no disponible</p>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
+};
+
+// Estilos
+const backgroundStyle: React.CSSProperties = {
+  backgroundColor: "#222",
+  minHeight: "100vh",
+  paddingTop: "2rem",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const containerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  maxWidth: "800px",
+  width: "100%",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.8rem",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const descriptionStyle: React.CSSProperties = {
+  fontSize: "1rem",
+  color: "#ddd",
+  marginBottom: "1rem",
+  textAlign: "center",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const buttonContainerStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "1rem",
+  marginBottom: "1.5rem",
+};
+
+const actionButtonStyle = (bgColor: string): React.CSSProperties => ({
+  backgroundColor: bgColor,
+  color: "#fff",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+});
+
+const dayContainerStyle: React.CSSProperties = {
+  marginBottom: "1.5rem",
+};
+
+const dayTitleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.4rem",
+  marginBottom: "0.5rem",
+};
+
+const groupContainerStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  padding: "1rem",
+  borderRadius: "8px",
+  marginBottom: "1rem",
+};
+
+const groupTitleStyle: React.CSSProperties = {
+  fontSize: "1.2rem",
+  color: "#ffcc00",
+  marginBottom: "0.5rem",
+};
+
+const tableStyle: React.CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+};
+
+const headerRowStyle: React.CSSProperties = {
+  backgroundColor: "#555",
+  color: "#ffcc00",
+  textAlign: "center",
+};
+
+const rowStyle: React.CSSProperties = {
+  textAlign: "center",
+  borderBottom: "1px solid #666",
+};
+
+const cellStyle: React.CSSProperties = {
+  padding: "0.8rem",
+  color: "#fff",
+};
+
+const imageStyle: React.CSSProperties = {
+  width: "100px",
+  height: "auto",
+  borderRadius: "4px",
+};
+
+const noImageStyle: React.CSSProperties = {
+  color: "#aaa",
+  fontStyle: "italic",
 };
 
 export default ViewRoutine;

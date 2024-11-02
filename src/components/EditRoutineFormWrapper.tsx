@@ -8,22 +8,32 @@ const EditRoutineFormWrapper: React.FC = () => {
   const { rutinaId } = useParams<{ rutinaId: string }>();
 
   const handleRoutineUpdated = () => {
-    // Redirige a la página de dashboard o alguna otra página después de la edición exitosa
     navigate("/dashboard");
   };
 
   const handleCloseEditRoutine = () => {
-    // Redirige a la lista de rutinas o dashboard cuando se cierra el formulario
-    navigate(-1); // -1 indica que vuelve a la página anterior
+    navigate(-1);
   };
 
   return (
-    <EditRoutineForm
-      rutinaId={parseInt(rutinaId || "", 10)}
-      onRoutineUpdated={handleRoutineUpdated}
-      onClose={handleCloseEditRoutine}
-    />
+    <div style={backgroundStyle}>
+      <EditRoutineForm
+        rutinaId={parseInt(rutinaId || "", 10)}
+        onRoutineUpdated={handleRoutineUpdated}
+        onClose={handleCloseEditRoutine}
+      />
+    </div>
   );
+};
+
+// Estilo de fondo oscuro
+const backgroundStyle: React.CSSProperties = {
+  backgroundColor: "#222",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "2rem",
 };
 
 export default EditRoutineFormWrapper;
