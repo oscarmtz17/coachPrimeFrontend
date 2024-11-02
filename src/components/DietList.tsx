@@ -1,4 +1,3 @@
-// src/components/DietList.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +6,7 @@ interface Diet {
   dietaId: number;
   nombre: string;
   descripcion: string;
+  fechaAsignacion: string;
 }
 
 interface DietListProps {
@@ -109,36 +109,52 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
   };
 
   return (
-    <div>
-      <h3>Dietas del Cliente</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={containerStyle}>
+      <h3 style={titleStyle}>Dietas del Cliente</h3>
+      {error && <p style={errorStyle}>{error}</p>}
       {!error && (
-        <table>
+        <table style={tableStyle}>
           <thead>
-            <tr>
+            <tr style={headerRowStyle}>
               <th>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
+              <th>Fecha de Inicio</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {diets.map((diet) => (
-              <tr key={diet.dietaId}>
-                <td>{diet.dietaId}</td>
-                <td>{diet.nombre}</td>
-                <td>{diet.descripcion}</td>
-                <td>
-                  <button onClick={() => handleDownloadPdf(diet.dietaId)}>
+              <tr key={diet.dietaId} style={rowStyle}>
+                <td style={cellStyle}>{diet.dietaId}</td>
+                <td style={cellStyle}>{diet.nombre}</td>
+                <td style={cellStyle}>{diet.descripcion}</td>
+                <td style={cellStyle}>
+                  {new Date(diet.fechaAsignacion).toLocaleDateString("es-ES")}
+                </td>
+                <td style={actionCellStyle}>
+                  <button
+                    onClick={() => handleDownloadPdf(diet.dietaId)}
+                    style={actionButtonStyle("#007bff")}
+                  >
                     Descargar PDF
                   </button>
-                  <button onClick={() => handleViewDiet(diet.dietaId)}>
+                  <button
+                    onClick={() => handleViewDiet(diet.dietaId)}
+                    style={actionButtonStyle("#28a745")}
+                  >
                     Ver Dieta
                   </button>
-                  <button onClick={() => handleEditDiet(diet.dietaId)}>
+                  <button
+                    onClick={() => handleEditDiet(diet.dietaId)}
+                    style={actionButtonStyle("#ffc107")}
+                  >
                     Editar Dieta
                   </button>
-                  <button onClick={() => handleDeleteDiet(diet.dietaId)}>
+                  <button
+                    onClick={() => handleDeleteDiet(diet.dietaId)}
+                    style={actionButtonStyle("#dc3545")}
+                  >
                     Eliminar Dieta
                   </button>
                 </td>
@@ -147,9 +163,85 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
           </tbody>
         </table>
       )}
-      <button onClick={onClose}>Cerrar</button>
+      <button onClick={onClose} style={closeButtonStyle}>
+        Cerrar
+      </button>
     </div>
   );
+};
+
+const containerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  maxWidth: "800px",
+  margin: "0 auto",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.8rem",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const tableStyle: React.CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+};
+
+const headerRowStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  color: "#ffcc00",
+  textAlign: "center",
+};
+
+const rowStyle: React.CSSProperties = {
+  textAlign: "center",
+  borderBottom: "1px solid #555",
+};
+
+const cellStyle: React.CSSProperties = {
+  padding: "0.8rem",
+  color: "#fff",
+};
+
+const actionCellStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "0.3rem",
+  flexWrap: "wrap",
+};
+
+const actionButtonStyle = (bgColor: string): React.CSSProperties => ({
+  backgroundColor: bgColor,
+  color: "#fff",
+  border: "none",
+  padding: "0.3rem 0.6rem",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+  marginTop: "0.3rem",
+});
+
+const closeButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  border: "none",
+  padding: "0.5rem 1rem",
+  borderRadius: "5px",
+  cursor: "pointer",
+  display: "block",
+  margin: "0 auto",
 };
 
 export default DietList;
