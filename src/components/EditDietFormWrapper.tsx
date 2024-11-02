@@ -14,13 +14,24 @@ const EditDietFormWrapper: React.FC = () => {
   }
 
   return (
-    <EditDietForm
-      clienteId={parseInt(clienteId)}
-      dietaId={parseInt(dietaId)}
-      onDietUpdated={() => console.log("Dieta actualizada")} // Puedes personalizar este comportamiento
-      onClose={() => window.history.back()}
-    />
+    <div style={backgroundStyle}>
+      <EditDietForm
+        clienteId={parseInt(clienteId)}
+        dietaId={parseInt(dietaId)}
+        onDietUpdated={() => console.log("Dieta actualizada")}
+        onClose={() => window.history.back()}
+      />
+    </div>
   );
+};
+
+const backgroundStyle: React.CSSProperties = {
+  backgroundColor: "#222",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "2rem",
 };
 
 export default EditDietFormWrapper;
