@@ -1,4 +1,3 @@
-// src/components/ProgressList.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EditProgressForm from "./EditProgressForm";
@@ -69,7 +68,6 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        // Actualizar la lista de progreso después de eliminar
         setProgressList((prevList) =>
           prevList.filter((progress) => progress.progresoId !== progresoId)
         );
@@ -83,7 +81,6 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
 
   const handleSaveProgress = () => {
     setSelectedProgress(null);
-    // Refrescar la lista de progreso después de guardar
     const fetchProgressList = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -104,17 +101,17 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   };
 
   if (loading) {
-    return <p>Cargando registros de progreso...</p>;
+    return <p style={loadingStyle}>Cargando registros de progreso...</p>;
   }
 
   return (
-    <div>
-      <h3>Progresos del Cliente</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={containerStyle}>
+      <h3 style={titleStyle}>Progresos del Cliente</h3>
+      {error && <p style={errorStyle}>{error}</p>}
       {!error && progressList.length > 0 ? (
-        <table>
+        <table style={tableStyle}>
           <thead>
-            <tr>
+            <tr style={headerRowStyle}>
               <th>Fecha</th>
               <th>Peso (kg)</th>
               <th>Estatura (cm)</th>
@@ -131,24 +128,30 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
           </thead>
           <tbody>
             {progressList.map((progress) => (
-              <tr key={progress.progresoId}>
-                <td>{new Date(progress.fechaRegistro).toLocaleDateString()}</td>
-                <td>{progress.pesoKg}</td>
-                <td>{progress.estaturaCm}</td>
-                <td>{progress.nivelActividad}</td>
-                <td>{progress.factorActividad}</td>
-                <td>{progress.cinturaCm}</td>
-                <td>{progress.caderaCm}</td>
-                <td>{progress.pechoCm}</td>
-                <td>{progress.brazoCm}</td>
-                <td>{progress.piernaCm}</td>
-                <td>{progress.notas}</td>
-                <td>
-                  <button onClick={() => handleEditProgress(progress)}>
+              <tr key={progress.progresoId} style={rowStyle}>
+                <td style={cellStyle}>
+                  {new Date(progress.fechaRegistro).toLocaleDateString()}
+                </td>
+                <td style={cellStyle}>{progress.pesoKg}</td>
+                <td style={cellStyle}>{progress.estaturaCm}</td>
+                <td style={cellStyle}>{progress.nivelActividad}</td>
+                <td style={cellStyle}>{progress.factorActividad}</td>
+                <td style={cellStyle}>{progress.cinturaCm}</td>
+                <td style={cellStyle}>{progress.caderaCm}</td>
+                <td style={cellStyle}>{progress.pechoCm}</td>
+                <td style={cellStyle}>{progress.brazoCm}</td>
+                <td style={cellStyle}>{progress.piernaCm}</td>
+                <td style={cellStyle}>{progress.notas}</td>
+                <td style={actionCellStyle}>
+                  <button
+                    onClick={() => handleEditProgress(progress)}
+                    style={actionButtonStyle("#28a745")}
+                  >
                     Editar
                   </button>
                   <button
                     onClick={() => handleDeleteProgress(progress.progresoId)}
+                    style={actionButtonStyle("#dc3545")}
                   >
                     Eliminar
                   </button>
@@ -158,9 +161,11 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
           </tbody>
         </table>
       ) : (
-        <p>No hay registros de progreso disponibles.</p>
+        <p style={noDataStyle}>No hay registros de progreso disponibles.</p>
       )}
-      <button onClick={onClose}>Cerrar</button>
+      <button onClick={onClose} style={closeButtonStyle}>
+        Cerrar
+      </button>
       {selectedProgress && (
         <EditProgressForm
           clienteId={clienteId}
@@ -171,6 +176,93 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
       )}
     </div>
   );
+};
+
+// Estilos
+const containerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  maxWidth: "900px",
+  margin: "0 auto",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.8rem",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const loadingStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  textAlign: "center",
+  fontSize: "1.2rem",
+};
+
+const noDataStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  textAlign: "center",
+  fontSize: "1.2rem",
+};
+
+const tableStyle: React.CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+};
+
+const headerRowStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  color: "#ffcc00",
+  textAlign: "center",
+};
+
+const rowStyle: React.CSSProperties = {
+  textAlign: "center",
+  borderBottom: "1px solid #555",
+};
+
+const cellStyle: React.CSSProperties = {
+  padding: "0.8rem",
+  color: "#fff",
+};
+
+const actionCellStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "0.3rem",
+  flexWrap: "wrap",
+};
+
+const actionButtonStyle = (bgColor: string): React.CSSProperties => ({
+  backgroundColor: bgColor,
+  color: "#fff",
+  border: "none",
+  padding: "0.3rem 0.6rem",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+  marginTop: "0.3rem",
+});
+
+const closeButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  border: "none",
+  padding: "0.5rem 1rem",
+  borderRadius: "5px",
+  cursor: "pointer",
+  display: "block",
+  margin: "0 auto",
 };
 
 export default ProgressList;
