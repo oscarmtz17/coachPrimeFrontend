@@ -30,8 +30,8 @@ interface Ejercicio {
 interface AddRoutineFormProps {
   clienteId: number;
   usuarioId: number;
-  onRoutineAdded: () => void; // Para actualizar la lista de rutinas después de agregar una nueva
-  onClose: () => void; // Para cerrar el formulario
+  onRoutineAdded: () => void;
+  onClose: () => void;
 }
 
 const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
@@ -74,11 +74,14 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   };
 
   const handleAddDay = () => {
-    const newDay: DiaEntrenamiento = {
-      diaSemana: "",
-      agrupaciones: [],
-    };
+    const newDay: DiaEntrenamiento = { diaSemana: "", agrupaciones: [] };
     setDiasEntrenamiento([...diasEntrenamiento, newDay]);
+  };
+
+  const handleRemoveDay = (dayIndex: number) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays.splice(dayIndex, 1);
+    setDiasEntrenamiento(updatedDays);
   };
 
   const handleDayChange = (index: number, diaSemana: string) => {
@@ -111,7 +114,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
         exerciseCount = 4;
         break;
       case "Circuito":
-        exerciseCount = 0; // Para permitir agregar ejercicios dinámicamente
+        exerciseCount = 0;
         break;
       default:
         exerciseCount = 1;
@@ -119,10 +122,16 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
 
     return Array.from({ length: exerciseCount }, () => ({
       nombre: "",
-      series: 0,
-      repeticiones: 0,
+      series: 1,
+      repeticiones: 1,
       imagenUrl: "",
     }));
+  };
+
+  const handleRemoveGroup = (dayIndex: number, groupIndex: number) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays[dayIndex].agrupaciones.splice(groupIndex, 1);
+    setDiasEntrenamiento(updatedDays);
   };
 
   const handleExerciseChange = (
@@ -134,9 +143,14 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   ) => {
     const updatedDays = [...diasEntrenamiento];
     const group = updatedDays[dayIndex].agrupaciones[groupIndex];
+    const updatedValue =
+      field === "series" || field === "repeticiones"
+        ? Math.max(1, Number(value))
+        : value;
+
     group.ejercicios[exerciseIndex] = {
       ...group.ejercicios[exerciseIndex],
-      [field]: value,
+      [field]: updatedValue,
     };
     setDiasEntrenamiento(updatedDays);
   };
@@ -144,8 +158,8 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   const handleAddExerciseToCircuit = (dayIndex: number, groupIndex: number) => {
     const newExercise: Ejercicio = {
       nombre: "",
-      series: 0,
-      repeticiones: 0,
+      series: 1,
+      repeticiones: 1,
       imagenUrl: "",
     };
 
@@ -155,29 +169,43 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   };
 
   return (
-    <div>
-      <h3>Agregar Nueva Rutina</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
-        <label>Nombre de la Rutina:</label>
-        <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
+    <div style={formContainerStyle}>
+      <h3 style={titleStyle}>Agregar Nueva Rutina</h3>
+      {error && <p style={errorStyle}>{error}</p>}
+      <div style={inputContainerStyle}>
+        <label style={labelStyle}>Nombre de la Rutina:</label>
+        <input
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          style={inputStyle}
+        />
       </div>
-      <div>
-        <label>Descripción:</label>
+      <div style={inputContainerStyle}>
+        <label style={labelStyle}>Descripción:</label>
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
+          style={textareaStyle}
         />
       </div>
-      <div>
-        <button onClick={handleAddDay}>Agregar Día de Entrenamiento</button>
-      </div>
+      <button onClick={handleAddDay} style={addButtonStyle}>
+        Agregar Día de Entrenamiento
+      </button>
       {diasEntrenamiento.map((dia, dayIndex) => (
-        <div key={dayIndex}>
-          <h4>Día de la Semana</h4>
+        <div key={dayIndex} style={dayContainerStyle}>
+          <div style={dayHeaderStyle}>
+            <h4 style={subtitleStyle}>Día de la Semana</h4>
+            <button
+              onClick={() => handleRemoveDay(dayIndex)}
+              style={removeButtonStyle}
+            >
+              Quitar Día
+            </button>
+          </div>
           <select
             value={dia.diaSemana}
             onChange={(e) => handleDayChange(dayIndex, e.target.value)}
+            style={selectStyle}
           >
             <option value="">Selecciona un día</option>
             <option value="Lunes">Lunes</option>
@@ -189,8 +217,11 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
             <option value="Domingo">Domingo</option>
           </select>
 
-          <h4>Agrupación</h4>
-          <select onChange={(e) => handleAddGroup(dayIndex, e.target.value)}>
+          <h4 style={subtitleStyle}>Agrupación</h4>
+          <select
+            onChange={(e) => handleAddGroup(dayIndex, e.target.value)}
+            style={selectStyle}
+          >
             <option value="">Selecciona una agrupación</option>
             <option value="Ejercicio Individual">Ejercicio Individual</option>
             <option value="Bi-Serie">Bi-Serie</option>
@@ -200,12 +231,20 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           </select>
 
           {dia.agrupaciones.map((agrupacion, groupIndex) => (
-            <div key={groupIndex}>
-              <h5>{agrupacion.tipo}</h5>
+            <div key={groupIndex} style={groupContainerStyle}>
+              <div style={groupHeaderStyle}>
+                <h5 style={groupTitleStyle}>{agrupacion.tipo}</h5>
+                <button
+                  onClick={() => handleRemoveGroup(dayIndex, groupIndex)}
+                  style={removeButtonStyle}
+                >
+                  Quitar Agrupación
+                </button>
+              </div>
               {agrupacion.ejercicios.map((ejercicio, exerciseIndex) => (
-                <div key={exerciseIndex}>
+                <div key={exerciseIndex} style={exerciseContainerStyle}>
+                  <label style={exerciseLabelStyle}>Nombre del Ejercicio</label>
                   <input
-                    placeholder="Nombre del ejercicio"
                     value={ejercicio.nombre}
                     onChange={(e) =>
                       handleExerciseChange(
@@ -216,11 +255,13 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         e.target.value
                       )
                     }
+                    style={inputStyle}
                   />
+                  <label style={exerciseLabelStyle}>Series</label>
                   <input
-                    placeholder="Series"
                     type="number"
                     value={ejercicio.series}
+                    min="1"
                     onChange={(e) =>
                       handleExerciseChange(
                         dayIndex,
@@ -230,11 +271,13 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         Number(e.target.value)
                       )
                     }
+                    style={inputStyle}
                   />
+                  <label style={exerciseLabelStyle}>Repeticiones</label>
                   <input
-                    placeholder="Repeticiones"
                     type="number"
                     value={ejercicio.repeticiones}
+                    min="1"
                     onChange={(e) =>
                       handleExerciseChange(
                         dayIndex,
@@ -244,9 +287,10 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         Number(e.target.value)
                       )
                     }
+                    style={inputStyle}
                   />
+                  <label style={exerciseLabelStyle}>URL de Imagen</label>
                   <input
-                    placeholder="URL de Imagen"
                     value={ejercicio.imagenUrl}
                     onChange={(e) =>
                       handleExerciseChange(
@@ -257,6 +301,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         e.target.value
                       )
                     }
+                    style={inputStyle}
                   />
                 </div>
               ))}
@@ -266,6 +311,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                   onClick={() =>
                     handleAddExerciseToCircuit(dayIndex, groupIndex)
                   }
+                  style={addButtonStyle}
                 >
                   Agregar Ejercicio al Circuito
                 </button>
@@ -274,10 +320,171 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           ))}
         </div>
       ))}
-      <button onClick={handleAddRoutine}>Guardar Rutina</button>
-      <button onClick={onClose}>Cancelar</button>
+      <div style={buttonContainerStyle}>
+        <button onClick={handleAddRoutine} style={saveButtonStyle}>
+          Guardar Rutina
+        </button>
+        <button onClick={onClose} style={cancelButtonStyle}>
+          Cancelar
+        </button>
+      </div>
     </div>
   );
+};
+
+// Additional styles
+const dayHeaderStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const groupHeaderStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const removeButtonStyle: React.CSSProperties = {
+  backgroundColor: "#dc3545",
+  color: "#fff",
+  border: "none",
+  padding: "0.3rem 0.6rem",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+};
+
+const exerciseLabelStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "0.9rem",
+  fontWeight: "bold",
+  marginBottom: "0.3rem",
+};
+
+const formContainerStyle: React.CSSProperties = {
+  backgroundColor: "#333",
+  color: "#fff",
+  padding: "1.5rem",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+};
+
+const titleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  textAlign: "center",
+  fontSize: "1.8rem",
+  marginBottom: "1rem",
+};
+
+const subtitleStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontSize: "1.2rem",
+};
+
+const errorStyle: React.CSSProperties = {
+  color: "red",
+  textAlign: "center",
+  marginBottom: "1rem",
+};
+
+const inputContainerStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+  marginBottom: "1rem",
+};
+
+const dayContainerStyle: React.CSSProperties = {
+  backgroundColor: "#444",
+  padding: "1rem",
+  borderRadius: "8px",
+  marginBottom: "1rem",
+};
+
+const groupContainerStyle: React.CSSProperties = {
+  padding: "0.5rem",
+  borderRadius: "4px",
+  backgroundColor: "#555",
+  marginTop: "0.5rem",
+};
+
+const groupTitleStyle: React.CSSProperties = {
+  fontWeight: "bold",
+  color: "#ffcc00",
+};
+
+const exerciseContainerStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+  marginBottom: "0.5rem",
+};
+
+const labelStyle: React.CSSProperties = {
+  color: "#ffcc00",
+  fontWeight: "bold",
+};
+
+const inputStyle: React.CSSProperties = {
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+};
+
+const textareaStyle: React.CSSProperties = {
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+  resize: "vertical",
+};
+
+const selectStyle: React.CSSProperties = {
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  backgroundColor: "#555",
+  color: "#fff",
+};
+
+const buttonContainerStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "1rem",
+  marginTop: "1rem",
+};
+
+const saveButtonStyle: React.CSSProperties = {
+  backgroundColor: "#ffcc00",
+  color: "#000",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  flex: 1,
+};
+
+const cancelButtonStyle: React.CSSProperties = {
+  backgroundColor: "#bbb",
+  color: "#333",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  flex: 1,
+};
+
+const addButtonStyle: React.CSSProperties = {
+  backgroundColor: "#007bff",
+  color: "#fff",
+  padding: "0.5rem",
+  borderRadius: "4px",
+  cursor: "pointer",
+  marginTop: "1rem",
 };
 
 export default AddRoutineForm;
