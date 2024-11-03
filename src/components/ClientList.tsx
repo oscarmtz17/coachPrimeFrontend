@@ -1,6 +1,7 @@
 // src/components/ClientList.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 import EditClientForm from "./EditClientForm";
 import AddClientForm from "./AddClientForm";
 import AddRoutineForm from "./AddRoutineForm";
@@ -34,10 +35,7 @@ const ClientList: React.FC = () => {
 
   const fetchClients = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5267/api/Cliente", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get("/Cliente");
       setClients(response.data);
       setFilteredClients(response.data);
       setError(null);
