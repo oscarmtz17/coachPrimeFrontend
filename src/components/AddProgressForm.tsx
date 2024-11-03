@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface AddProgressFormProps {
   clienteId: number;
@@ -26,7 +27,6 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
 
   const handleSaveProgress = async () => {
     try {
-      const token = localStorage.getItem("token");
       const progresoData = {
         pesoKg,
         estaturaCm,
@@ -40,13 +40,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         notas,
       };
 
-      await axios.post(
-        `http://localhost:5267/api/progreso/${clienteId}`,
-        progresoData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.post(`/progreso/${clienteId}`, progresoData);
 
       onProgressAdded();
       onClose();
