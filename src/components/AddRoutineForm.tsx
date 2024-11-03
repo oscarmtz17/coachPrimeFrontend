@@ -1,6 +1,7 @@
 // src/components/AddRoutineForm.tsx
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface Routine {
   nombre: string;
@@ -49,7 +50,6 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
 
   const handleAddRoutine = async () => {
     try {
-      const token = localStorage.getItem("token");
       const routine: Routine = {
         nombre,
         descripcion,
@@ -58,9 +58,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
         diasEntrenamiento,
       };
 
-      await axios.post("http://localhost:5267/api/rutina", routine, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.post("/rutina", routine);
 
       onRoutineAdded();
       setNombre("");
