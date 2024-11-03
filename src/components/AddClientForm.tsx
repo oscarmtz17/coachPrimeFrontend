@@ -1,6 +1,7 @@
 // src/components/AddClientForm.tsx
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface AddClientFormProps {
   onClose: () => void;
@@ -28,9 +29,7 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ onClose, onSave }) => {
         dietas: [], // Asumimos que dietas es una lista vacía inicialmente
       };
 
-      await axios.post("http://localhost:5267/api/cliente", newClient, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.post("/cliente", newClient);
 
       onSave(); // Actualiza la lista y cierra el formulario
     } catch (error) {
