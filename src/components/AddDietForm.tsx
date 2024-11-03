@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface Diet {
   nombre: string;
@@ -41,7 +42,6 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
 
   const handleAddDiet = async () => {
     try {
-      const token = localStorage.getItem("token");
       const diet: Diet = {
         nombre,
         descripcion,
@@ -50,9 +50,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
         notas,
       };
 
-      await axios.post(`http://localhost:5267/api/dieta/${clienteId}`, diet, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.post(`/dieta/${clienteId}`, diet);
 
       onDietAdded();
       setNombre("");
