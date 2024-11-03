@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import EditProgressForm from "./EditProgressForm";
+import { useNavigate } from "react-router-dom";
 
 interface Progress {
   progresoId: number;
@@ -29,6 +29,7 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   const [selectedProgress, setSelectedProgress] = useState<Progress | null>(
     null
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProgressList = async () => {
@@ -56,7 +57,7 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   }, [clienteId]);
 
   const handleEditProgress = (progress: Progress) => {
-    setSelectedProgress(progress);
+    navigate(`/editar-progreso/${clienteId}/${progress.progresoId}`);
   };
 
   const handleDeleteProgress = async (progresoId: number) => {
@@ -77,27 +78,6 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
         setError("No se pudo eliminar el progreso.");
       }
     }
-  };
-
-  const handleSaveProgress = () => {
-    setSelectedProgress(null);
-    const fetchProgressList = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/progreso/${clienteId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        const progressData = response.data.$values || response.data;
-        setProgressList(progressData);
-      } catch (err) {
-        console.error("Error al actualizar los registros de progreso:", err);
-      }
-    };
-    fetchProgressList();
   };
 
   if (loading) {
@@ -166,14 +146,6 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
       <button onClick={onClose} style={closeButtonStyle}>
         Cerrar
       </button>
-      {selectedProgress && (
-        <EditProgressForm
-          clienteId={clienteId}
-          progress={selectedProgress}
-          onClose={() => setSelectedProgress(null)}
-          onSave={handleSaveProgress}
-        />
-      )}
     </div>
   );
 };

@@ -10,7 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ViewRoutine from "./components/ViewRoutine";
 import EditRoutineFormWrapper from "./components/EditRoutineFormWrapper";
 import ViewDiet from "./components/ViewDiet";
-import EditDietFormWrapper from "./components/EditDietFormWrapper"; // Nuevo componente para manejar la edición de dietas
+import EditDietFormWrapper from "./components/EditDietFormWrapper";
+import EditProgressFormWrapper from "./components/EditProgressFormWrapper"; // Importa el nuevo componente
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -33,8 +34,12 @@ const App: React.FC = () => (
           <Route
             path="/editar-dieta/:clienteId/:dietaId"
             element={<EditDietFormWrapper />}
+          />
+          <Route
+            path="/editar-progreso/:clienteId/:progresoId"
+            element={<EditProgressFormWrapper />}
           />{" "}
-          {/* Nueva ruta para editar dieta */}
+          {/* Nueva ruta para editar progreso */}
         </Route>
       </Routes>
     </Router>
