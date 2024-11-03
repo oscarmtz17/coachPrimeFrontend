@@ -85,9 +85,7 @@ const ClientList: React.FC = () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5267/api/Cliente/${clientId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.delete(`/Cliente/${clientId}`);
         fetchClients(); // Vuelve a cargar la lista de clientes después de la eliminación
       } catch (err) {
         setError("Error al eliminar el cliente");
