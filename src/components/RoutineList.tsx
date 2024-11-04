@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Routine {
   rutinaId: number;
@@ -23,13 +24,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/rutina/cliente/${clienteId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/rutina/cliente/${clienteId}`);
 
         if (response.data && Array.isArray(response.data.$values)) {
           setRoutines(response.data.$values);
@@ -58,10 +53,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
   const handleDeleteRoutine = async (rutinaId: number) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta rutina?")) {
       try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5267/api/rutina/${rutinaId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.delete(`/rutina/${rutinaId}`);
 
         setRoutines((prevRoutines) =>
           prevRoutines.filter((routine) => routine.rutinaId !== rutinaId)
@@ -76,16 +68,9 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
 
   const handleDownloadPdf = async (rutinaId: number) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5267/api/rutina/${clienteId}/${rutinaId}/pdf`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const response = await api.get(`/rutina/${clienteId}/${rutinaId}/pdf`, {
+        responseType: "blob",
+      });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
