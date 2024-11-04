@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface DiaEntrenamiento {
   diaSemana: string;
@@ -42,13 +43,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
   useEffect(() => {
     const fetchRoutineDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/rutina/${rutinaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/rutina/${rutinaId}`);
 
         const adaptedRoutine = {
           ...response.data,
@@ -195,13 +190,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
         })),
       };
 
-      const response = await axios.put(
-        `http://localhost:5267/api/rutina/${rutinaId}`,
-        routine,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.put(`/rutina/${rutinaId}`, routine);
 
       setSuccessMessage(response.data);
       setError(null);
