@@ -1,6 +1,7 @@
 // src/components/EditClientForm.tsx
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface EditClientFormProps {
   client: {
@@ -32,23 +33,14 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5267/api/cliente/${client.clienteId}`,
-        {
-          nombre,
-          apellido,
-          email,
-          telefono,
-          sexo,
-          usuarioId: client.usuarioId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.put(`/cliente/${client.clienteId}`, {
+        nombre,
+        apellido,
+        email,
+        telefono,
+        sexo,
+        usuarioId: client.usuarioId,
+      });
 
       onSave();
     } catch (err) {
