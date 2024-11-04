@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Ejercicio {
   nombre: string;
@@ -35,13 +36,7 @@ const ViewRoutine: React.FC = () => {
   useEffect(() => {
     const fetchRoutine = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/rutina/${rutinaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/rutina/${rutinaId}`);
 
         const adaptedRoutine = {
           ...response.data,
@@ -72,13 +67,9 @@ const ViewRoutine: React.FC = () => {
   const handleDownloadPdf = async () => {
     if (!routine) return;
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5267/api/rutina/${routine.clienteId}/${rutinaId}/pdf`,
+      const response = await api.get(
+        `/rutina/${routine.clienteId}/${rutinaId}/pdf`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           responseType: "blob",
         }
       );
@@ -107,10 +98,7 @@ const ViewRoutine: React.FC = () => {
   const handleDeleteRoutine = async () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta rutina?")) {
       try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5267/api/rutina/${rutinaId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.delete(`/rutina/${rutinaId}`);
 
         alert("Rutina eliminada exitosamente.");
         navigate("/dashboard");
