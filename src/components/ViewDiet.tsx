@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Alimento {
   nombre: string;
@@ -36,13 +37,7 @@ const ViewDiet: React.FC = () => {
   useEffect(() => {
     const fetchDiet = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/dieta/${clienteId}/${dietaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/dieta/${clienteId}/${dietaId}`);
 
         const adaptedDiet = {
           ...response.data,
@@ -66,13 +61,9 @@ const ViewDiet: React.FC = () => {
   const handleDownloadPdf = async () => {
     if (!diet) return;
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5267/api/dieta/${diet.clienteId}/${dietaId}/pdf`,
+      const response = await api.get(
+        `/dieta/${diet.clienteId}/${dietaId}/pdf`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           responseType: "blob",
         }
       );
@@ -95,13 +86,7 @@ const ViewDiet: React.FC = () => {
   const handleDeleteDiet = async () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta dieta?")) {
       try {
-        const token = localStorage.getItem("token");
-        await axios.delete(
-          `http://localhost:5267/api/dieta/${diet?.clienteId}/${dietaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await api.delete(`/dieta/${diet?.clienteId}/${dietaId}`);
 
         alert("Dieta eliminada exitosamente.");
         navigate("/dashboard");
