@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import EditProgressForm from "./EditProgressForm";
+import api from "../services/api";
 
 interface Progress {
   progresoId: number;
@@ -32,13 +33,7 @@ const EditProgressFormWrapper: React.FC = () => {
       if (!clienteId || !progresoId) return;
 
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/progreso/${clienteId}/${progresoId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/progreso/${clienteId}/${progresoId}`);
         setProgress(response.data);
         setError(null);
       } catch (err) {

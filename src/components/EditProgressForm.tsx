@@ -1,6 +1,7 @@
 // src/components/EditProgressForm.tsx
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../services/api";
 
 interface Progress {
   progresoId: number;
@@ -57,12 +58,7 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5267/api/progreso/${clienteId}/${formData.progresoId}`,
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put(`/progreso/${clienteId}/${formData.progresoId}`, formData);
       onSave();
       onClose();
     } catch (err) {
