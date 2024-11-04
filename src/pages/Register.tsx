@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../services/api";
 
 const Register: React.FC = () => {
   const [nombre, setNombre] = useState("");
@@ -32,7 +33,7 @@ const Register: React.FC = () => {
 
     setLoading(true);
     try {
-      await axios.post("http://localhost:5267/api/auth/register", {
+      await api.post("/auth/register", {
         nombre,
         apellido,
         email,
