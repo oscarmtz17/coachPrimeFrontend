@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Alimento {
   nombre: string;
@@ -39,13 +40,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
   useEffect(() => {
     const fetchDietDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/dieta/${clienteId}/${dietaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/dieta/${clienteId}/${dietaId}`);
 
         const adaptedDiet = {
           ...response.data,
@@ -70,7 +65,6 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
 
   const handleUpdateDiet = async () => {
     try {
-      const token = localStorage.getItem("token");
       const diet = {
         nombre,
         descripcion,
@@ -84,13 +78,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
         notas,
       };
 
-      const response = await axios.put(
-        `http://localhost:5267/api/dieta/${clienteId}/${dietaId}`,
-        diet,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.put(`/dieta/${clienteId}/${dietaId}`, diet);
 
       alert("Dieta actualizada exitosamente.");
       onDietUpdated();
