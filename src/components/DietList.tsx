@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Diet {
   dietaId: number;
@@ -22,13 +23,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
   useEffect(() => {
     const fetchDiets = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/dieta/${clienteId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/dieta/${clienteId}`);
 
         if (response.data && Array.isArray(response.data.$values)) {
           setDiets(response.data.$values);
@@ -56,14 +51,9 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
 
   const handleDownloadPdf = async (dietaId: number) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5267/api/dieta/${clienteId}/${dietaId}/pdf`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          responseType: "blob",
-        }
-      );
+      const response = await api.get(`/dieta/${clienteId}/${dietaId}/pdf`, {
+        responseType: "blob",
+      });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -89,13 +79,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
   const handleDeleteDiet = async (dietaId: number) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta dieta?")) {
       try {
-        const token = localStorage.getItem("token");
-        await axios.delete(
-          `http://localhost:5267/api/dieta/${clienteId}/${dietaId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await api.delete(`/dieta/${clienteId}/${dietaId}`);
 
         setDiets((prevDiets) =>
           prevDiets.filter((diet) => diet.dietaId !== dietaId)
