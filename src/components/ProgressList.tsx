@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 interface Progress {
   progresoId: number;
@@ -34,13 +35,7 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   useEffect(() => {
     const fetchProgressList = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:5267/api/progreso/${clienteId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get(`/progreso/${clienteId}`);
 
         const progressData = response.data.$values || response.data;
         setProgressList(progressData);
@@ -63,11 +58,7 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   const handleDeleteProgress = async (progresoId: number) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este progreso?")) {
       try {
-        const token = localStorage.getItem("token");
-        await axios.delete(
-          `http://localhost:5267/api/progreso/${clienteId}/${progresoId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        await api.delete(`/progreso/${clienteId}/${progresoId}`);
 
         setProgressList((prevList) =>
           prevList.filter((progress) => progress.progresoId !== progresoId)
