@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import Modal from "./Modal";
+import ImageSelector from "./ImageSelector";
 
 interface DiaEntrenamiento {
   diaSemana: string;
@@ -38,13 +39,18 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
   >([]);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<{
+    dayIndex: number;
+    groupIndex: number;
+    exerciseIndex: number;
+  } | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoutineDetails = async () => {
       try {
         const response = await api.get(`/rutina/${rutinaId}`);
-
         const adaptedRoutine = {
           ...response.data,
           diasEntrenamiento: response.data.diasEntrenamiento.$values.map(
@@ -59,7 +65,6 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
             })
           ),
         };
-
         setNombre(adaptedRoutine.nombre);
         setDescripcion(adaptedRoutine.descripcion);
         setDiasEntrenamiento(adaptedRoutine.diasEntrenamiento);
@@ -68,7 +73,6 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
         console.error(error);
       }
     };
-
     fetchRoutineDetails();
   }, [rutinaId]);
 
@@ -175,7 +179,6 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
 
   const handleUpdateRoutine = async () => {
     try {
-      const token = localStorage.getItem("token");
       const routine = {
         nombre,
         descripcion,
@@ -203,6 +206,42 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
       setSuccessMessage(null);
       console.error(err);
     }
+  };
+
+  // Funciones específicas para seleccionar y eliminar imágenes
+  const openImageSelector = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    setSelectedExercise({ dayIndex, groupIndex, exerciseIndex });
+    setIsImageSelectorOpen(true);
+  };
+
+  const closeImageSelector = () => setIsImageSelectorOpen(false);
+
+  const handleSelectImage = (url: string) => {
+    if (selectedExercise) {
+      const { dayIndex, groupIndex, exerciseIndex } = selectedExercise;
+      const updatedDays = [...diasEntrenamiento];
+      updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+        exerciseIndex
+      ].imagenUrl = url;
+      setDiasEntrenamiento(updatedDays);
+    }
+    closeImageSelector();
+  };
+
+  const handleRemoveImage = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+      exerciseIndex
+    ].imagenUrl = "";
+    setDiasEntrenamiento(updatedDays);
   };
 
   return (
@@ -324,20 +363,36 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                     }
                     style={inputStyle}
                   />
-                  <label style={exerciseLabelStyle}>URL de Imagen</label>
-                  <input
-                    value={ejercicio.imagenUrl}
-                    onChange={(e) =>
-                      handleExerciseChange(
-                        dayIndex,
-                        groupIndex,
-                        exerciseIndex,
-                        "imagenUrl",
-                        e.target.value
-                      )
-                    }
-                    style={inputStyle}
-                  />
+                  {ejercicio.imagenUrl ? (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img
+                        src={ejercicio.imagenUrl}
+                        alt="Imagen del Ejercicio"
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginRight: "0.5rem",
+                        }}
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveImage(dayIndex, groupIndex, exerciseIndex)
+                        }
+                        style={removeButtonStyle}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        openImageSelector(dayIndex, groupIndex, exerciseIndex)
+                      }
+                      style={addButtonStyle}
+                    >
+                      Seleccionar Imagen para Ejercicio
+                    </button>
+                  )}
                 </div>
               ))}
               <button
@@ -358,9 +413,15 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
           Cerrar
         </button>
       </div>
+
+      <Modal isOpen={isImageSelectorOpen} onClose={closeImageSelector}>
+        <ImageSelector onSelect={handleSelectImage} />
+      </Modal>
     </div>
   );
 };
+
+// Mantén todos los estilos originales aquí
 
 // Styles
 const containerStyle: React.CSSProperties = {

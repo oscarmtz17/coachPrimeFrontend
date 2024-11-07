@@ -51,7 +51,7 @@ api.interceptors.request.use(
           response.data;
 
         if (newAccessToken && newRefreshToken) {
-          console.log("Nuevo access token obtenido:", newAccessToken);
+          // console.log("Nuevo access token obtenido:", newAccessToken);
           localStorage.setItem("accessToken", newAccessToken);
           localStorage.setItem("refreshToken", newRefreshToken);
           config.headers["Authorization"] = `Bearer ${newAccessToken}`;

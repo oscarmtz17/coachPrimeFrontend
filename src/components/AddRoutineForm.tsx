@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import api from "../services/api";
+import Modal from "./Modal";
+import ImageSelector from "./ImageSelector";
 
 interface Routine {
   nombre: string;
@@ -47,6 +49,12 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
     DiaEntrenamiento[]
   >([]);
   const [error, setError] = useState<string | null>(null);
+  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<{
+    dayIndex: number;
+    groupIndex: number;
+    exerciseIndex: number;
+  } | null>(null);
 
   const handleAddRoutine = async () => {
     try {
@@ -69,6 +77,41 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
       setError("Error al agregar la rutina");
       console.error(err);
     }
+  };
+
+  const openImageSelector = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    setSelectedExercise({ dayIndex, groupIndex, exerciseIndex });
+    setIsImageSelectorOpen(true);
+  };
+
+  const closeImageSelector = () => setIsImageSelectorOpen(false);
+
+  const handleSelectImage = (url: string) => {
+    if (selectedExercise) {
+      const { dayIndex, groupIndex, exerciseIndex } = selectedExercise;
+      const updatedDays = [...diasEntrenamiento];
+      updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+        exerciseIndex
+      ].imagenUrl = url;
+      setDiasEntrenamiento(updatedDays);
+    }
+    closeImageSelector();
+  };
+
+  const handleRemoveImage = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+      exerciseIndex
+    ].imagenUrl = "";
+    setDiasEntrenamiento(updatedDays);
   };
 
   const handleAddDay = () => {
@@ -186,6 +229,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           style={textareaStyle}
         />
       </div>
+
       <button onClick={handleAddDay} style={addButtonStyle}>
         Agregar Día de Entrenamiento
       </button>
@@ -287,20 +331,36 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                     }
                     style={inputStyle}
                   />
-                  <label style={exerciseLabelStyle}>URL de Imagen</label>
-                  <input
-                    value={ejercicio.imagenUrl}
-                    onChange={(e) =>
-                      handleExerciseChange(
-                        dayIndex,
-                        groupIndex,
-                        exerciseIndex,
-                        "imagenUrl",
-                        e.target.value
-                      )
-                    }
-                    style={inputStyle}
-                  />
+                  {ejercicio.imagenUrl ? (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img
+                        src={ejercicio.imagenUrl}
+                        alt="Imagen del Ejercicio"
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginRight: "0.5rem",
+                        }}
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveImage(dayIndex, groupIndex, exerciseIndex)
+                        }
+                        style={removeButtonStyle}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        openImageSelector(dayIndex, groupIndex, exerciseIndex)
+                      }
+                      style={addButtonStyle}
+                    >
+                      Seleccionar Imagen para Ejercicio
+                    </button>
+                  )}
                 </div>
               ))}
 
@@ -326,11 +386,17 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           Cancelar
         </button>
       </div>
+
+      <Modal isOpen={isImageSelectorOpen} onClose={closeImageSelector}>
+        <ImageSelector onSelect={handleSelectImage} />
+      </Modal>
     </div>
   );
 };
 
-// Additional styles
+// (Los estilos adicionales se mantienen igual...)
+
+// (Aquí se encuentran los estilos que ya tienes definidos...)
 const dayHeaderStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
