@@ -16,30 +16,31 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [imageName, setImageName] = useState("");
 
-  // Fetch public and private images
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await api.get(
-          `/images/combined-images?userId=${localStorage.getItem(
-            "userId"
-          )}&category=${selectedCategory}`
-        );
-        const fetchedImages = response.data.$values || [];
-        setImages(fetchedImages);
-        setFilteredImages(fetchedImages);
-      } catch (error) {
-        console.error("Error fetching images:", error);
-      }
-    };
+  // Fetch images function
+  const fetchImages = async () => {
+    try {
+      const response = await api.get(
+        `/images/combined-images?userId=${localStorage.getItem(
+          "userId"
+        )}&category=${selectedCategory}`
+      );
+      const fetchedImages = response.data.$values || [];
+      setImages(fetchedImages);
+      setFilteredImages(fetchedImages);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
 
+  // Fetch public and private images when category changes
+  useEffect(() => {
     if (selectedCategory) {
       fetchImages();
       setSearchTerm("");
     }
   }, [selectedCategory]);
 
-  // Filtrar imágenes
+  // Filter images based on search term
   useEffect(() => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const result = images.filter((url) => {
@@ -81,7 +82,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       formData.append("file", file);
       formData.append("category", selectedCategory);
       formData.append("userId", userId);
-      formData.append("customName", imageName.trim().replace(/\s+/g, "_")); // Enviamos el nombre personalizado como un parámetro separado
+      formData.append("customName", imageName.trim().replace(/\s+/g, "_"));
 
       try {
         await api.post("/images/upload-private", formData);
@@ -90,6 +91,9 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         setFile(null);
         setPreviewUrl(null);
         setImageName("");
+
+        // Refrescar la lista de imágenes después de la subida
+        fetchImages();
       } catch (error) {
         console.error("Error al subir la imagen:", error);
         alert("Error al subir la imagen.");
@@ -98,7 +102,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <h3 style={{ textAlign: "center", color: "#ffcc00" }}>Imágenes</h3>
       <select
         value={selectedCategory}
