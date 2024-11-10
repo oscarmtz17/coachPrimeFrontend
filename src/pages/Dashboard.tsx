@@ -1,9 +1,15 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import ClientList from "../components/ClientList";
 
 const Dashboard: React.FC = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const goToProfile = () => {
+    navigate("/profile");
+  };
 
   return (
     <div
@@ -13,7 +19,7 @@ const Dashboard: React.FC = () => {
         alignItems: "center",
         minHeight: "100vh",
         padding: "2rem",
-        backgroundColor: "#222", // Fondo oscuro
+        backgroundColor: "#222",
         color: "#fff",
       }}
     >
@@ -30,6 +36,21 @@ const Dashboard: React.FC = () => {
         >
           Bienvenido al Dashboard
         </h2>
+        <button
+          onClick={goToProfile}
+          style={{
+            backgroundColor: "#007bff",
+            color: "#fff",
+            padding: "0.75rem 1.5rem",
+            border: "none",
+            borderRadius: "5px",
+            fontSize: "1rem",
+            cursor: "pointer",
+            marginRight: "1rem",
+          }}
+        >
+          Perfil
+        </button>
         <button
           onClick={logout}
           style={{

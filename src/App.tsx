@@ -11,7 +11,8 @@ import ViewRoutine from "./components/ViewRoutine";
 import EditRoutineFormWrapper from "./components/EditRoutineFormWrapper";
 import ViewDiet from "./components/ViewDiet";
 import EditDietFormWrapper from "./components/EditDietFormWrapper";
-import EditProgressFormWrapper from "./components/EditProgressFormWrapper"; // Importa el nuevo componente
+import EditProgressFormWrapper from "./components/EditProgressFormWrapper";
+import UserProfile from "./pages/UserProfile";
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -25,6 +26,7 @@ const App: React.FC = () => (
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/rutina/:rutinaId" element={<ViewRoutine />} />
           <Route path="/dieta/:clienteId/:dietaId" element={<ViewDiet />} />
           <Route
