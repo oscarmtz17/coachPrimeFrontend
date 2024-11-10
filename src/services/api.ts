@@ -8,14 +8,15 @@ const api = axios.create({
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post("/auth/login", { email, password });
-    const { token, refreshToken } = response.data;
+    const { token, refreshToken, userId } = response.data;
 
-    if (token && refreshToken) {
+    if (token && refreshToken && userId) {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("refreshToken", refreshToken);
-      console.log("Login exitoso: Tokens almacenados en localStorage");
+      localStorage.setItem("userId", userId); // Guardar el userId
+      console.log("Login exitoso: Tokens y userId almacenados en localStorage");
     } else {
-      console.error("Tokens faltantes en la respuesta de login");
+      console.error("Tokens o userId faltantes en la respuesta de login");
     }
 
     return response.data;
