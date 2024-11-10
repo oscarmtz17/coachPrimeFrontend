@@ -16,7 +16,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [imageName, setImageName] = useState("");
 
-  // Fetch images function
+  // Fetch images with signed URLs
   const fetchImages = async () => {
     try {
       const response = await api.get(
@@ -24,7 +24,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
           "userId"
         )}&category=${selectedCategory}`
       );
-      const fetchedImages = response.data.$values || [];
+      const fetchedImages = response.data.$values || response.data || [];
       setImages(fetchedImages);
       setFilteredImages(fetchedImages);
     } catch (error) {
@@ -32,7 +32,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
     }
   };
 
-  // Fetch public and private images when category changes
   useEffect(() => {
     if (selectedCategory) {
       fetchImages();
@@ -40,7 +39,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
     }
   }, [selectedCategory]);
 
-  // Filter images based on search term
   useEffect(() => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const result = images.filter((url) => {
@@ -78,7 +76,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
 
     if (file && selectedCategory && imageName.trim()) {
       const formData = new FormData();
-
       formData.append("file", file);
       formData.append("category", selectedCategory);
       formData.append("userId", userId);
@@ -91,8 +88,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         setFile(null);
         setPreviewUrl(null);
         setImageName("");
-
-        // Refrescar la lista de imágenes después de la subida
         fetchImages();
       } catch (error) {
         console.error("Error al subir la imagen:", error);
