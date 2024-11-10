@@ -14,6 +14,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [imageName, setImageName] = useState("");
 
   // Fetch public and private images
   useEffect(() => {
@@ -74,17 +75,13 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       return;
     }
 
-    if (file && selectedCategory) {
+    if (file && selectedCategory && imageName.trim()) {
       const formData = new FormData();
+
       formData.append("file", file);
       formData.append("category", selectedCategory);
       formData.append("userId", userId);
-
-      console.log("Subiendo imagen con:", {
-        file,
-        category: selectedCategory,
-        userId,
-      }); // Depuración
+      formData.append("customName", imageName.trim().replace(/\s+/g, "_")); // Enviamos el nombre personalizado como un parámetro separado
 
       try {
         await api.post("/images/upload-private", formData);
@@ -92,6 +89,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         setIsPreviewOpen(false);
         setFile(null);
         setPreviewUrl(null);
+        setImageName("");
       } catch (error) {
         console.error("Error al subir la imagen:", error);
         alert("Error al subir la imagen.");
@@ -120,7 +118,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         <option value="back">Espalda</option>
         <option value="abs">Abdomen</option>
         <option value="legs">Piernas</option>
-        {/* Añade más opciones según tus categorías */}
       </select>
 
       {selectedCategory && (
@@ -176,11 +173,16 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         }}
       >
         {filteredImages.map((url, index) => {
+          // Extraer el nombre del archivo sin el UUID
           const fileName =
             url
               .split("/")
               .pop()
-              ?.replace(/\.[^/.]+$/, "") || "";
+              ?.replace(/\.[^/.]+$/, "") // Quitar la extensión del archivo
+              .split("_")
+              .slice(1) // Eliminar el UUID
+              .join("_") || ""; // Unir el resto si el nombre tenía más de una palabra
+
           return (
             <div key={index} style={{ textAlign: "center" }}>
               <img
@@ -199,17 +201,43 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
         <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)}>
           <div style={{ textAlign: "center" }}>
             <h4 style={{ color: "#ffcc00" }}>Vista previa de la imagen</h4>
-            <img
-              src={previewUrl}
-              alt="Preview"
-              style={{ width: "100px", height: "100px", marginBottom: "10px" }}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "10px",
+              }}
+            >
+              <img
+                src={previewUrl}
+                alt="Preview"
+                style={{ width: "150px", height: "150px" }}
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Nombre de la imagen"
+              maxLength={50}
+              value={imageName}
+              onChange={(e) => setImageName(e.target.value)}
+              required
+              style={{
+                padding: "0.5rem",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                width: "80%",
+                backgroundColor: "#555",
+                color: "#fff",
+                marginBottom: "10px",
+              }}
             />
             <div>
               <button
                 onClick={handleUpload}
+                disabled={!imageName}
                 style={{
                   marginRight: "10px",
-                  backgroundColor: "#4CAF50",
+                  backgroundColor: !imageName ? "#ccc" : "#4CAF50",
                   color: "#fff",
                   padding: "0.5rem",
                   borderRadius: "4px",
