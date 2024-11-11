@@ -46,6 +46,26 @@ const UserProfile: React.FC = () => {
     fetchUserData();
   }, [userId]);
 
+  const fetchUserLogo = async () => {
+    try {
+      const response = await api.get(`/images/user-logo`, {
+        params: { userId },
+      });
+      if (response.status === 200) {
+        const logoUrl = response.data.url; // Asegúrate de usar 'url' en minúsculas
+        setPreviewLogo(logoUrl);
+      }
+    } catch (error) {
+      console.error("No se encontró un logo para el usuario:", error);
+      setPreviewLogo(null); // Si no hay logo, mantenemos null
+    }
+  };
+
+  // Llamar a fetchUserLogo cuando se cargue el componente
+  useEffect(() => {
+    fetchUserLogo();
+  }, []);
+
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNombre(e.target.value);
   const handleApellidoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -118,9 +138,21 @@ const UserProfile: React.FC = () => {
     }
   };
 
-  const handleUploadLogo = () => {
-    if (logo) {
-      alert("Logotipo subido");
+  const handleUploadLogo = async () => {
+    if (!logo) return;
+
+    const formData = new FormData();
+    formData.append("file", logo);
+
+    try {
+      const response = await api.post("/images/upload-logo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("Logo subido exitosamente.");
+      setPreviewLogo(response.data.Url); // Muestra el logo subido al usuario
+    } catch (error) {
+      console.error("Error al subir el logo:", error);
+      alert("Hubo un problema al subir el logo. Intente nuevamente.");
     }
   };
 
@@ -365,7 +397,7 @@ const UserProfile: React.FC = () => {
             marginBottom: "1rem",
           }}
         >
-          Subir Logotipo
+          {previewLogo ? "Cambiar Logo" : "Subir Logo"}
         </h3>
         <input
           type="file"
