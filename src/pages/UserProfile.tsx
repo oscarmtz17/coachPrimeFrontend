@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const UserProfile: React.FC = () => {
   const [nombre, setNombre] = useState("Grecia Dancer");
-  const [apellido, setApellido] = useState("");
-  const [telefono, setTelefono] = useState("");
+  const [apellido, setApellido] = useState("Pérez");
+  const [telefono, setTelefono] = useState("1234567890");
+  const [isEditing, setIsEditing] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Aquí podrías cargar los datos del usuario desde la API si fuera necesario.
+  }, []);
 
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNombre(e.target.value);
@@ -13,6 +18,15 @@ const UserProfile: React.FC = () => {
     setApellido(e.target.value);
   const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTelefono(e.target.value);
+
+  const handleEdit = () => setIsEditing(true);
+  const handleCancel = () => setIsEditing(false);
+
+  const handleSaveChanges = () => {
+    // Aquí iría la lógica para guardar los cambios del perfil, por ejemplo, llamando a una API.
+    setIsEditing(false);
+    alert("Cambios guardados");
+  };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -23,11 +37,6 @@ const UserProfile: React.FC = () => {
       alert("Por favor, seleccione un archivo en formato JPEG o PNG.");
       e.target.value = ""; // Limpiar el input de archivo si el formato no es válido
     }
-  };
-
-  const handleSaveChanges = () => {
-    // Aquí iría la lógica para guardar los cambios del perfil
-    alert("Cambios guardados");
   };
 
   const handleUploadLogo = () => {
@@ -61,13 +70,14 @@ const UserProfile: React.FC = () => {
           type="text"
           value={nombre}
           onChange={handleNombreChange}
+          disabled={!isEditing}
           style={{
             width: "100%",
             padding: "0.5rem",
             marginBottom: "1rem",
             borderRadius: "4px",
             border: "1px solid #bbb",
-            backgroundColor: "#333",
+            backgroundColor: isEditing ? "#333" : "#555",
             color: "#fff",
           }}
         />
@@ -79,13 +89,14 @@ const UserProfile: React.FC = () => {
           type="text"
           value={apellido}
           onChange={handleApellidoChange}
+          disabled={!isEditing}
           style={{
             width: "100%",
             padding: "0.5rem",
             marginBottom: "1rem",
             borderRadius: "4px",
             border: "1px solid #bbb",
-            backgroundColor: "#333",
+            backgroundColor: isEditing ? "#333" : "#555",
             color: "#fff",
           }}
         />
@@ -94,35 +105,72 @@ const UserProfile: React.FC = () => {
           Teléfono:
         </label>
         <input
-          type="text"
+          type="number"
           value={telefono}
           onChange={handleTelefonoChange}
+          disabled={!isEditing}
+          maxLength={10}
           style={{
             width: "100%",
             padding: "0.5rem",
             marginBottom: "2rem",
             borderRadius: "4px",
             border: "1px solid #bbb",
-            backgroundColor: "#333",
+            backgroundColor: isEditing ? "#333" : "#555",
             color: "#fff",
           }}
         />
 
-        <button
-          onClick={handleSaveChanges}
-          style={{
-            backgroundColor: "#4CAF50",
-            color: "#fff",
-            padding: "0.75rem 1.5rem",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            width: "100%",
-            marginBottom: "2rem",
-          }}
-        >
-          Guardar Cambios
-        </button>
+        {isEditing ? (
+          <>
+            <button
+              onClick={handleSaveChanges}
+              style={{
+                backgroundColor: "#4CAF50",
+                color: "#fff",
+                padding: "0.75rem 1.5rem",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                width: "100%",
+                marginBottom: "1rem",
+              }}
+            >
+              Guardar Cambios
+            </button>
+            <button
+              onClick={handleCancel}
+              style={{
+                backgroundColor: "#f44336",
+                color: "#fff",
+                padding: "0.75rem 1.5rem",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                width: "100%",
+                marginBottom: "2rem",
+              }}
+            >
+              Cancelar
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleEdit}
+            style={{
+              backgroundColor: "#007bff",
+              color: "#fff",
+              padding: "0.75rem 1.5rem",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              width: "100%",
+              marginBottom: "2rem",
+            }}
+          >
+            Editar Datos
+          </button>
+        )}
 
         <h3
           style={{ fontSize: "1.5rem", color: "#ffcc00", marginBottom: "1rem" }}
