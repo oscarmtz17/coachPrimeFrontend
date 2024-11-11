@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Modal from "../components/Modal"; // Asumimos que tienes el componente de modal
 import api from "../services/api";
 
 const UserProfile: React.FC = () => {
@@ -6,11 +7,19 @@ const UserProfile: React.FC = () => {
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
-  const [originalTelefono, setOriginalTelefono] = useState(""); // Teléfono original para comparar
+  const [originalTelefono, setOriginalTelefono] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const userId = localStorage.getItem("userId");
 
   const fetchUserData = async () => {
@@ -26,7 +35,7 @@ const UserProfile: React.FC = () => {
       setNombre(nombre);
       setApellido(apellido || "");
       setTelefono(phone || "");
-      setOriginalTelefono(phone || ""); // Guardar el teléfono original
+      setOriginalTelefono(phone || "");
       setEmail(email);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -53,10 +62,9 @@ const UserProfile: React.FC = () => {
   const handleCancel = () => {
     setIsEditing(false);
     fetchUserData();
-    setError(null); // Limpia el error si cancela la edición
+    setError(null);
   };
 
-  // Nueva función para verificar si el teléfono ya está registrado
   const checkPhoneExists = async (): Promise<boolean> => {
     try {
       const response = await api.get("/usuario/check-phone", {
@@ -70,13 +78,11 @@ const UserProfile: React.FC = () => {
   };
 
   const handleSaveChanges = async () => {
-    // Validar que el teléfono tenga 10 dígitos
     if (telefono && telefono.length !== 10) {
       setError("El número de teléfono debe tener exactamente 10 dígitos.");
       return;
     }
 
-    // Solo verificar el teléfono si ha sido modificado
     if (telefono !== originalTelefono) {
       const phoneExists = await checkPhoneExists();
       if (phoneExists) {
@@ -93,7 +99,7 @@ const UserProfile: React.FC = () => {
       });
       alert("Cambios guardados exitosamente");
       setIsEditing(false);
-      setError(null); // Limpia el mensaje de error en caso de éxito
+      setError(null);
       fetchUserData();
     } catch (error) {
       console.error("Error al guardar los cambios:", error);
@@ -118,6 +124,49 @@ const UserProfile: React.FC = () => {
     }
   };
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setPasswordError(null);
+  };
+
+  const handleChangePassword = () => {
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("Las nuevas contraseñas no coinciden.");
+      return;
+    }
+
+    alert("Contraseña actualizada exitosamente");
+    closeModal();
+  };
+
+  const handleNewPasswordBlur = () => {
+    if (
+      newPassword &&
+      confirmNewPassword &&
+      newPassword !== confirmNewPassword
+    ) {
+      setPasswordError("Las nuevas contraseñas no coinciden.");
+    } else {
+      setPasswordError(null);
+    }
+  };
+
+  const handleConfirmNewPasswordBlur = () => {
+    if (
+      newPassword &&
+      confirmNewPassword &&
+      newPassword !== confirmNewPassword
+    ) {
+      setPasswordError("Las nuevas contraseñas no coinciden.");
+    } else {
+      setPasswordError(null);
+    }
+  };
+
   return (
     <div
       style={{
@@ -135,6 +184,8 @@ const UserProfile: React.FC = () => {
       </h2>
 
       <div style={{ width: "100%", maxWidth: "500px", textAlign: "center" }}>
+        {/* Aquí están todos los campos y botones originales */}
+
         <label style={{ display: "block", marginBottom: "0.5rem" }}>
           Nombre:
         </label>
@@ -274,8 +325,28 @@ const UserProfile: React.FC = () => {
           </button>
         )}
 
+        <button
+          onClick={openModal}
+          style={{
+            backgroundColor: "#ffcc00",
+            color: "#000",
+            padding: "0.75rem 1.5rem",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            width: "100%",
+            marginBottom: "1rem",
+          }}
+        >
+          Cambiar Contraseña
+        </button>
+
         <h3
-          style={{ fontSize: "1.5rem", color: "#ffcc00", marginBottom: "1rem" }}
+          style={{
+            fontSize: "1.5rem",
+            color: "#ffcc00",
+            marginBottom: "1rem",
+          }}
         >
           Subir Logotipo
         </h3>
@@ -311,8 +382,114 @@ const UserProfile: React.FC = () => {
           Subir Logotipo
         </button>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <h3 style={{ color: "#ffcc00", textAlign: "center" }}>
+          Cambiar Contraseña
+        </h3>
+        <div
+          style={{
+            justifyContent: "center",
+            width: "80%",
+            marginLeft: "10%",
+          }}
+        >
+          <label>Contraseña Actual:</label>
+          <div style={{ position: "relative" }}>
+            <input
+              type={showCurrentPassword ? "text" : "password"}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              style={inputStyle}
+            />
+            <button
+              onMouseDown={() => setShowCurrentPassword(true)}
+              onMouseUp={() => setShowCurrentPassword(false)}
+              style={showButtonStyle}
+            >
+              Mostrar
+            </button>
+          </div>
+
+          <label>Nueva Contraseña:</label>
+          <div style={{ position: "relative" }}>
+            <input
+              type={showNewPassword ? "text" : "password"}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              onBlur={handleNewPasswordBlur}
+              style={inputStyle}
+            />
+            <button
+              onMouseDown={() => setShowNewPassword(true)}
+              onMouseUp={() => setShowNewPassword(false)}
+              style={showButtonStyle}
+            >
+              Mostrar
+            </button>
+          </div>
+
+          <label>Confirmar Nueva Contraseña:</label>
+          <div style={{ position: "relative" }}>
+            <input
+              type={showConfirmNewPassword ? "text" : "password"}
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              onBlur={handleConfirmNewPasswordBlur}
+              style={inputStyle}
+            />
+            <button
+              onMouseDown={() => setShowConfirmNewPassword(true)}
+              onMouseUp={() => setShowConfirmNewPassword(false)}
+              style={showButtonStyle}
+            >
+              Mostrar
+            </button>
+          </div>
+
+          {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+          <button onClick={handleChangePassword} style={buttonStyle("#4CAF50")}>
+            Aceptar
+          </button>
+          <button onClick={closeModal} style={buttonStyle("#f44336")}>
+            Cancelar
+          </button>
+        </div>
+      </Modal>
     </div>
   );
+};
+
+// Estilos adicionales
+const inputStyle = {
+  width: "100%",
+  padding: "0.5rem",
+  marginBottom: "1rem",
+  borderRadius: "4px",
+  border: "1px solid #bbb",
+  backgroundColor: "#333",
+  color: "#fff",
+};
+
+const buttonStyle = (bgColor: string) => ({
+  backgroundColor: bgColor,
+  color: "#fff",
+  padding: "0.75rem 1.5rem",
+  border: "none",
+  borderRadius: "5px",
+  cursor: "pointer",
+});
+
+const showButtonStyle: React.CSSProperties = {
+  position: "absolute",
+  right: "10px",
+  top: "8px",
+  backgroundColor: "transparent",
+  border: "none",
+  color: "#ffcc00",
+  cursor: "pointer",
 };
 
 export default UserProfile;
