@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from "react";
+import api from "../services/api"; // Servicio para realizar peticiones HTTP al backend
 
 const UserProfile: React.FC = () => {
-  const [nombre, setNombre] = useState("Grecia Dancer");
-  const [apellido, setApellido] = useState("Pérez");
-  const [telefono, setTelefono] = useState("1234567890");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [telefono, setTelefono] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+  const userId = localStorage.getItem("userId"); // Supone que el userId está almacenado en el localStorage
+
+  // Definir fetchUserData como una función independiente
+  const fetchUserData = async () => {
+    try {
+      const userId = localStorage.getItem("userId"); // O usa el valor que tienes para el ID del usuario
+      if (!userId) {
+        console.error(
+          "No se ha encontrado el ID de usuario en el almacenamiento local."
+        );
+        return;
+      }
+      const response = await api.get(`/usuario/${userId}`);
+      const { nombre, apellido, phone } = response.data;
+      setNombre(nombre);
+      setApellido(apellido || ""); // Si apellido es null, establece una cadena vacía
+      setTelefono(phone || ""); // Si phone es null, establece una cadena vacía
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   useEffect(() => {
-    // Aquí podrías cargar los datos del usuario desde la API si fuera necesario.
-  }, []);
+    // Llamar a fetchUserData cuando el componente se monta
+    fetchUserData();
+  }, [userId]);
 
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNombre(e.target.value);
@@ -20,12 +43,28 @@ const UserProfile: React.FC = () => {
     setTelefono(e.target.value);
 
   const handleEdit = () => setIsEditing(true);
-  const handleCancel = () => setIsEditing(false);
-
-  const handleSaveChanges = () => {
-    // Aquí iría la lógica para guardar los cambios del perfil, por ejemplo, llamando a una API.
+  const handleCancel = () => {
     setIsEditing(false);
-    alert("Cambios guardados");
+    fetchUserData(); // Llama a fetchUserData para restablecer los datos originales
+  };
+
+  const handleSaveChanges = async () => {
+    const userId = localStorage.getItem("userId"); // Obtener el ID de usuario desde localStorage
+
+    try {
+      const response = await api.put(`/usuario/${userId}`, {
+        nombre,
+        apellido,
+        phone: telefono,
+      });
+      alert("Cambios guardados exitosamente");
+      setIsEditing(false);
+      // Refrescar los datos precargados después de guardar
+      fetchUserData();
+    } catch (error) {
+      console.error("Error al guardar los cambios:", error);
+      alert("Hubo un error al intentar guardar los cambios");
+    }
   };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
