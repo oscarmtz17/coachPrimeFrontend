@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import api from "../services/api"; // Servicio para realizar peticiones HTTP al backend
+import api from "../services/api";
 
 const UserProfile: React.FC = () => {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [email, setEmail] = useState(""); // Nuevo estado para el email
+  const [email, setEmail] = useState("");
+  const [originalTelefono, setOriginalTelefono] = useState(""); // Teléfono original para comparar
   const [isEditing, setIsEditing] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const userId = localStorage.getItem("userId");
 
   const fetchUserData = async () => {
@@ -24,7 +26,8 @@ const UserProfile: React.FC = () => {
       setNombre(nombre);
       setApellido(apellido || "");
       setTelefono(phone || "");
-      setEmail(email); // Precargar el email
+      setOriginalTelefono(phone || ""); // Guardar el teléfono original
+      setEmail(email);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -38,16 +41,50 @@ const UserProfile: React.FC = () => {
     setNombre(e.target.value);
   const handleApellidoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setApellido(e.target.value);
-  const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTelefono(e.target.value);
+
+  const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 10) {
+      setTelefono(value);
+    }
+  };
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
     setIsEditing(false);
     fetchUserData();
+    setError(null); // Limpia el error si cancela la edición
+  };
+
+  // Nueva función para verificar si el teléfono ya está registrado
+  const checkPhoneExists = async (): Promise<boolean> => {
+    try {
+      const response = await api.get("/usuario/check-phone", {
+        params: { phone: telefono },
+      });
+      return response.data.exists;
+    } catch (error) {
+      console.error("Error checking phone:", error);
+      return false;
+    }
   };
 
   const handleSaveChanges = async () => {
+    // Validar que el teléfono tenga 10 dígitos
+    if (telefono && telefono.length !== 10) {
+      setError("El número de teléfono debe tener exactamente 10 dígitos.");
+      return;
+    }
+
+    // Solo verificar el teléfono si ha sido modificado
+    if (telefono !== originalTelefono) {
+      const phoneExists = await checkPhoneExists();
+      if (phoneExists) {
+        setError("El número de teléfono ya está registrado por otro usuario.");
+        return;
+      }
+    }
+
     try {
       await api.put(`/usuario/${userId}`, {
         nombre,
@@ -56,6 +93,7 @@ const UserProfile: React.FC = () => {
       });
       alert("Cambios guardados exitosamente");
       setIsEditing(false);
+      setError(null); // Limpia el mensaje de error en caso de éxito
       fetchUserData();
     } catch (error) {
       console.error("Error al guardar los cambios:", error);
@@ -139,7 +177,7 @@ const UserProfile: React.FC = () => {
           Teléfono:
         </label>
         <input
-          type="number"
+          type="text"
           value={telefono}
           onChange={handleTelefonoChange}
           disabled={!isEditing}
@@ -147,13 +185,15 @@ const UserProfile: React.FC = () => {
           style={{
             width: "100%",
             padding: "0.5rem",
-            marginBottom: "2rem",
+            marginBottom: "1rem",
             borderRadius: "4px",
             border: "1px solid #bbb",
             backgroundColor: isEditing ? "#333" : "#555",
             color: "#fff",
           }}
         />
+
+        {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
 
         <label style={{ display: "block", marginBottom: "0.5rem" }}>
           Email:
