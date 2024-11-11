@@ -5,15 +5,14 @@ const UserProfile: React.FC = () => {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [email, setEmail] = useState(""); // Nuevo estado para el email
   const [isEditing, setIsEditing] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-  const userId = localStorage.getItem("userId"); // Supone que el userId está almacenado en el localStorage
+  const userId = localStorage.getItem("userId");
 
-  // Definir fetchUserData como una función independiente
   const fetchUserData = async () => {
     try {
-      const userId = localStorage.getItem("userId"); // O usa el valor que tienes para el ID del usuario
       if (!userId) {
         console.error(
           "No se ha encontrado el ID de usuario en el almacenamiento local."
@@ -21,17 +20,17 @@ const UserProfile: React.FC = () => {
         return;
       }
       const response = await api.get(`/usuario/${userId}`);
-      const { nombre, apellido, phone } = response.data;
+      const { nombre, apellido, phone, email } = response.data;
       setNombre(nombre);
-      setApellido(apellido || ""); // Si apellido es null, establece una cadena vacía
-      setTelefono(phone || ""); // Si phone es null, establece una cadena vacía
+      setApellido(apellido || "");
+      setTelefono(phone || "");
+      setEmail(email); // Precargar el email
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
   useEffect(() => {
-    // Llamar a fetchUserData cuando el componente se monta
     fetchUserData();
   }, [userId]);
 
@@ -45,21 +44,18 @@ const UserProfile: React.FC = () => {
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
     setIsEditing(false);
-    fetchUserData(); // Llama a fetchUserData para restablecer los datos originales
+    fetchUserData();
   };
 
   const handleSaveChanges = async () => {
-    const userId = localStorage.getItem("userId"); // Obtener el ID de usuario desde localStorage
-
     try {
-      const response = await api.put(`/usuario/${userId}`, {
+      await api.put(`/usuario/${userId}`, {
         nombre,
         apellido,
         phone: telefono,
       });
       alert("Cambios guardados exitosamente");
       setIsEditing(false);
-      // Refrescar los datos precargados después de guardar
       fetchUserData();
     } catch (error) {
       console.error("Error al guardar los cambios:", error);
@@ -74,13 +70,12 @@ const UserProfile: React.FC = () => {
       setPreviewLogo(URL.createObjectURL(file));
     } else {
       alert("Por favor, seleccione un archivo en formato JPEG o PNG.");
-      e.target.value = ""; // Limpiar el input de archivo si el formato no es válido
+      e.target.value = "";
     }
   };
 
   const handleUploadLogo = () => {
     if (logo) {
-      // Aquí iría la lógica para subir el logo
       alert("Logotipo subido");
     }
   };
@@ -159,6 +154,34 @@ const UserProfile: React.FC = () => {
             color: "#fff",
           }}
         />
+
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Email:
+        </label>
+        <input
+          type="email"
+          value={email}
+          disabled
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "4px",
+            border: "1px solid #bbb",
+            backgroundColor: "#555",
+            color: "#fff",
+          }}
+        />
+        <p
+          style={{
+            fontSize: "0.9rem",
+            color: "#ffcc00",
+            marginTop: "-0.5rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          El email no se puede modificar
+        </p>
 
         {isEditing ? (
           <>
