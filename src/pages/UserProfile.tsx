@@ -133,14 +133,31 @@ const UserProfile: React.FC = () => {
     setPasswordError(null);
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (newPassword !== confirmNewPassword) {
       setPasswordError("Las nuevas contraseñas no coinciden.");
       return;
     }
 
-    alert("Contraseña actualizada exitosamente");
-    closeModal();
+    try {
+      // Llama al nuevo endpoint para cambiar la contraseña
+      await api.post(`/auth/change-password`, {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      });
+
+      alert("Contraseña actualizada exitosamente");
+      closeModal();
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setPasswordError(error.response.data);
+      } else {
+        setPasswordError(
+          "Error al actualizar la contraseña. Intenta nuevamente."
+        );
+      }
+      console.error("Error al cambiar la contraseña:", error);
+    }
   };
 
   const handleNewPasswordBlur = () => {
