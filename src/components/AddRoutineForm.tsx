@@ -1,34 +1,31 @@
 // src/components/AddRoutineForm.tsx
-import React, { useState } from "react";
-import axios from "axios";
-import api from "../services/api";
+import React from "react";
+import {
+  formContainerStyle,
+  titleStyle,
+  errorStyle,
+  inputContainerStyle,
+  labelStyle,
+  inputStyle,
+  textareaStyle,
+  selectStyle,
+  dayContainerStyle,
+  dayHeaderStyle,
+  subtitleStyle,
+  removeButtonStyle,
+  groupContainerStyle,
+  groupHeaderStyle,
+  groupTitleStyle,
+  exerciseContainerStyle,
+  exerciseLabelStyle,
+  buttonContainerStyle,
+  saveButtonStyle,
+  cancelButtonStyle,
+  addButtonStyle,
+} from "../styles/AddRoutineFormStyles";
+import { useAddRoutineForm } from "../hooks/useAddRoutineForm";
 import Modal from "./Modal";
 import ImageSelector from "./ImageSelector";
-
-interface Routine {
-  nombre: string;
-  descripcion: string;
-  clienteId: number;
-  usuarioId: number;
-  diasEntrenamiento: DiaEntrenamiento[];
-}
-
-interface DiaEntrenamiento {
-  diaSemana: string;
-  agrupaciones: Agrupacion[];
-}
-
-interface Agrupacion {
-  tipo: string;
-  ejercicios: Ejercicio[];
-}
-
-interface Ejercicio {
-  nombre: string;
-  series: number;
-  repeticiones: number;
-  imagenUrl: string;
-}
 
 interface AddRoutineFormProps {
   clienteId: number;
@@ -43,171 +40,27 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   onRoutineAdded,
   onClose,
 }) => {
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [diasEntrenamiento, setDiasEntrenamiento] = useState<
-    DiaEntrenamiento[]
-  >([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState<{
-    dayIndex: number;
-    groupIndex: number;
-    exerciseIndex: number;
-  } | null>(null);
-
-  const handleAddRoutine = async () => {
-    try {
-      const routine: Routine = {
-        nombre,
-        descripcion,
-        clienteId,
-        usuarioId,
-        diasEntrenamiento,
-      };
-
-      await api.post("/rutina", routine);
-
-      onRoutineAdded();
-      setNombre("");
-      setDescripcion("");
-      setDiasEntrenamiento([]);
-      onClose();
-    } catch (err) {
-      setError("Error al agregar la rutina");
-      console.error(err);
-    }
-  };
-
-  const openImageSelector = (
-    dayIndex: number,
-    groupIndex: number,
-    exerciseIndex: number
-  ) => {
-    setSelectedExercise({ dayIndex, groupIndex, exerciseIndex });
-    setIsImageSelectorOpen(true);
-  };
-
-  const closeImageSelector = () => setIsImageSelectorOpen(false);
-
-  const handleSelectImage = (url: string) => {
-    if (selectedExercise) {
-      const { dayIndex, groupIndex, exerciseIndex } = selectedExercise;
-      const updatedDays = [...diasEntrenamiento];
-      updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
-        exerciseIndex
-      ].imagenUrl = url;
-      setDiasEntrenamiento(updatedDays);
-    }
-    closeImageSelector();
-  };
-
-  const handleRemoveImage = (
-    dayIndex: number,
-    groupIndex: number,
-    exerciseIndex: number
-  ) => {
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
-      exerciseIndex
-    ].imagenUrl = "";
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const handleAddDay = () => {
-    const newDay: DiaEntrenamiento = { diaSemana: "", agrupaciones: [] };
-    setDiasEntrenamiento([...diasEntrenamiento, newDay]);
-  };
-
-  const handleRemoveDay = (dayIndex: number) => {
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays.splice(dayIndex, 1);
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const handleDayChange = (index: number, diaSemana: string) => {
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays[index].diaSemana = diaSemana;
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const handleAddGroup = (index: number, tipo: string) => {
-    const newGroup: Agrupacion = {
-      tipo,
-      ejercicios: createInitialExercises(tipo),
-    };
-
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays[index].agrupaciones.push(newGroup);
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const createInitialExercises = (tipo: string): Ejercicio[] => {
-    let exerciseCount = 1;
-    switch (tipo) {
-      case "Bi-Serie":
-        exerciseCount = 2;
-        break;
-      case "Tri-Serie":
-        exerciseCount = 3;
-        break;
-      case "Cuatri-Serie":
-        exerciseCount = 4;
-        break;
-      case "Circuito":
-        exerciseCount = 0;
-        break;
-      default:
-        exerciseCount = 1;
-    }
-
-    return Array.from({ length: exerciseCount }, () => ({
-      nombre: "",
-      series: 1,
-      repeticiones: 1,
-      imagenUrl: "",
-    }));
-  };
-
-  const handleRemoveGroup = (dayIndex: number, groupIndex: number) => {
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays[dayIndex].agrupaciones.splice(groupIndex, 1);
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const handleExerciseChange = (
-    dayIndex: number,
-    groupIndex: number,
-    exerciseIndex: number,
-    field: keyof Ejercicio,
-    value: string | number
-  ) => {
-    const updatedDays = [...diasEntrenamiento];
-    const group = updatedDays[dayIndex].agrupaciones[groupIndex];
-    const updatedValue =
-      field === "series" || field === "repeticiones"
-        ? Math.max(1, Number(value))
-        : value;
-
-    group.ejercicios[exerciseIndex] = {
-      ...group.ejercicios[exerciseIndex],
-      [field]: updatedValue,
-    };
-    setDiasEntrenamiento(updatedDays);
-  };
-
-  const handleAddExerciseToCircuit = (dayIndex: number, groupIndex: number) => {
-    const newExercise: Ejercicio = {
-      nombre: "",
-      series: 1,
-      repeticiones: 1,
-      imagenUrl: "",
-    };
-
-    const updatedDays = [...diasEntrenamiento];
-    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios.push(newExercise);
-    setDiasEntrenamiento(updatedDays);
-  };
+  const {
+    nombre,
+    setNombre,
+    descripcion,
+    setDescripcion,
+    diasEntrenamiento,
+    error,
+    handleAddRoutine,
+    handleAddDay,
+    handleRemoveDay,
+    handleDayChange,
+    handleAddGroup,
+    handleRemoveGroup,
+    handleExerciseChange,
+    handleAddExerciseToCircuit,
+    isImageSelectorOpen,
+    openImageSelector,
+    closeImageSelector,
+    handleSelectImage,
+    handleRemoveImage,
+  } = useAddRoutineForm(clienteId, usuarioId, onRoutineAdded, onClose);
 
   return (
     <div style={formContainerStyle}>
@@ -392,163 +245,6 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
       </Modal>
     </div>
   );
-};
-
-// (Los estilos adicionales se mantienen igual...)
-
-// (Aquí se encuentran los estilos que ya tienes definidos...)
-const dayHeaderStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const groupHeaderStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const removeButtonStyle: React.CSSProperties = {
-  backgroundColor: "#dc3545",
-  color: "#fff",
-  border: "none",
-  padding: "0.3rem 0.6rem",
-  borderRadius: "4px",
-  cursor: "pointer",
-  fontSize: "0.9rem",
-};
-
-const exerciseLabelStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontSize: "0.9rem",
-  fontWeight: "bold",
-  marginBottom: "0.3rem",
-};
-
-const formContainerStyle: React.CSSProperties = {
-  backgroundColor: "#333",
-  color: "#fff",
-  padding: "1.5rem",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-};
-
-const titleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.8rem",
-  marginBottom: "1rem",
-};
-
-const subtitleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontSize: "1.2rem",
-};
-
-const errorStyle: React.CSSProperties = {
-  color: "red",
-  textAlign: "center",
-  marginBottom: "1rem",
-};
-
-const inputContainerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  marginBottom: "1rem",
-};
-
-const dayContainerStyle: React.CSSProperties = {
-  backgroundColor: "#444",
-  padding: "1rem",
-  borderRadius: "8px",
-  marginBottom: "1rem",
-};
-
-const groupContainerStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  backgroundColor: "#555",
-  marginTop: "0.5rem",
-};
-
-const groupTitleStyle: React.CSSProperties = {
-  fontWeight: "bold",
-  color: "#ffcc00",
-};
-
-const exerciseContainerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  marginBottom: "0.5rem",
-};
-
-const labelStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontWeight: "bold",
-};
-
-const inputStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-};
-
-const textareaStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-  resize: "vertical",
-};
-
-const selectStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-};
-
-const buttonContainerStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "1rem",
-  marginTop: "1rem",
-};
-
-const saveButtonStyle: React.CSSProperties = {
-  backgroundColor: "#ffcc00",
-  color: "#000",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
-};
-
-const cancelButtonStyle: React.CSSProperties = {
-  backgroundColor: "#bbb",
-  color: "#333",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
-};
-
-const addButtonStyle: React.CSSProperties = {
-  backgroundColor: "#007bff",
-  color: "#fff",
-  padding: "0.5rem",
-  borderRadius: "4px",
-  cursor: "pointer",
-  marginTop: "1rem",
 };
 
 export default AddRoutineForm;
