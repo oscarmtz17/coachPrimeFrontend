@@ -1,28 +1,6 @@
 // src/components/AddRoutineForm.tsx
 import React from "react";
-import {
-  formContainerStyle,
-  titleStyle,
-  errorStyle,
-  inputContainerStyle,
-  labelStyle,
-  inputStyle,
-  textareaStyle,
-  selectStyle,
-  dayContainerStyle,
-  dayHeaderStyle,
-  subtitleStyle,
-  removeButtonStyle,
-  groupContainerStyle,
-  groupHeaderStyle,
-  groupTitleStyle,
-  exerciseContainerStyle,
-  exerciseLabelStyle,
-  buttonContainerStyle,
-  saveButtonStyle,
-  cancelButtonStyle,
-  addButtonStyle,
-} from "../styles/AddRoutineFormStyles";
+import AddRoutineFormStyles from "../styles/AddRoutineFormStyles";
 import { useAddRoutineForm } from "../hooks/useAddRoutineForm";
 import Modal from "./Modal";
 import ImageSelector from "./ImageSelector";
@@ -63,36 +41,36 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   } = useAddRoutineForm(clienteId, usuarioId, onRoutineAdded, onClose);
 
   return (
-    <div style={formContainerStyle}>
-      <h3 style={titleStyle}>Agregar Nueva Rutina</h3>
-      {error && <p style={errorStyle}>{error}</p>}
-      <div style={inputContainerStyle}>
-        <label style={labelStyle}>Nombre de la Rutina:</label>
+    <div style={AddRoutineFormStyles.formContainer}>
+      <h3 style={AddRoutineFormStyles.title}>Agregar Nueva Rutina</h3>
+      {error && <p style={AddRoutineFormStyles.error}>{error}</p>}
+      <div style={AddRoutineFormStyles.inputContainer}>
+        <label style={AddRoutineFormStyles.label}>Nombre de la Rutina:</label>
         <input
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          style={inputStyle}
+          style={AddRoutineFormStyles.input}
         />
       </div>
-      <div style={inputContainerStyle}>
-        <label style={labelStyle}>Descripción:</label>
+      <div style={AddRoutineFormStyles.inputContainer}>
+        <label style={AddRoutineFormStyles.label}>Descripción:</label>
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          style={textareaStyle}
+          style={AddRoutineFormStyles.textarea}
         />
       </div>
 
-      <button onClick={handleAddDay} style={addButtonStyle}>
+      <button onClick={handleAddDay} style={AddRoutineFormStyles.addButton}>
         Agregar Día de Entrenamiento
       </button>
       {diasEntrenamiento.map((dia, dayIndex) => (
-        <div key={dayIndex} style={dayContainerStyle}>
-          <div style={dayHeaderStyle}>
-            <h4 style={subtitleStyle}>Día de la Semana</h4>
+        <div key={dayIndex} style={AddRoutineFormStyles.dayContainer}>
+          <div style={AddRoutineFormStyles.dayHeader}>
+            <h4 style={AddRoutineFormStyles.subtitle}>Día de la Semana</h4>
             <button
               onClick={() => handleRemoveDay(dayIndex)}
-              style={removeButtonStyle}
+              style={AddRoutineFormStyles.removeButton}
             >
               Quitar Día
             </button>
@@ -100,7 +78,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           <select
             value={dia.diaSemana}
             onChange={(e) => handleDayChange(dayIndex, e.target.value)}
-            style={selectStyle}
+            style={AddRoutineFormStyles.select}
           >
             <option value="">Selecciona un día</option>
             <option value="Lunes">Lunes</option>
@@ -112,10 +90,10 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
             <option value="Domingo">Domingo</option>
           </select>
 
-          <h4 style={subtitleStyle}>Agrupación</h4>
+          <h4 style={AddRoutineFormStyles.subtitle}>Agrupación</h4>
           <select
             onChange={(e) => handleAddGroup(dayIndex, e.target.value)}
-            style={selectStyle}
+            style={AddRoutineFormStyles.select}
           >
             <option value="">Selecciona una agrupación</option>
             <option value="Ejercicio Individual">Ejercicio Individual</option>
@@ -126,19 +104,26 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           </select>
 
           {dia.agrupaciones.map((agrupacion, groupIndex) => (
-            <div key={groupIndex} style={groupContainerStyle}>
-              <div style={groupHeaderStyle}>
-                <h5 style={groupTitleStyle}>{agrupacion.tipo}</h5>
+            <div key={groupIndex} style={AddRoutineFormStyles.groupContainer}>
+              <div style={AddRoutineFormStyles.groupHeader}>
+                <h5 style={AddRoutineFormStyles.groupTitle}>
+                  {agrupacion.tipo}
+                </h5>
                 <button
                   onClick={() => handleRemoveGroup(dayIndex, groupIndex)}
-                  style={removeButtonStyle}
+                  style={AddRoutineFormStyles.removeButton}
                 >
                   Quitar Agrupación
                 </button>
               </div>
               {agrupacion.ejercicios.map((ejercicio, exerciseIndex) => (
-                <div key={exerciseIndex} style={exerciseContainerStyle}>
-                  <label style={exerciseLabelStyle}>Nombre del Ejercicio</label>
+                <div
+                  key={exerciseIndex}
+                  style={AddRoutineFormStyles.exerciseContainer}
+                >
+                  <label style={AddRoutineFormStyles.exerciseLabel}>
+                    Nombre del Ejercicio
+                  </label>
                   <input
                     value={ejercicio.nombre}
                     onChange={(e) =>
@@ -150,9 +135,11 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         e.target.value
                       )
                     }
-                    style={inputStyle}
+                    style={AddRoutineFormStyles.input}
                   />
-                  <label style={exerciseLabelStyle}>Series</label>
+                  <label style={AddRoutineFormStyles.exerciseLabel}>
+                    Series
+                  </label>
                   <input
                     type="number"
                     value={ejercicio.series}
@@ -166,9 +153,11 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         Number(e.target.value)
                       )
                     }
-                    style={inputStyle}
+                    style={AddRoutineFormStyles.input}
                   />
-                  <label style={exerciseLabelStyle}>Repeticiones</label>
+                  <label style={AddRoutineFormStyles.exerciseLabel}>
+                    Repeticiones
+                  </label>
                   <input
                     type="number"
                     value={ejercicio.repeticiones}
@@ -182,7 +171,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         Number(e.target.value)
                       )
                     }
-                    style={inputStyle}
+                    style={AddRoutineFormStyles.input}
                   />
                   {ejercicio.imagenUrl ? (
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -199,7 +188,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                         onClick={() =>
                           handleRemoveImage(dayIndex, groupIndex, exerciseIndex)
                         }
-                        style={removeButtonStyle}
+                        style={AddRoutineFormStyles.removeButton}
                       >
                         X
                       </button>
@@ -209,7 +198,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                       onClick={() =>
                         openImageSelector(dayIndex, groupIndex, exerciseIndex)
                       }
-                      style={addButtonStyle}
+                      style={AddRoutineFormStyles.addButton}
                     >
                       Seleccionar Imagen para Ejercicio
                     </button>
@@ -222,7 +211,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                   onClick={() =>
                     handleAddExerciseToCircuit(dayIndex, groupIndex)
                   }
-                  style={addButtonStyle}
+                  style={AddRoutineFormStyles.addButton}
                 >
                   Agregar Ejercicio al Circuito
                 </button>
@@ -231,11 +220,14 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           ))}
         </div>
       ))}
-      <div style={buttonContainerStyle}>
-        <button onClick={handleAddRoutine} style={saveButtonStyle}>
+      <div style={AddRoutineFormStyles.buttonContainer}>
+        <button
+          onClick={handleAddRoutine}
+          style={AddRoutineFormStyles.saveButton}
+        >
           Guardar Rutina
         </button>
-        <button onClick={onClose} style={cancelButtonStyle}>
+        <button onClick={onClose} style={AddRoutineFormStyles.cancelButton}>
           Cancelar
         </button>
       </div>
