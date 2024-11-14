@@ -1,7 +1,7 @@
 // src/components/EditClientForm.tsx
-import React, { useState } from "react";
-import axios from "axios";
-import api from "../services/api";
+import React from "react";
+import { useEditClientForm } from "../hooks/useEditClientForm";
+import EditClientFormStyles from "../styles/EditClientFormStyles";
 
 interface EditClientFormProps {
   client: {
@@ -22,40 +22,28 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
   onClose,
   onSave,
 }) => {
-  const [nombre, setNombre] = useState(client.nombre);
-  const [apellido, setApellido] = useState(client.apellido);
-  const [email, setEmail] = useState(client.email);
-  const [telefono, setTelefono] = useState(client.telefono);
-  const [sexo, setSexo] = useState(client.sexo);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      await api.put(`/cliente/${client.clienteId}`, {
-        nombre,
-        apellido,
-        email,
-        telefono,
-        sexo,
-        usuarioId: client.usuarioId,
-      });
-
-      onSave();
-    } catch (err) {
-      setError("Error al actualizar el cliente. Intenta de nuevo.");
-      console.error(err);
-    }
-  };
+  const {
+    nombre,
+    apellido,
+    email,
+    telefono,
+    sexo,
+    setNombre,
+    setApellido,
+    setEmail,
+    setTelefono,
+    setSexo,
+    error,
+    handleSubmit,
+  } = useEditClientForm(client, onSave);
 
   return (
-    <div style={formContainerStyle}>
-      <h3 style={titleStyle}>Editar Cliente</h3>
-      {error && <p style={errorStyle}>{error}</p>}
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <div style={inputContainerStyle}>
-          <label htmlFor="nombre" style={labelStyle}>
+    <div style={EditClientFormStyles.formContainer}>
+      <h3 style={EditClientFormStyles.title}>Editar Cliente</h3>
+      {error && <p style={EditClientFormStyles.error}>{error}</p>}
+      <form onSubmit={handleSubmit} style={EditClientFormStyles.form}>
+        <div style={EditClientFormStyles.inputContainer}>
+          <label htmlFor="nombre" style={EditClientFormStyles.label}>
             Nombre
           </label>
           <input
@@ -64,11 +52,11 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             required
-            style={inputStyle}
+            style={EditClientFormStyles.input}
           />
         </div>
-        <div style={inputContainerStyle}>
-          <label htmlFor="apellido" style={labelStyle}>
+        <div style={EditClientFormStyles.inputContainer}>
+          <label htmlFor="apellido" style={EditClientFormStyles.label}>
             Apellido
           </label>
           <input
@@ -77,11 +65,11 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             value={apellido}
             onChange={(e) => setApellido(e.target.value)}
             required
-            style={inputStyle}
+            style={EditClientFormStyles.input}
           />
         </div>
-        <div style={inputContainerStyle}>
-          <label htmlFor="email" style={labelStyle}>
+        <div style={EditClientFormStyles.inputContainer}>
+          <label htmlFor="email" style={EditClientFormStyles.label}>
             Email
           </label>
           <input
@@ -90,11 +78,11 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={inputStyle}
+            style={EditClientFormStyles.input}
           />
         </div>
-        <div style={inputContainerStyle}>
-          <label htmlFor="telefono" style={labelStyle}>
+        <div style={EditClientFormStyles.inputContainer}>
+          <label htmlFor="telefono" style={EditClientFormStyles.label}>
             Teléfono
           </label>
           <input
@@ -103,11 +91,11 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             value={telefono}
             onChange={(e) => setTelefono(e.target.value)}
             required
-            style={inputStyle}
+            style={EditClientFormStyles.input}
           />
         </div>
-        <div style={inputContainerStyle}>
-          <label htmlFor="sexo" style={labelStyle}>
+        <div style={EditClientFormStyles.inputContainer}>
+          <label htmlFor="sexo" style={EditClientFormStyles.label}>
             Sexo
           </label>
           <input
@@ -116,93 +104,24 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             value={sexo}
             onChange={(e) => setSexo(e.target.value)}
             required
-            style={inputStyle}
+            style={EditClientFormStyles.input}
           />
         </div>
-        <div style={buttonContainerStyle}>
-          <button type="submit" style={saveButtonStyle}>
+        <div style={EditClientFormStyles.buttonContainer}>
+          <button type="submit" style={EditClientFormStyles.saveButton}>
             Guardar
           </button>
-          <button type="button" onClick={onClose} style={cancelButtonStyle}>
+          <button
+            type="button"
+            onClick={onClose}
+            style={EditClientFormStyles.cancelButton}
+          >
             Cancelar
           </button>
         </div>
       </form>
     </div>
   );
-};
-
-const formContainerStyle: React.CSSProperties = {
-  backgroundColor: "#333",
-  color: "#fff",
-  padding: "1.5rem",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-};
-
-const titleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.8rem",
-  marginBottom: "1rem",
-};
-
-const errorStyle: React.CSSProperties = {
-  color: "red",
-  textAlign: "center",
-  marginBottom: "1rem",
-};
-
-const formStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "1rem",
-};
-
-const inputContainerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-};
-
-const labelStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontWeight: "bold",
-};
-
-const inputStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-};
-
-const buttonContainerStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "1rem",
-  marginTop: "1rem",
-};
-
-const saveButtonStyle: React.CSSProperties = {
-  backgroundColor: "#ffcc00",
-  color: "#000",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
-};
-
-const cancelButtonStyle: React.CSSProperties = {
-  backgroundColor: "#bbb",
-  color: "#333",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
 };
 
 export default EditClientForm;
