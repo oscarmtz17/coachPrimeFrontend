@@ -1,27 +1,7 @@
-import React, { useState } from "react";
-import axios from "axios";
-import api from "../services/api";
-
-interface Diet {
-  nombre: string;
-  descripcion: string;
-  clienteId: number;
-  comidas: Comida[];
-  notas: string;
-}
-
-interface Comida {
-  nombre: string;
-  orden: number;
-  hora: string;
-  alimentos: Alimento[];
-}
-
-interface Alimento {
-  nombre: string;
-  cantidad: number;
-  unidad: string;
-}
+// src/components/AddDietForm.tsx
+import React from "react";
+import { useAddDietForm } from "../hooks/useAddDietForm";
+import AddDietFormStyles from "../styles/AddDietFormStyles";
 
 interface AddDietFormProps {
   clienteId: number;
@@ -34,138 +14,73 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
   onDietAdded,
   onClose,
 }) => {
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [notas, setNotas] = useState("");
-  const [comidas, setComidas] = useState<Comida[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleAddDiet = async () => {
-    try {
-      const diet: Diet = {
-        nombre,
-        descripcion,
-        clienteId,
-        comidas,
-        notas,
-      };
-
-      await api.post(`/dieta/${clienteId}`, diet);
-
-      onDietAdded();
-      setNombre("");
-      setDescripcion("");
-      setNotas("");
-      setComidas([]);
-      onClose();
-    } catch (err) {
-      setError("Error al agregar la dieta");
-      console.error(err);
-    }
-  };
-
-  const handleAddComida = () => {
-    const newComida: Comida = {
-      nombre: "",
-      orden: comidas.length + 1,
-      hora: "",
-      alimentos: [],
-    };
-    setComidas([...comidas, newComida]);
-  };
-
-  const handleRemoveComida = (index: number) => {
-    const updatedComidas = [...comidas];
-    updatedComidas.splice(index, 1);
-    setComidas(updatedComidas);
-  };
-
-  const handleComidaChange = (
-    index: number,
-    field: keyof Comida,
-    value: string
-  ) => {
-    const updatedComidas = [...comidas];
-    updatedComidas[index] = { ...updatedComidas[index], [field]: value };
-    setComidas(updatedComidas);
-  };
-
-  const handleAddAlimento = (comidaIndex: number) => {
-    const newAlimento: Alimento = { nombre: "", cantidad: 0, unidad: "" };
-    const updatedComidas = [...comidas];
-    updatedComidas[comidaIndex].alimentos.push(newAlimento);
-    setComidas(updatedComidas);
-  };
-
-  const handleRemoveAlimento = (comidaIndex: number, alimentoIndex: number) => {
-    const updatedComidas = [...comidas];
-    updatedComidas[comidaIndex].alimentos.splice(alimentoIndex, 1);
-    setComidas(updatedComidas);
-  };
-
-  const handleAlimentoChange = (
-    comidaIndex: number,
-    alimentoIndex: number,
-    field: keyof Alimento,
-    value: string | number
-  ) => {
-    const updatedComidas = [...comidas];
-    updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
-      ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
-      [field]: value,
-    };
-    setComidas(updatedComidas);
-  };
+  const {
+    nombre,
+    setNombre,
+    descripcion,
+    setDescripcion,
+    notas,
+    setNotas,
+    comidas,
+    error,
+    handleAddDiet,
+    handleAddComida,
+    handleRemoveComida,
+    handleComidaChange,
+    handleAddAlimento,
+    handleRemoveAlimento,
+    handleAlimentoChange,
+  } = useAddDietForm(clienteId, onDietAdded, onClose);
 
   return (
-    <div style={formContainerStyle}>
-      <h3 style={titleStyle}>Agregar Nueva Dieta</h3>
-      {error && <p style={errorStyle}>{error}</p>}
+    <div style={AddDietFormStyles.formContainer}>
+      <h3 style={AddDietFormStyles.title}>Agregar Nueva Dieta</h3>
+      {error && <p style={AddDietFormStyles.error}>{error}</p>}
 
-      <div style={inputContainerStyle}>
-        <label style={labelStyle}>Nombre de la Dieta:</label>
+      <div style={AddDietFormStyles.inputContainer}>
+        <label style={AddDietFormStyles.label}>Nombre de la Dieta:</label>
         <input
-          style={inputStyle}
+          style={AddDietFormStyles.input}
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
       </div>
-      <div style={inputContainerStyle}>
-        <label style={labelStyle}>Descripción:</label>
+      <div style={AddDietFormStyles.inputContainer}>
+        <label style={AddDietFormStyles.label}>Descripción:</label>
         <textarea
-          style={textareaStyle}
+          style={AddDietFormStyles.textarea}
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
       </div>
-      <div style={inputContainerStyle}>
-        <label style={labelStyle}>Notas:</label>
+      <div style={AddDietFormStyles.inputContainer}>
+        <label style={AddDietFormStyles.label}>Notas:</label>
         <textarea
-          style={textareaStyle}
+          style={AddDietFormStyles.textarea}
           value={notas}
           onChange={(e) => setNotas(e.target.value)}
         />
       </div>
 
-      <button onClick={handleAddComida} style={addButtonStyle}>
+      <button onClick={handleAddComida} style={AddDietFormStyles.addButton}>
         Agregar Comida
       </button>
 
       {comidas.map((comida, comidaIndex) => (
-        <div key={comidaIndex} style={dayContainerStyle}>
-          <h4 style={subtitleStyle}>Comida {comidaIndex + 1}</h4>
+        <div key={comidaIndex} style={AddDietFormStyles.dayContainer}>
+          <h4 style={AddDietFormStyles.subtitle}>Comida {comidaIndex + 1}</h4>
 
-          <div style={buttonWrapperStyle}>
+          <div style={AddDietFormStyles.buttonWrapper}>
             <button
               onClick={() => handleAddAlimento(comidaIndex)}
-              style={addButtonStyle}
+              style={AddDietFormStyles.addButton}
             >
               Agregar Alimento
             </button>
           </div>
 
           <input
-            style={inputStyle}
+            style={AddDietFormStyles.input}
             placeholder="Nombre de la comida"
             value={comida.nombre}
             onChange={(e) =>
@@ -173,7 +88,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
             }
           />
           <input
-            style={inputStyle}
+            style={AddDietFormStyles.input}
             placeholder="Hora"
             value={comida.hora}
             onChange={(e) =>
@@ -182,15 +97,18 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
           />
           <button
             onClick={() => handleRemoveComida(comidaIndex)}
-            style={removeButtonStyle}
+            style={AddDietFormStyles.removeButton}
           >
             Quitar Comida
           </button>
 
           {comida.alimentos.map((alimento, alimentoIndex) => (
-            <div key={alimentoIndex} style={alimentoContainerStyle}>
+            <div
+              key={alimentoIndex}
+              style={AddDietFormStyles.alimentoContainer}
+            >
               <input
-                style={inputStyle}
+                style={AddDietFormStyles.input}
                 placeholder="Nombre del alimento"
                 value={alimento.nombre}
                 onChange={(e) =>
@@ -203,7 +121,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
                 }
               />
               <input
-                style={inputStyle}
+                style={AddDietFormStyles.input}
                 placeholder="Cantidad"
                 type="number"
                 value={alimento.cantidad}
@@ -217,7 +135,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
                 }
               />
               <input
-                style={inputStyle}
+                style={AddDietFormStyles.input}
                 placeholder="Unidad"
                 value={alimento.unidad}
                 onChange={(e) =>
@@ -231,7 +149,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               />
               <button
                 onClick={() => handleRemoveAlimento(comidaIndex, alimentoIndex)}
-                style={removeButtonStyle}
+                style={AddDietFormStyles.removeButton}
               >
                 Quitar Alimento
               </button>
@@ -240,135 +158,16 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
         </div>
       ))}
 
-      <div style={buttonContainerStyle}>
-        <button onClick={handleAddDiet} style={saveButtonStyle}>
+      <div style={AddDietFormStyles.buttonContainer}>
+        <button onClick={handleAddDiet} style={AddDietFormStyles.saveButton}>
           Guardar Dieta
         </button>
-        <button onClick={onClose} style={cancelButtonStyle}>
+        <button onClick={onClose} style={AddDietFormStyles.cancelButton}>
           Cancelar
         </button>
       </div>
     </div>
   );
-};
-
-const formContainerStyle: React.CSSProperties = {
-  backgroundColor: "#333",
-  color: "#fff",
-  padding: "1.5rem",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-};
-
-const titleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.8rem",
-  marginBottom: "1rem",
-};
-
-const errorStyle: React.CSSProperties = {
-  color: "red",
-  textAlign: "center",
-  marginBottom: "1rem",
-};
-
-const inputContainerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  marginBottom: "1rem",
-};
-
-const dayContainerStyle: React.CSSProperties = {
-  backgroundColor: "#444",
-  padding: "1rem",
-  borderRadius: "8px",
-  marginBottom: "1rem",
-};
-
-const buttonWrapperStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "flex-start",
-  marginBottom: "0.5rem",
-};
-
-const alimentoContainerStyle: React.CSSProperties = {
-  display: "flex",
-  gap: "0.5rem",
-  marginBottom: "0.5rem",
-  alignItems: "center",
-};
-
-const subtitleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontSize: "1.2rem",
-};
-
-const labelStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontWeight: "bold",
-};
-
-const inputStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-};
-
-const textareaStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  backgroundColor: "#555",
-  color: "#fff",
-  resize: "vertical",
-};
-
-const buttonContainerStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "1rem",
-  marginTop: "1rem",
-};
-
-const addButtonStyle: React.CSSProperties = {
-  backgroundColor: "#007bff",
-  color: "#fff",
-  padding: "0.5rem",
-  borderRadius: "4px",
-  cursor: "pointer",
-};
-
-const saveButtonStyle: React.CSSProperties = {
-  backgroundColor: "#ffcc00",
-  color: "#000",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
-};
-
-const cancelButtonStyle: React.CSSProperties = {
-  backgroundColor: "#bbb",
-  color: "#333",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  flex: 1,
-};
-
-const removeButtonStyle: React.CSSProperties = {
-  backgroundColor: "#dc3545",
-  color: "#fff",
-  padding: "0.5rem",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
 };
 
 export default AddDietForm;
