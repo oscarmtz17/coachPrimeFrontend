@@ -22,6 +22,7 @@ const useAddProgressForm = (
 
   const handleSaveProgress = async () => {
     try {
+      // Paso 1: Enviar los datos del progreso
       const progresoData = {
         pesoKg,
         estaturaCm,
@@ -35,13 +36,34 @@ const useAddProgressForm = (
         notas,
       };
 
-      await api.post(`/progreso/${clienteId}`, progresoData);
+      const progressResponse = await api.post(
+        `/progreso/${clienteId}`,
+        progresoData
+      );
 
+      // Paso 2: Si hay imágenes seleccionadas, subirlas al backend
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append("files", image);
+        });
+
+        formData.append("progressDate", new Date().toISOString().split("T")[0]); // Fecha actual
+
+        await api.post(`/images/upload-progress-images`, formData);
+
+        // Notificar que el progreso y las imágenes se guardaron correctamente
+        alert("Progreso y fotos guardados exitosamente.");
+      } else {
+        alert("Progreso guardado exitosamente.");
+      }
+
+      // Limpiar formulario
       onProgressAdded();
       onClose();
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
-      setError("Hubo un error al guardar el progreso.");
+      console.error("Error al guardar el progreso o las imágenes:", error);
+      setError("Hubo un error al guardar el progreso o las imágenes.");
     }
   };
 
