@@ -1,22 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import api from "../services/api";
-
-interface Progress {
-  progresoId: number;
-  fechaRegistro: string;
-  pesoKg: number;
-  estaturaCm: number;
-  nivelActividad: string;
-  factorActividad: number;
-  cinturaCm: number;
-  caderaCm: number;
-  pechoCm: number;
-  brazoCm: number;
-  piernaCm: number;
-  notas: string;
-}
+// src/components/ProgressList.tsx
+import React from "react";
+import { useProgressList } from "../hooks/useProgressList";
+import ProgressListStyles from "../styles/ProgressListStyles";
 
 interface ProgressListProps {
   clienteId: number;
@@ -24,65 +9,30 @@ interface ProgressListProps {
 }
 
 const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
-  const [progressList, setProgressList] = useState<Progress[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedProgress, setSelectedProgress] = useState<Progress | null>(
-    null
-  );
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProgressList = async () => {
-      try {
-        const response = await api.get(`/progreso/${clienteId}`);
-
-        const progressData = response.data.$values || response.data;
-        setProgressList(progressData);
-        setError(null);
-      } catch (err) {
-        console.error("Error al cargar los registros de progreso:", err);
-        setError("No se pudieron cargar los registros de progreso.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProgressList();
-  }, [clienteId]);
-
-  const handleEditProgress = (progress: Progress) => {
-    navigate(`/editar-progreso/${clienteId}/${progress.progresoId}`);
-  };
-
-  const handleDeleteProgress = async (progresoId: number) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este progreso?")) {
-      try {
-        await api.delete(`/progreso/${clienteId}/${progresoId}`);
-
-        setProgressList((prevList) =>
-          prevList.filter((progress) => progress.progresoId !== progresoId)
-        );
-        alert("Progreso eliminado exitosamente.");
-      } catch (error) {
-        console.error("Error al eliminar el progreso:", error);
-        setError("No se pudo eliminar el progreso.");
-      }
-    }
-  };
+  const {
+    progressList,
+    error,
+    loading,
+    handleEditProgress,
+    handleDeleteProgress,
+  } = useProgressList(clienteId);
 
   if (loading) {
-    return <p style={loadingStyle}>Cargando registros de progreso...</p>;
+    return (
+      <p style={ProgressListStyles.loading}>
+        Cargando registros de progreso...
+      </p>
+    );
   }
 
   return (
-    <div style={containerStyle}>
-      <h3 style={titleStyle}>Progresos del Cliente</h3>
-      {error && <p style={errorStyle}>{error}</p>}
+    <div style={ProgressListStyles.container}>
+      <h3 style={ProgressListStyles.title}>Progresos del Cliente</h3>
+      {error && <p style={ProgressListStyles.error}>{error}</p>}
       {!error && progressList.length > 0 ? (
-        <table style={tableStyle}>
+        <table style={ProgressListStyles.table}>
           <thead>
-            <tr style={headerRowStyle}>
+            <tr style={ProgressListStyles.headerRow}>
               <th>Fecha</th>
               <th>Peso (kg)</th>
               <th>Estatura (cm)</th>
@@ -99,30 +49,34 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
           </thead>
           <tbody>
             {progressList.map((progress) => (
-              <tr key={progress.progresoId} style={rowStyle}>
-                <td style={cellStyle}>
+              <tr key={progress.progresoId} style={ProgressListStyles.row}>
+                <td style={ProgressListStyles.cell}>
                   {new Date(progress.fechaRegistro).toLocaleDateString()}
                 </td>
-                <td style={cellStyle}>{progress.pesoKg}</td>
-                <td style={cellStyle}>{progress.estaturaCm}</td>
-                <td style={cellStyle}>{progress.nivelActividad}</td>
-                <td style={cellStyle}>{progress.factorActividad}</td>
-                <td style={cellStyle}>{progress.cinturaCm}</td>
-                <td style={cellStyle}>{progress.caderaCm}</td>
-                <td style={cellStyle}>{progress.pechoCm}</td>
-                <td style={cellStyle}>{progress.brazoCm}</td>
-                <td style={cellStyle}>{progress.piernaCm}</td>
-                <td style={cellStyle}>{progress.notas}</td>
-                <td style={actionCellStyle}>
+                <td style={ProgressListStyles.cell}>{progress.pesoKg}</td>
+                <td style={ProgressListStyles.cell}>{progress.estaturaCm}</td>
+                <td style={ProgressListStyles.cell}>
+                  {progress.nivelActividad}
+                </td>
+                <td style={ProgressListStyles.cell}>
+                  {progress.factorActividad}
+                </td>
+                <td style={ProgressListStyles.cell}>{progress.cinturaCm}</td>
+                <td style={ProgressListStyles.cell}>{progress.caderaCm}</td>
+                <td style={ProgressListStyles.cell}>{progress.pechoCm}</td>
+                <td style={ProgressListStyles.cell}>{progress.brazoCm}</td>
+                <td style={ProgressListStyles.cell}>{progress.piernaCm}</td>
+                <td style={ProgressListStyles.cell}>{progress.notas}</td>
+                <td style={ProgressListStyles.actionCell}>
                   <button
                     onClick={() => handleEditProgress(progress)}
-                    style={actionButtonStyle("#28a745")}
+                    style={ProgressListStyles.actionButton("#28a745")}
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => handleDeleteProgress(progress.progresoId)}
-                    style={actionButtonStyle("#dc3545")}
+                    style={ProgressListStyles.actionButton("#dc3545")}
                   >
                     Eliminar
                   </button>
@@ -132,100 +86,15 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
           </tbody>
         </table>
       ) : (
-        <p style={noDataStyle}>No hay registros de progreso disponibles.</p>
+        <p style={ProgressListStyles.noData}>
+          No hay registros de progreso disponibles.
+        </p>
       )}
-      <button onClick={onClose} style={closeButtonStyle}>
+      <button onClick={onClose} style={ProgressListStyles.closeButton}>
         Cerrar
       </button>
     </div>
   );
-};
-
-// Estilos
-const containerStyle: React.CSSProperties = {
-  backgroundColor: "#333",
-  color: "#fff",
-  padding: "2rem",
-  borderRadius: "8px",
-  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-  maxWidth: "900px",
-  margin: "0 auto",
-};
-
-const titleStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  fontSize: "1.8rem",
-  textAlign: "center",
-  marginBottom: "1rem",
-};
-
-const errorStyle: React.CSSProperties = {
-  color: "red",
-  textAlign: "center",
-  marginBottom: "1rem",
-};
-
-const loadingStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.2rem",
-};
-
-const noDataStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.2rem",
-};
-
-const tableStyle: React.CSSProperties = {
-  width: "100%",
-  borderCollapse: "collapse",
-  marginBottom: "1rem",
-};
-
-const headerRowStyle: React.CSSProperties = {
-  backgroundColor: "#444",
-  color: "#ffcc00",
-  textAlign: "center",
-};
-
-const rowStyle: React.CSSProperties = {
-  textAlign: "center",
-  borderBottom: "1px solid #555",
-};
-
-const cellStyle: React.CSSProperties = {
-  padding: "0.8rem",
-  color: "#fff",
-};
-
-const actionCellStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "center",
-  gap: "0.3rem",
-  flexWrap: "wrap",
-};
-
-const actionButtonStyle = (bgColor: string): React.CSSProperties => ({
-  backgroundColor: bgColor,
-  color: "#fff",
-  border: "none",
-  padding: "0.3rem 0.6rem",
-  borderRadius: "4px",
-  cursor: "pointer",
-  fontSize: "0.9rem",
-  marginTop: "0.3rem",
-});
-
-const closeButtonStyle: React.CSSProperties = {
-  backgroundColor: "#ffcc00",
-  color: "#000",
-  border: "none",
-  padding: "0.5rem 1rem",
-  borderRadius: "5px",
-  cursor: "pointer",
-  display: "block",
-  margin: "0 auto",
 };
 
 export default ProgressList;
