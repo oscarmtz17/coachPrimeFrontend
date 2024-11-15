@@ -2,6 +2,7 @@
 import { CSSProperties } from "react";
 
 const AddProgressFormStyles = {
+  /* estilos previos */
   formContainer: {
     backgroundColor: "#333",
     color: "#fff",
@@ -88,6 +89,50 @@ const AddProgressFormStyles = {
     borderRadius: "4px",
     cursor: "pointer",
     flex: 1,
+  } as CSSProperties,
+
+  fileInput: {
+    display: "block",
+    marginBottom: "0.8rem",
+  } as CSSProperties,
+
+  imageLimitText: {
+    color: "#ffcc00",
+    fontSize: "0.9rem",
+    marginBottom: "0.8rem",
+  } as CSSProperties,
+
+  imagePreviewContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
+    marginBottom: "0.8rem",
+  } as CSSProperties,
+
+  imagePreview: {
+    position: "relative",
+    width: "60px",
+    height: "60px",
+  } as CSSProperties,
+
+  previewImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: "4px",
+  } as CSSProperties,
+
+  removeImageButton: {
+    position: "absolute",
+    top: "-5px",
+    right: "-5px",
+    backgroundColor: "#ff0000",
+    color: "#fff",
+    border: "none",
+    borderRadius: "50%",
+    cursor: "pointer",
+    padding: "2px 5px",
+    fontSize: "0.8rem",
   } as CSSProperties,
 };
 

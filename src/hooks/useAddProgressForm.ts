@@ -18,6 +18,7 @@ const useAddProgressForm = (
   const [piernaCm, setPiernaCm] = useState<number>(1);
   const [notas, setNotas] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [images, setImages] = useState<File[]>([]);
 
   const handleSaveProgress = async () => {
     try {
@@ -44,6 +45,19 @@ const useAddProgressForm = (
     }
   };
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = event.target.files;
+    if (selectedFiles && selectedFiles.length + images.length <= 10) {
+      setImages([...images, ...Array.from(selectedFiles)]);
+    } else {
+      setError("Puedes subir un máximo de 10 imágenes.");
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   const handlePositiveInputChange =
     (setter: React.Dispatch<React.SetStateAction<number>>) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +77,10 @@ const useAddProgressForm = (
     piernaCm,
     notas,
     error,
+    images,
+    setImages,
+    handleImageUpload,
+    handleRemoveImage,
     setPesoKg,
     setEstaturaCm,
     setNivelActividad,

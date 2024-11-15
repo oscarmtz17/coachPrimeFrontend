@@ -26,6 +26,10 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
     piernaCm,
     notas,
     error,
+    images,
+    setImages,
+    handleImageUpload,
+    handleRemoveImage,
     setPesoKg,
     setEstaturaCm,
     setNivelActividad,
@@ -45,6 +49,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
       <h3 style={AddProgressFormStyles.title}>Registrar Progreso</h3>
       {error && <p style={AddProgressFormStyles.error}>{error}</p>}
 
+      {/* Campos de progreso */}
       {[
         { label: "Peso (kg):", value: pesoKg, setter: setPesoKg },
         { label: "Estatura (cm):", value: estaturaCm, setter: setEstaturaCm },
@@ -94,6 +99,41 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         onChange={(e) => setNotas(e.target.value)}
         style={AddProgressFormStyles.textarea}
       />
+
+      {/* Sección para subir imágenes */}
+      <label style={AddProgressFormStyles.label}>
+        Fotos de Progreso (Máximo 10):
+      </label>
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageUpload}
+        disabled={images.length >= 10}
+        style={AddProgressFormStyles.fileInput}
+      />
+      <p style={AddProgressFormStyles.imageLimitText}>
+        {images.length}/10 imágenes seleccionadas
+      </p>
+
+      {/* Previsualización de imágenes */}
+      <div style={AddProgressFormStyles.imagePreviewContainer}>
+        {images.map((image, index) => (
+          <div key={index} style={AddProgressFormStyles.imagePreview}>
+            <img
+              src={URL.createObjectURL(image)}
+              alt={`preview-${index}`}
+              style={AddProgressFormStyles.previewImage}
+            />
+            <button
+              onClick={() => handleRemoveImage(index)}
+              style={AddProgressFormStyles.removeImageButton}
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </div>
 
       <div style={AddProgressFormStyles.buttonContainer}>
         <button
