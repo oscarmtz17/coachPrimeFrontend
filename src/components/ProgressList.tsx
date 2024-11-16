@@ -1,5 +1,4 @@
-// src/components/ProgressList.tsx
-import React from "react";
+import React, { useState } from "react";
 import { useProgressList } from "../hooks/useProgressList";
 import ProgressListStyles from "../styles/ProgressListStyles";
 
@@ -15,7 +14,27 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
     loading,
     handleEditProgress,
     handleDeleteProgress,
+    getProgressImages,
   } = useProgressList(clienteId);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
+  const [selectedProgressId, setSelectedProgressId] = useState<number | null>(
+    null
+  );
+
+  const handleViewImages = async (progresoId: number) => {
+    const fetchedImages = await getProgressImages(progresoId);
+    setImages(fetchedImages);
+    setSelectedProgressId(progresoId);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setImages([]);
+    setSelectedProgressId(null);
+  };
 
   if (loading) {
     return (
@@ -80,6 +99,12 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
                   >
                     Eliminar
                   </button>
+                  <button
+                    onClick={() => handleViewImages(progress.progresoId)}
+                    style={ProgressListStyles.actionButton("#007bff")}
+                  >
+                    Ver Imágenes
+                  </button>
                 </td>
               </tr>
             ))}
@@ -93,6 +118,26 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
       <button onClick={onClose} style={ProgressListStyles.closeButton}>
         Cerrar
       </button>
+
+      {modalOpen && (
+        <div style={ProgressListStyles.modal}>
+          <h4>Imágenes del Progreso</h4>
+          <div style={ProgressListStyles.imageContainer}>
+            {images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Imagen ${index + 1}`}
+                style={ProgressListStyles.thumbnail}
+                onClick={() => window.open(image, "_blank")}
+              />
+            ))}
+          </div>
+          <button onClick={closeModal} style={ProgressListStyles.closeButton}>
+            Cerrar
+          </button>
+        </div>
+      )}
     </div>
   );
 };

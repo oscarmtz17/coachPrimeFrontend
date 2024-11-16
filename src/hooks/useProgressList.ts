@@ -61,11 +61,26 @@ export const useProgressList = (clienteId: number) => {
     }
   };
 
+  const getProgressImages = async (progresoId: number): Promise<string[]> => {
+    try {
+      const response = await api.get(
+        `/images/list-progress-images/${clienteId}/${progresoId}`
+      );
+      console.log(response.data.images.$values);
+
+      return response.data.images.$values || [];
+    } catch (error) {
+      console.error("Error al obtener las imágenes del progreso:", error);
+      return [];
+    }
+  };
+
   return {
     progressList,
     error,
     loading,
     handleEditProgress,
     handleDeleteProgress,
+    getProgressImages,
   };
 };

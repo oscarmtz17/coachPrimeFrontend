@@ -83,6 +83,43 @@ const ProgressListStyles = {
     fontSize: "0.9rem",
     marginTop: "0.3rem",
   }),
+
+  // Estilo del contenedor del modal
+  modal: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 1000,
+    backgroundColor: "#333",
+    color: "#fff",
+    padding: "2rem",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    maxWidth: "600px",
+    width: "90%",
+    maxHeight: "80vh",
+    overflowY: "auto",
+  } as CSSProperties,
+
+  // Estilo del contenedor de las miniaturas de imágenes
+  imageContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+    justifyContent: "center",
+    marginTop: "1rem",
+  } as CSSProperties,
+
+  // Estilo de cada miniatura de imagen
+  thumbnail: {
+    width: "100px",
+    height: "100px",
+    objectFit: "cover",
+    borderRadius: "4px",
+    cursor: "pointer",
+    transition: "transform 0.2s ease-in-out",
+  } as CSSProperties,
 };
 
 export default ProgressListStyles;
