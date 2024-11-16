@@ -19,8 +19,12 @@ const useAddProgressForm = (
   const [notas, setNotas] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [images, setImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSaveProgress = async () => {
+    if (isSubmitting) return; // Prevenir múltiples envíos
+
+    setIsSubmitting(true); // Deshabilitar el botón
     try {
       // Paso 1: Enviar los datos del progreso
       const progresoData = {
@@ -41,6 +45,11 @@ const useAddProgressForm = (
         progresoData
       );
 
+      const progresoId = progressResponse.data.progresoId; // Obtener el progresoId de la respuesta
+      if (!progresoId) {
+        throw new Error("No se pudo obtener el progresoId.");
+      }
+
       // Paso 2: Si hay imágenes seleccionadas, subirlas al backend
       if (images.length > 0) {
         const formData = new FormData();
@@ -48,11 +57,17 @@ const useAddProgressForm = (
           formData.append("files", image);
         });
 
-        formData.append("progressDate", new Date().toISOString().split("T")[0]); // Fecha actual
+        // Usar el progresoId para crear una carpeta específica
+        formData.append(
+          "progressDate",
+          `${new Date().toISOString().split("T")[0]}_${progresoId}`
+        );
 
-        await api.post(`/images/upload-progress-images`, formData);
+        await api.post(
+          `/images/upload-progress-images/${clienteId}/${progresoId}`,
+          formData
+        );
 
-        // Notificar que el progreso y las imágenes se guardaron correctamente
         alert("Progreso y fotos guardados exitosamente.");
       } else {
         alert("Progreso guardado exitosamente.");
@@ -64,6 +79,8 @@ const useAddProgressForm = (
     } catch (error) {
       console.error("Error al guardar el progreso o las imágenes:", error);
       setError("Hubo un error al guardar el progreso o las imágenes.");
+    } finally {
+      setIsSubmitting(false); // Habilitar el botón después de finalizar la solicitud
     }
   };
 
@@ -101,6 +118,7 @@ const useAddProgressForm = (
     error,
     images,
     setImages,
+    isSubmitting,
     handleImageUpload,
     handleRemoveImage,
     setPesoKg,

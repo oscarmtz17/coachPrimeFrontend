@@ -28,6 +28,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
     error,
     images,
     setImages,
+    isSubmitting,
     handleImageUpload,
     handleRemoveImage,
     setPesoKg,
@@ -139,8 +140,9 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         <button
           onClick={handleSaveProgress}
           style={AddProgressFormStyles.saveButton}
+          disabled={isSubmitting}
         >
-          Guardar Progreso
+          {isSubmitting ? "Guardando..." : "Guardar Progreso"}
         </button>
         <button onClick={onClose} style={AddProgressFormStyles.cancelButton}>
           Cancelar
