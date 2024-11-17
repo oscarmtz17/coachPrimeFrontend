@@ -80,6 +80,41 @@ const EditProgressFormStyles = {
     cursor: "pointer",
     flex: 1,
   } as CSSProperties,
+  imageSection: {
+    marginTop: "1rem",
+  } as CSSProperties,
+
+  imageContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+  } as CSSProperties,
+
+  imageWrapper: {
+    position: "relative",
+  } as CSSProperties,
+
+  image: {
+    width: "100px",
+    height: "100px",
+    objectFit: "cover",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+  } as CSSProperties,
+
+  removeButton: {
+    position: "absolute",
+    top: "0",
+    right: "0",
+    backgroundColor: "#dc3545",
+    color: "#fff",
+    border: "none",
+    borderRadius: "50%",
+    cursor: "pointer",
+    fontSize: "0.8rem",
+    width: "20px",
+    height: "20px",
+  } as CSSProperties,
 };
 
 export default EditProgressFormStyles;

@@ -1,4 +1,3 @@
-// src/components/EditProgressForm.tsx
 import React from "react";
 import useEditProgressForm from "../hooks/useEditProgressForm";
 import EditProgressFormStyles from "../styles/EditProgressFormStyles";
@@ -31,18 +30,23 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
   onSave,
   onClose,
 }) => {
-  const { formData, error, handleChange, handleSave } = useEditProgressForm(
-    clienteId,
-    progress,
-    onSave,
-    onClose
-  );
+  const {
+    formData,
+    error,
+    existingImages,
+    newImages,
+    handleChange,
+    handleSave,
+    handleAddImages,
+    handleRemoveImage,
+  } = useEditProgressForm(clienteId, progress, onSave, onClose);
 
   return (
     <div style={EditProgressFormStyles.container}>
       <h3 style={EditProgressFormStyles.title}>Editar Progreso</h3>
       {error && <p style={EditProgressFormStyles.error}>{error}</p>}
 
+      {/* Campos de datos */}
       {[
         { label: "Peso (kg):", name: "pesoKg", value: formData.pesoKg },
         {
@@ -73,39 +77,64 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
         </div>
       ))}
 
+      {/* Sección de imágenes existentes */}
+      <div style={EditProgressFormStyles.imageSection}>
+        <h4>Imágenes Existentes</h4>
+        <div style={EditProgressFormStyles.imageContainer}>
+          {existingImages.map((image, index) => (
+            <div key={index} style={EditProgressFormStyles.imageWrapper}>
+              <img
+                src={image}
+                alt={`Imagen ${index + 1}`}
+                style={EditProgressFormStyles.image}
+              />
+              <button
+                style={EditProgressFormStyles.removeButton}
+                onClick={() => handleRemoveImage(index, true)}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Añadir nuevas imágenes */}
       <div style={EditProgressFormStyles.inputContainer}>
-        <label style={EditProgressFormStyles.label}>Nivel de Actividad:</label>
+        <label style={EditProgressFormStyles.label}>Añadir Imágenes:</label>
+        <p>
+          {existingImages.length + newImages.length}/10 imágenes seleccionadas
+        </p>
         <input
-          type="text"
-          name="nivelActividad"
-          value={formData.nivelActividad}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleAddImages}
+          disabled={existingImages.length + newImages.length >= 10}
           style={EditProgressFormStyles.input}
         />
+        {newImages.length > 0 && (
+          <div style={EditProgressFormStyles.imageContainer}>
+            {newImages.map((image, index) => (
+              <div key={index} style={EditProgressFormStyles.imageWrapper}>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Nueva Imagen ${index + 1}`}
+                  style={EditProgressFormStyles.image}
+                />
+                <button
+                  style={EditProgressFormStyles.removeButton}
+                  onClick={() => handleRemoveImage(index, false)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div style={EditProgressFormStyles.inputContainer}>
-        <label style={EditProgressFormStyles.label}>Factor de Actividad:</label>
-        <input
-          type="number"
-          name="factorActividad"
-          value={formData.factorActividad}
-          min="1"
-          onChange={handleChange}
-          style={EditProgressFormStyles.input}
-        />
-      </div>
-
-      <div style={EditProgressFormStyles.inputContainer}>
-        <label style={EditProgressFormStyles.label}>Notas:</label>
-        <textarea
-          name="notas"
-          value={formData.notas}
-          onChange={handleChange}
-          style={EditProgressFormStyles.textarea}
-        />
-      </div>
-
+      {/* Botones */}
       <div style={EditProgressFormStyles.buttonContainer}>
         <button onClick={handleSave} style={EditProgressFormStyles.saveButton}>
           Guardar Cambios
