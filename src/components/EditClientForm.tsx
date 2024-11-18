@@ -1,4 +1,3 @@
-// src/components/EditClientForm.tsx
 import React from "react";
 import { useEditClientForm } from "../hooks/useEditClientForm";
 import EditClientFormStyles from "../styles/EditClientFormStyles";
@@ -35,7 +34,9 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
     setSexo,
     error,
     handleSubmit,
-  } = useEditClientForm(client, onSave);
+    handleCapitalize,
+    handleTelefonoChange,
+  } = useEditClientForm(client, onSave, onClose); // Pasamos onClose aquí
 
   return (
     <div style={EditClientFormStyles.formContainer}>
@@ -50,7 +51,7 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             id="nombre"
             type="text"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => handleCapitalize(e.target.value, setNombre)}
             required
             style={EditClientFormStyles.input}
           />
@@ -63,7 +64,7 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             id="apellido"
             type="text"
             value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
+            onChange={(e) => handleCapitalize(e.target.value, setApellido)}
             required
             style={EditClientFormStyles.input}
           />
@@ -89,23 +90,32 @@ const EditClientForm: React.FC<EditClientFormProps> = ({
             id="telefono"
             type="text"
             value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            onChange={(e) => handleTelefonoChange(e.target.value)}
             required
             style={EditClientFormStyles.input}
+            maxLength={10}
+            placeholder="Ejemplo: 1234567890"
           />
+          {telefono.length > 0 && telefono.length < 10 && (
+            <span style={{ color: "red" }}>
+              Debe tener exactamente 10 dígitos
+            </span>
+          )}
         </div>
         <div style={EditClientFormStyles.inputContainer}>
           <label htmlFor="sexo" style={EditClientFormStyles.label}>
             Sexo
           </label>
-          <input
+          <select
             id="sexo"
-            type="text"
             value={sexo}
-            onChange={(e) => setSexo(e.target.value)}
+            onChange={(e) => setSexo(e.target.value)} // Aseguramos que actualice correctamente
             required
             style={EditClientFormStyles.input}
-          />
+          >
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
         </div>
         <div style={EditClientFormStyles.buttonContainer}>
           <button type="submit" style={EditClientFormStyles.saveButton}>
