@@ -36,6 +36,17 @@ export const useAddDietForm = (
 
   const handleAddDiet = async () => {
     try {
+      // Validar si hay al menos un alimento en la dieta
+      const hasAlimentos = comidas.some(
+        (comida) => comida.alimentos.length > 0
+      );
+      if (!hasAlimentos) {
+        setError(
+          "Debes agregar al menos un alimento a tu dieta antes de guardarla."
+        );
+        return; // Detener la ejecución si no hay alimentos
+      }
+
       const diet: Diet = {
         nombre,
         descripcion,
@@ -51,9 +62,15 @@ export const useAddDietForm = (
       setDescripcion("");
       setNotas("");
       setComidas([]);
+      setError(null); // Limpiar cualquier error previo
       onClose();
-    } catch (err) {
-      setError("Error al agregar la dieta");
+    } catch (err: any) {
+      // Manejar error del backend
+      if (err.response?.data?.error) {
+        setError(err.response.data.error); // Mostrar el mensaje específico del backend
+      } else {
+        setError("Error al agregar la dieta"); // Mensaje genérico en caso de error inesperado
+      }
       console.error(err);
     }
   };
