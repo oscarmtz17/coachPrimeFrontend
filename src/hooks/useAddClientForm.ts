@@ -37,6 +37,28 @@ export const useAddClientForm = (onClose: () => void, onSave: () => void) => {
     }
   };
 
+  const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Filtrar caracteres no numéricos
+    const numericValue = e.target.value.replace(/\D/g, "");
+    // Limitar a 10 caracteres
+    if (numericValue.length <= 10) {
+      setTelefono(numericValue); // Actualizar el estado
+    }
+  };
+
+  const handleCapitalize = (
+    value: string,
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    // Capitalizar la primera letra de cada palabra
+    const capitalized = value
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    setter(capitalized); // Actualizar el estado
+  };
+
   return {
     nombre,
     apellido,
@@ -50,5 +72,7 @@ export const useAddClientForm = (onClose: () => void, onSave: () => void) => {
     setTelefono,
     setSexo,
     handleSubmit,
+    handleTelefonoChange,
+    handleCapitalize,
   };
 };

@@ -22,6 +22,8 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ onClose, onSave }) => {
     setTelefono,
     setSexo,
     handleSubmit,
+    handleTelefonoChange,
+    handleCapitalize,
   } = useAddClientForm(onClose, onSave);
 
   return (
@@ -34,7 +36,7 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => handleCapitalize(e.target.value, setNombre)}
             required
             style={AddClientFormStyles.input}
           />
@@ -44,7 +46,7 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
+            onChange={(e) => handleCapitalize(e.target.value, setApellido)}
             required
             style={AddClientFormStyles.input}
           />
@@ -64,11 +66,19 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            onChange={handleTelefonoChange} // Usar la función del custom hook
             required
             style={AddClientFormStyles.input}
+            maxLength={10} // Asegura que no se puedan escribir más de 10 caracteres
+            placeholder="Ejemplo: 1234567890"
           />
+          {telefono.length > 0 && telefono.length < 10 && (
+            <span style={{ color: "red" }}>
+              Debe tener exactamente 10 dígitos
+            </span>
+          )}
         </div>
+
         <div style={AddClientFormStyles.inputContainer}>
           <label style={AddClientFormStyles.label}>Sexo</label>
           <select
