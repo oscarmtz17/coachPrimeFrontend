@@ -31,6 +31,11 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   return (
     <div style={ImageSelectorStyles.container}>
       <h3 style={ImageSelectorStyles.title}>Imágenes</h3>
+      <p style={ImageSelectorStyles.advestise}>
+        <strong>¡Importante!:</strong> Por tu privacidad nos aseguramos que las
+        imágenes que subas solo podrán ser vistas por ti, ningún otro usuario
+        puede visualizar o usar tus imágenes.
+      </p>
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}

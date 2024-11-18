@@ -11,6 +11,16 @@ const ImageSelectorStyles = {
     color: "#ffcc00",
   } as CSSProperties,
 
+  advestise: {
+    backgroundColor: "#555",
+    padding: "0.5rem",
+    borderRadius: "4px",
+    color: "#ffcc00",
+    marginBottom: "1rem",
+    fontSize: "0.9rem",
+    textAlign: "center",
+  } as CSSProperties,
+
   select: {
     display: "inline-block",
     margin: "0 auto",
