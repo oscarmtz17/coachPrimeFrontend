@@ -170,12 +170,20 @@ export const useEditRoutineForm = (
   };
 
   const handleUpdateRoutine = async () => {
+    // Validación previa en el frontend
+    const hasExercises = diasEntrenamiento.some((dia) =>
+      dia.agrupaciones.some((agrupacion) => agrupacion.ejercicios.length > 0)
+    );
+
+    if (!hasExercises) {
+      setError("Debes agregar al menos un ejercicio a tu rutina.");
+      return; // Detenemos la ejecución si no hay ejercicios
+    }
+
     try {
       const routine = {
         nombre,
         descripcion,
-        clienteId: 14, // Esto podría ajustarse según tus necesidades
-        usuarioId: 17, // Esto también podría ajustarse
         diasEntrenamiento: diasEntrenamiento.map((dia) => ({
           diaSemana: dia.diaSemana,
           agrupaciones: dia.agrupaciones.map((agrupacion) => ({
@@ -192,7 +200,10 @@ export const useEditRoutineForm = (
       onRoutineUpdated();
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data || "Error al actualizar la rutina");
+      // Manejar el error del backend
+      const backendError =
+        err.response?.data?.error || "Error al actualizar la rutina";
+      setError(backendError);
       setSuccessMessage(null);
     }
   };
