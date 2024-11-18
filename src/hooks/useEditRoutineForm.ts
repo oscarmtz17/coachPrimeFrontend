@@ -233,6 +233,19 @@ export const useEditRoutineForm = (
     setDiasEntrenamiento(updatedDays);
   };
 
+  const handleRemoveExerciseFromCircuit = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios.splice(
+      exerciseIndex,
+      1
+    );
+    setDiasEntrenamiento(updatedDays);
+  };
+
   return {
     nombre,
     setNombre,
@@ -249,6 +262,7 @@ export const useEditRoutineForm = (
     handleRemoveExercise,
     handleExerciseChange,
     handleAddExercise,
+    handleRemoveExerciseFromCircuit,
     handleUpdateRoutine,
     isImageSelectorOpen,
     openImageSelector,

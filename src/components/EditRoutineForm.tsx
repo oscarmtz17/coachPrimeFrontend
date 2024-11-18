@@ -32,12 +32,12 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
     handleRemoveGroup,
     handleExerciseChange,
     handleAddExercise,
-    handleRemoveExercise,
     isImageSelectorOpen,
     openImageSelector,
     closeImageSelector,
     handleSelectImage,
     handleRemoveImage,
+    handleRemoveExerciseFromCircuit,
   } = useEditRoutineForm(rutinaId, onRoutineUpdated, onClose);
 
   return (
@@ -212,15 +212,32 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                       Seleccionar Imagen para Ejercicio
                     </button>
                   )}
+                  {/* Botón para quitar ejercicio solo si la agrupación es tipo Circuito */}
+                  {agrupacion.tipo === "Circuito" && (
+                    <button
+                      onClick={() =>
+                        handleRemoveExerciseFromCircuit(
+                          dayIndex,
+                          groupIndex,
+                          exerciseIndex
+                        )
+                      }
+                      style={EditRoutineFormStyles.removeButton}
+                    >
+                      Quitar Ejercicio
+                    </button>
+                  )}
                 </div>
               ))}
 
-              <button
-                onClick={() => handleAddExercise(dayIndex, groupIndex)}
-                style={EditRoutineFormStyles.addButton}
-              >
-                Agregar Ejercicio
-              </button>
+              {agrupacion.tipo === "Circuito" && (
+                <button
+                  onClick={() => handleAddExercise(dayIndex, groupIndex)}
+                  style={EditRoutineFormStyles.addButton}
+                >
+                  Agregar Ejercicio
+                </button>
+              )}
             </div>
           ))}
         </div>
