@@ -47,6 +47,15 @@ export const useAddRoutineForm = (
   } | null>(null);
 
   const handleAddRoutine = async () => {
+    if (
+      !diasEntrenamiento.some((dia) =>
+        dia.agrupaciones.some((agrupacion) => agrupacion.ejercicios.length > 0)
+      )
+    ) {
+      alert("Debes agregar al menos un ejercicio a tu rutina.");
+      return;
+    }
+
     try {
       const routine: Routine = {
         nombre,
@@ -61,8 +70,8 @@ export const useAddRoutineForm = (
       resetForm();
       onClose();
     } catch (err) {
-      setError("Error al agregar la rutina");
       console.error(err);
+      setError("Error al agregar la rutina.");
     }
   };
 
@@ -202,6 +211,19 @@ export const useAddRoutineForm = (
     setDiasEntrenamiento(updatedDays);
   };
 
+  const handleRemoveExerciseFromCircuit = (
+    dayIndex: number,
+    groupIndex: number,
+    exerciseIndex: number
+  ) => {
+    const updatedDays = [...diasEntrenamiento];
+    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios.splice(
+      exerciseIndex,
+      1
+    );
+    setDiasEntrenamiento(updatedDays);
+  };
+
   return {
     nombre,
     setNombre,
@@ -224,5 +246,6 @@ export const useAddRoutineForm = (
     handleExerciseChange,
     handleAddExerciseToCircuit,
     handleAddRoutine,
+    handleRemoveExerciseFromCircuit,
   };
 };

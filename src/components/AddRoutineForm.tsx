@@ -38,6 +38,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
     closeImageSelector,
     handleSelectImage,
     handleRemoveImage,
+    handleRemoveExerciseFromCircuit,
   } = useAddRoutineForm(clienteId, usuarioId, onRoutineAdded, onClose);
 
   return (
@@ -58,6 +59,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
           style={AddRoutineFormStyles.textarea}
+          placeholder="Agrega una descripcion opcional"
         />
       </div>
 
@@ -201,6 +203,22 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
                       style={AddRoutineFormStyles.addButton}
                     >
                       Seleccionar Imagen para Ejercicio
+                    </button>
+                  )}
+                  {/* Botón para quitar el ejercicio */}
+                  {/* Botón para quitar ejercicio solo si la agrupación es tipo Circuito */}
+                  {agrupacion.tipo === "Circuito" && (
+                    <button
+                      onClick={() =>
+                        handleRemoveExerciseFromCircuit(
+                          dayIndex,
+                          groupIndex,
+                          exerciseIndex
+                        )
+                      }
+                      style={AddRoutineFormStyles.removeButton}
+                    >
+                      Quitar Ejercicio
                     </button>
                   )}
                 </div>
