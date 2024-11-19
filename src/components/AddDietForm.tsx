@@ -43,6 +43,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
           style={AddDietFormStyles.input}
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
+          maxLength={70}
         />
       </div>
       <div style={AddDietFormStyles.inputContainer}>
@@ -88,7 +89,8 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
             }
           />
           <input
-            style={AddDietFormStyles.input}
+            style={AddDietFormStyles.inputTime}
+            type="time" // Cambiar el tipo a "time"
             placeholder="Hora"
             value={comida.hora}
             onChange={(e) =>
@@ -123,6 +125,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               <input
                 style={AddDietFormStyles.input}
                 placeholder="Cantidad"
+                min={0}
                 type="number"
                 value={alimento.cantidad}
                 onChange={(e) =>
@@ -136,7 +139,8 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               />
               <input
                 style={AddDietFormStyles.input}
-                placeholder="Unidad"
+                placeholder="Unidad(Kg, gr, tazas, etc.)"
+                maxLength={10}
                 value={alimento.unidad}
                 onChange={(e) =>
                   handleAlimentoChange(

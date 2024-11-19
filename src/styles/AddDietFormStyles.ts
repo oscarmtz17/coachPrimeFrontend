@@ -58,6 +58,18 @@ const AddDietFormStyles: Record<string, CSSProperties> = {
     backgroundColor: "#555",
     color: "#fff",
   },
+  inputTime: {
+    padding: "0.5rem",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    backgroundColor: "#555",
+    color: "#fff",
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 5,
+    height: 16,
+    width: 170, // Igualar el ancho al resto de los inputs
+  },
   textarea: {
     padding: "0.5rem",
     borderRadius: "4px",

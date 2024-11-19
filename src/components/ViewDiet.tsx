@@ -40,7 +40,7 @@ const ViewDiet: React.FC = () => {
           {diet.comidas.map((comida, index) => (
             <div key={index} style={ViewDietStyles.mealContainer}>
               <h4 style={ViewDietStyles.mealTitle}>
-                {`Comida ${comida.orden} - ${comida.hora}`}
+                {`${comida.nombre} - ${comida.hora}`}
               </h4>
               <h5 style={ViewDietStyles.mealSubtitle}>{comida.nombre}</h5>
               <table style={ViewDietStyles.table}>

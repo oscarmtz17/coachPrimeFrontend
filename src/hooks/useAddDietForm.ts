@@ -36,6 +36,32 @@ export const useAddDietForm = (
 
   const handleAddDiet = async () => {
     try {
+      // Validar que el nombre de la dieta no esté vacío y no exceda 100 caracteres
+      if (!nombre.trim()) {
+        setError("El nombre de la dieta es obligatorio.");
+        return;
+      }
+
+      if (nombre.length > 100) {
+        setError("El nombre de la dieta no puede exceder 100 caracteres.");
+        return;
+      }
+
+      // Validar si hay al menos una comida con nombre y al menos un alimento
+      const invalidComida = comidas.some((comida) => !comida.nombre.trim());
+      if (invalidComida) {
+        setError("Todas las comidas deben tener un nombre.");
+        return;
+      }
+
+      const invalidAlimento = comidas.some((comida) =>
+        comida.alimentos.some((alimento) => !alimento.nombre.trim())
+      );
+      if (invalidAlimento) {
+        setError("Todos los alimentos deben tener un nombre.");
+        return;
+      }
+
       // Validar si hay al menos un alimento en la dieta
       const hasAlimentos = comidas.some(
         (comida) => comida.alimentos.length > 0
@@ -44,7 +70,7 @@ export const useAddDietForm = (
         setError(
           "Debes agregar al menos un alimento a tu dieta antes de guardarla."
         );
-        return; // Detener la ejecución si no hay alimentos
+        return;
       }
 
       const diet: Diet = {
@@ -121,11 +147,22 @@ export const useAddDietForm = (
     value: string | number
   ) => {
     const updatedComidas = [...comidas];
+
+    if (field === "cantidad") {
+      // Validar que la cantidad no sea negativa
+      const numericValue = Number(value);
+      if (numericValue < 0) {
+        setError("La cantidad no puede ser negativa.");
+        return;
+      }
+    }
+
     updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
       ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
       [field]: value,
     };
     setComidas(updatedComidas);
+    setError(null); // Limpiar cualquier mensaje de error anterior
   };
 
   return {
