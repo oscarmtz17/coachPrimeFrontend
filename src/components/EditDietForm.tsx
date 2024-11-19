@@ -44,6 +44,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
           style={EditDietFormStyles.input}
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
+          maxLength={70}
         />
       </div>
       <div style={EditDietFormStyles.inputContainer}>
@@ -74,7 +75,8 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
             }
           />
           <input
-            style={EditDietFormStyles.input}
+            style={EditDietFormStyles.inputTime}
+            type="time"
             placeholder="Hora"
             value={comida.hora}
             onChange={(e) =>
@@ -107,6 +109,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
                 style={EditDietFormStyles.input}
                 placeholder="Cantidad"
                 type="number"
+                min="0" // Evita que se ingresen valores negativos desde la interfaz
                 value={alimento.cantidad}
                 onChange={(e) =>
                   handleAlimentoChange(
@@ -119,7 +122,8 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
               />
               <input
                 style={EditDietFormStyles.input}
-                placeholder="Unidad"
+                placeholder="Unidad(Kg, gr, tazas, etc.)"
+                maxLength={10}
                 value={alimento.unidad}
                 onChange={(e) =>
                   handleAlimentoChange(
@@ -149,7 +153,6 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
       <button onClick={handleAddComida} style={EditDietFormStyles.addButton}>
         Agregar Comida
       </button>
-      s{" "}
       <div style={EditDietFormStyles.buttonContainer}>
         <button
           onClick={handleUpdateDiet}

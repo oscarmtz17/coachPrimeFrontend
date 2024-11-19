@@ -54,6 +54,43 @@ export const useEditDietForm = (
 
   const handleUpdateDiet = async () => {
     try {
+      // Validar que el nombre de la dieta no esté vacío y no exceda 100 caracteres
+      if (!nombre.trim()) {
+        setError("El nombre de la dieta es obligatorio.");
+        return;
+      }
+
+      if (nombre.length > 100) {
+        setError("El nombre de la dieta no puede exceder 100 caracteres.");
+        return;
+      }
+
+      // Validar si hay al menos una comida con nombre y al menos un alimento
+      const invalidComida = comidas.some((comida) => !comida.nombre.trim());
+      if (invalidComida) {
+        setError("Todas las comidas deben tener un nombre.");
+        return;
+      }
+
+      const invalidAlimento = comidas.some((comida) =>
+        comida.alimentos.some((alimento) => !alimento.nombre.trim())
+      );
+      if (invalidAlimento) {
+        setError("Todos los alimentos deben tener un nombre.");
+        return;
+      }
+
+      // Validar si hay al menos un alimento en la dieta
+      const hasAlimentos = comidas.some(
+        (comida) => comida.alimentos.length > 0
+      );
+      if (!hasAlimentos) {
+        setError(
+          "Debes agregar al menos un alimento a tu dieta antes de actualizarla."
+        );
+        return;
+      }
+
       const diet = {
         nombre,
         descripcion,
@@ -68,11 +105,18 @@ export const useEditDietForm = (
       };
 
       await api.put(`/dieta/${clienteId}/${dietaId}`, diet);
+
       alert("Dieta actualizada exitosamente.");
+      setError(null); // Limpiar cualquier error previo
       onDietUpdated();
       onClose();
     } catch (err: any) {
-      setError(err.response?.data || "Error al actualizar la dieta");
+      // Manejar error del backend
+      if (err.response?.data?.error) {
+        setError(err.response.data.error); // Mostrar el mensaje específico del backend
+      } else {
+        setError("Error al actualizar la dieta"); // Mensaje genérico en caso de error inesperado
+      }
       console.error(err);
     }
   };
@@ -91,14 +135,25 @@ export const useEditDietForm = (
     comidaIndex: number,
     alimentoIndex: number,
     field: keyof Alimento,
-    value: any
+    value: string | number
   ) => {
     const updatedComidas = [...comidas];
+
+    if (field === "cantidad") {
+      // Validar que la cantidad no sea negativa
+      const numericValue = Number(value);
+      if (numericValue < 0) {
+        setError("La cantidad no puede ser negativa.");
+        return;
+      }
+    }
+
     updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
       ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
       [field]: value,
     };
     setComidas(updatedComidas);
+    setError(null); // Limpiar cualquier mensaje de error anterior
   };
 
   const handleAddComida = () => {
