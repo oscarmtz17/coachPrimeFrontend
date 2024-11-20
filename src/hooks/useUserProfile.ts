@@ -150,8 +150,9 @@ export const useUserProfile = () => {
       const response = await api.post("/images/upload-logo", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      const newLogoUrl = response.data.url; // Asegúrate de usar el campo correcto
+      setPreviewLogo(newLogoUrl); // Actualiza la vista inmediatamente
       alert("Logo subido exitosamente.");
-      setPreviewLogo(response.data.Url);
     } catch (error) {
       console.error("Error al subir el logo:", error);
       alert("Hubo un problema al subir el logo. Intente nuevamente.");
