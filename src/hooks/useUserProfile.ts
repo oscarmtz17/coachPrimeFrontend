@@ -19,6 +19,7 @@ export const useUserProfile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const userId = localStorage.getItem("userId");
 
   // Fetch user data
@@ -204,6 +205,24 @@ export const useUserProfile = () => {
     }
   };
 
+  // Validar contraseñas
+  const validatePasswords = () => {
+    if (!newPassword || !confirmNewPassword) {
+      setPasswordError("Ambos campos de contraseña son obligatorios.");
+      return false;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("Las contraseñas no coinciden.");
+      return false;
+    }
+    setPasswordError(null); // Limpiar el error si las contraseñas coinciden
+    return true;
+  };
+
+  // Ejecutar validación en blur
+  const handleNewPasswordBlur = () => validatePasswords();
+  const handleConfirmNewPasswordBlur = () => validatePasswords();
+
   return {
     nombre,
     apellido,
@@ -239,5 +258,8 @@ export const useUserProfile = () => {
     setShowConfirmNewPassword,
     setShowCurrentPassword,
     setShowNewPassword,
+    handleNewPasswordBlur,
+    handleConfirmNewPasswordBlur,
+    validatePasswords,
   };
 };

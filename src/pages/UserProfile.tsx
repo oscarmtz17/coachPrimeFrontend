@@ -32,13 +32,13 @@ const UserProfile: React.FC = () => {
     openModal,
     closeModal,
     handleChangePassword,
-    togglePasswordVisibility,
     setCurrentPassword,
     setNewPassword,
     setConfirmNewPassword,
     setShowConfirmNewPassword,
     setShowCurrentPassword,
     setShowNewPassword,
+    validatePasswords,
   } = useUserProfile();
 
   return (
@@ -162,8 +162,10 @@ const UserProfile: React.FC = () => {
                 type={showNewPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                onBlur={validatePasswords} // Validar al perder el foco
                 style={UserProfileStyles.input}
               />
+
               <button
                 onMouseDown={() => setShowNewPassword(true)}
                 onMouseUp={() => setShowNewPassword(false)}
@@ -179,8 +181,10 @@ const UserProfile: React.FC = () => {
                 type={showConfirmNewPassword ? "text" : "password"}
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
+                onBlur={validatePasswords} // Validar al perder el foco
                 style={UserProfileStyles.input}
               />
+
               <button
                 onMouseDown={() => setShowConfirmNewPassword(true)}
                 onMouseUp={() => setShowConfirmNewPassword(false)}
@@ -191,13 +195,24 @@ const UserProfile: React.FC = () => {
             </div>
           </div>
 
+          {passwordError && (
+            <p style={UserProfileStyles.error}>{passwordError}</p>
+          )}
+
           <div style={UserProfileStyles.modalFooter}>
             <button
               onClick={handleChangePassword}
+              disabled={
+                !currentPassword ||
+                !newPassword ||
+                !confirmNewPassword ||
+                !!passwordError
+              }
               style={UserProfileStyles.saveButton}
             >
               Aceptar
             </button>
+
             <button onClick={closeModal} style={UserProfileStyles.cancelButton}>
               Cancelar
             </button>
