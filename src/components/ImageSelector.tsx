@@ -1,5 +1,5 @@
 // src/components/ImageSelector.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import api from "../services/api";
 import Modal from "./Modal";
 import useImageSelector from "../hooks/useImageSelector";
@@ -27,6 +27,9 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
     handleFileChange,
     handleUpload,
   } = useImageSelector();
+
+  console.log("filteredImages: ", filteredImages);
+  console.log("imageName: ", imageName);
 
   return (
     <div style={ImageSelectorStyles.container}>
@@ -77,25 +80,23 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       />
 
       <div style={ImageSelectorStyles.imageGrid}>
-        {filteredImages.map((url, index) => {
+        {filteredImages.map((image, index) => {
+          console.log("Image: ", image.url);
+
           const fileName =
-            url
-              .split("/")
+            image.Key?.split("/") // Asegúrate de que Key existe
               .pop()
-              ?.replace(/\.[^/.]+$/, "")
-              .split("_")
-              .slice(1)
-              .join("_") || "";
+              ?.replace(/\.[^/.]+$/, "") || "Nombre no disponible";
 
           return (
             <div key={index} style={ImageSelectorStyles.imageContainer}>
               <img
-                src={url}
+                src={image.url} // Asegúrate de que Url está siendo utilizado aquí
                 alt={fileName}
                 style={ImageSelectorStyles.image}
-                onClick={() => onSelect(url)}
+                onClick={() => onSelect(image.Key || "")}
               />
-              <p style={ImageSelectorStyles.imageName}>{fileName}</p>
+              <p style={ImageSelectorStyles.imageName}>{image.imageName}</p>
             </div>
           );
         })}

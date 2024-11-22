@@ -4,8 +4,13 @@ import api from "../services/api";
 
 const useImageSelector = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [filteredImages, setFilteredImages] = useState<string[]>([]);
+  const [images, setImages] = useState<
+    { Key: string; url: string; imageName: string }[]
+  >([]);
+  const [filteredImages, setFilteredImages] = useState<
+    { Key: string; url: string; imageName: string }[]
+  >([]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -19,9 +24,20 @@ const useImageSelector = () => {
           "userId"
         )}&category=${selectedCategory}`
       );
-      const fetchedImages = response.data.$values || response.data || [];
-      setImages(fetchedImages);
-      setFilteredImages(fetchedImages);
+
+      const fetchedImages =
+        response.data?.$values?.filter((img: any) => img.key && img.url) || [];
+
+      // Procesar el imageName desde el key
+      const processedImages = fetchedImages.map(
+        (img: { key: string; url: string }) => {
+          const name = img.key.split("_").pop() || ""; // Extraer la parte después del último "_"
+          return { ...img, imageName: name }; // Agregar el imageName al objeto
+        }
+      );
+
+      setImages(processedImages);
+      setFilteredImages(processedImages); // Inicializar con las imágenes procesadas
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -30,20 +46,23 @@ const useImageSelector = () => {
   useEffect(() => {
     if (selectedCategory) {
       fetchImages();
-      setSearchTerm("");
+      setSearchTerm(""); // Reiniciar el término de búsqueda
     }
   }, [selectedCategory]);
 
   useEffect(() => {
+    if (!searchTerm.trim()) {
+      // Si no hay búsqueda, restaurar todas las imágenes
+      setFilteredImages(images);
+      return;
+    }
+
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    const result = images.filter((url) => {
-      const fileName =
-        url
-          .split("/")
-          .pop()
-          ?.replace(/\.[^/.]+$/, "") || "";
-      return fileName.toLowerCase().includes(lowerCaseSearchTerm);
+
+    const result = images.filter(({ imageName }) => {
+      return imageName.toLowerCase().includes(lowerCaseSearchTerm);
     });
+
     setFilteredImages(result);
   }, [searchTerm, images]);
 
