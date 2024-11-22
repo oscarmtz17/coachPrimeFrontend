@@ -251,7 +251,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
       </div>
 
       <Modal isOpen={isImageSelectorOpen} onClose={closeImageSelector}>
-        <ImageSelector onSelect={handleSelectImage} />
+        <ImageSelector onSelect={(key, url) => handleSelectImage(key, url)} />
       </Modal>
     </div>
   );

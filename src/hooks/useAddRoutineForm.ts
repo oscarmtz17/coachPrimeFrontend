@@ -17,6 +17,7 @@ interface Ejercicio {
   series: number;
   repeticiones: number;
   imagenUrl: string;
+  imagenKey: string;
 }
 
 interface Routine {
@@ -65,6 +66,8 @@ export const useAddRoutineForm = (
         diasEntrenamiento,
       };
 
+      console.log("routineJson: ", routine);
+
       await api.post("/rutina", routine);
       onRoutineAdded();
       resetForm();
@@ -92,13 +95,17 @@ export const useAddRoutineForm = (
 
   const closeImageSelector = () => setIsImageSelectorOpen(false);
 
-  const handleSelectImage = (url: string) => {
+  const handleSelectImage = (key: string, url: string) => {
     if (selectedExercise) {
       const { dayIndex, groupIndex, exerciseIndex } = selectedExercise;
       const updatedDays = [...diasEntrenamiento];
+
       updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
         exerciseIndex
-      ].imagenUrl = url;
+      ].imagenUrl = url; // Guardar URL completa para la vista en el form
+      updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+        exerciseIndex
+      ].imagenKey = key;
       setDiasEntrenamiento(updatedDays);
     }
     closeImageSelector();
@@ -168,6 +175,7 @@ export const useAddRoutineForm = (
       series: 1,
       repeticiones: 1,
       imagenUrl: "",
+      imagenKey: "",
     }));
   };
 
@@ -204,6 +212,7 @@ export const useAddRoutineForm = (
       series: 1,
       repeticiones: 1,
       imagenUrl: "",
+      imagenKey: "",
     };
 
     const updatedDays = [...diasEntrenamiento];
