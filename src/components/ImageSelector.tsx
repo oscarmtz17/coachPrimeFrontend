@@ -6,7 +6,7 @@ import useImageSelector from "../hooks/useImageSelector";
 import ImageSelectorStyles from "../styles/ImageSelectorStyles";
 
 interface ImageSelectorProps {
-  onSelect: (url: string) => void;
+  onSelect: (key: string, url: string) => void;
 }
 
 const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
@@ -81,10 +81,9 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
 
       <div style={ImageSelectorStyles.imageGrid}>
         {filteredImages.map((image, index) => {
-          console.log("Image: ", image.url);
-
           const fileName =
-            image.Key?.split("/") // Asegúrate de que Key existe
+            image.key
+              ?.split("/") // Asegúrate de que Key existe
               .pop()
               ?.replace(/\.[^/.]+$/, "") || "Nombre no disponible";
 
@@ -94,7 +93,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
                 src={image.url} // Asegúrate de que Url está siendo utilizado aquí
                 alt={fileName}
                 style={ImageSelectorStyles.image}
-                onClick={() => onSelect(image.Key || "")}
+                onClick={() => onSelect(image.key || "", image.url || "")}
               />
               <p style={ImageSelectorStyles.imageName}>{image.imageName}</p>
             </div>

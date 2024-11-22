@@ -5,10 +5,10 @@ import api from "../services/api";
 const useImageSelector = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [images, setImages] = useState<
-    { Key: string; url: string; imageName: string }[]
+    { key: string; url: string; imageName: string }[]
   >([]);
   const [filteredImages, setFilteredImages] = useState<
-    { Key: string; url: string; imageName: string }[]
+    { key: string; url: string; imageName: string }[]
   >([]);
 
   const [searchTerm, setSearchTerm] = useState("");
