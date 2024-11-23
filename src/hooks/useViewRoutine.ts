@@ -7,7 +7,7 @@ interface Ejercicio {
   nombre: string;
   series: number;
   repeticiones: number;
-  imagenUrl: string;
+  imagenKey: string;
 }
 
 interface Agrupacion {
@@ -46,12 +46,17 @@ export const useViewRoutine = (
               agrupaciones: dia.agrupaciones.$values.map((agrupacion: any) => ({
                 ...agrupacion,
                 ejercicios: agrupacion.ejerciciosAgrupados.$values.map(
-                  (ejercicioAgrupado: any) => ejercicioAgrupado.ejercicio
+                  (ejercicioAgrupado: any) => ({
+                    ...ejercicioAgrupado.ejercicio,
+                    imagenKey: ejercicioAgrupado.ejercicio.imagenKey, // Guardar la key original
+                    imagenUrl: ejercicioAgrupado.ejercicio.imagenUrl, // Guardar la URL firmada
+                  })
                 ),
               })),
             })
           ),
         };
+
         setRoutine(adaptedRoutine);
         setError(null);
       } catch (error: any) {
