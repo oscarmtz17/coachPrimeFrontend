@@ -8,6 +8,7 @@ interface Ejercicio {
   series: number;
   repeticiones: number;
   imagenKey: string;
+  imagenUrl: string;
 }
 
 interface Agrupacion {
@@ -56,6 +57,9 @@ export const useViewRoutine = (
             })
           ),
         };
+
+        console.log("adaptedRoutine: ", adaptedRoutine.data);
+        console.log("adaptedRoutine: ", adaptedRoutine);
 
         setRoutine(adaptedRoutine);
         setError(null);

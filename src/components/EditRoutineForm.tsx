@@ -182,10 +182,10 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                     style={EditRoutineFormStyles.input}
                   />
 
-                  {ejercicio.imagenUrl ? (
+                  {ejercicio.imagenKey || ejercicio.imagenUrl ? (
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <img
-                        src={ejercicio.imagenUrl}
+                        src={ejercicio.imagenUrl || ejercicio.imagenKey} // Mostrar imagen firmada si está disponible
                         alt="Imagen del Ejercicio"
                         style={{
                           width: 100,
@@ -199,7 +199,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                         }
                         style={EditRoutineFormStyles.removeButton}
                       >
-                        X
+                        Quitar Imagen
                       </button>
                     </div>
                   ) : (
@@ -212,6 +212,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                       Seleccionar Imagen para Ejercicio
                     </button>
                   )}
+
                   {/* Botón para quitar ejercicio solo si la agrupación es tipo Circuito */}
                   {agrupacion.tipo === "Circuito" && (
                     <button

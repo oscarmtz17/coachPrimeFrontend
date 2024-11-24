@@ -79,9 +79,9 @@ const ViewRoutine: React.FC = () => {
                               {ejercicio.repeticiones}
                             </td>
                             <td style={ViewRoutineStyles.cell}>
-                              {ejercicio.imagenKey ? (
+                              {ejercicio.imagenUrl ? (
                                 <img
-                                  src={ejercicio.imagenKey} // Usar la URL firmada
+                                  src={ejercicio.imagenUrl} // Usar la URL firmada
                                   alt={ejercicio.nombre}
                                   style={ViewRoutineStyles.image}
                                 />

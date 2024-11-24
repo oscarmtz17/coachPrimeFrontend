@@ -18,6 +18,7 @@ interface Ejercicio {
   series: number;
   repeticiones: number;
   imagenUrl: string;
+  imagenKey: string;
 }
 
 export const useEditRoutineForm = (
@@ -44,6 +45,7 @@ export const useEditRoutineForm = (
     const fetchRoutineDetails = async () => {
       try {
         const response = await api.get(`/rutina/${rutinaId}`);
+
         const adaptedRoutine = {
           ...response.data,
           diasEntrenamiento: response.data.diasEntrenamiento.$values.map(
@@ -52,12 +54,19 @@ export const useEditRoutineForm = (
               agrupaciones: dia.agrupaciones.$values.map((agrupacion: any) => ({
                 ...agrupacion,
                 ejercicios: agrupacion.ejerciciosAgrupados.$values.map(
-                  (ejercicioAgrupado: any) => ejercicioAgrupado.ejercicio
+                  (ejercicioAgrupado: any) => ({
+                    nombre: ejercicioAgrupado.ejercicio.nombre,
+                    series: ejercicioAgrupado.ejercicio.series,
+                    repeticiones: ejercicioAgrupado.ejercicio.repeticiones,
+                    imagenKey: ejercicioAgrupado.ejercicio.imagenKey, // Conservar key
+                    imagenUrl: ejercicioAgrupado.ejercicio.imagenUrl, // Usar URL firmada para mostrar
+                  })
                 ),
               })),
             })
           ),
         };
+
         setNombre(adaptedRoutine.nombre);
         setDescripcion(adaptedRoutine.descripcion);
         setDiasEntrenamiento(adaptedRoutine.diasEntrenamiento);
@@ -65,6 +74,7 @@ export const useEditRoutineForm = (
         setError("Error al cargar la rutina.");
       }
     };
+
     fetchRoutineDetails();
   }, [rutinaId]);
 
@@ -125,6 +135,7 @@ export const useEditRoutineForm = (
       series: 1,
       repeticiones: 1,
       imagenUrl: "",
+      imagenKey: "",
     }));
   };
 
@@ -134,6 +145,7 @@ export const useEditRoutineForm = (
       series: 1,
       repeticiones: 1,
       imagenUrl: "",
+      imagenKey: "",
     };
     const updatedDays = [...diasEntrenamiento];
     updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios.push(newExercise);
@@ -188,23 +200,25 @@ export const useEditRoutineForm = (
           diaSemana: dia.diaSemana,
           agrupaciones: dia.agrupaciones.map((agrupacion) => ({
             tipo: agrupacion.tipo,
-            ejercicios: agrupacion.ejercicios,
+            ejercicios: agrupacion.ejercicios.map((ejercicio) => ({
+              nombre: ejercicio.nombre,
+              series: ejercicio.series,
+              repeticiones: ejercicio.repeticiones,
+              imagenKey: ejercicio.imagenKey, // Asegurarse de enviar el key
+            })),
           })),
         })),
       };
 
       const response = await api.put(`/rutina/${rutinaId}`, routine);
-
       setSuccessMessage(response.data);
       setError(null);
+      alert("Rutina actualizada correctamente.");
       onRoutineUpdated();
       navigate("/dashboard");
-    } catch (err: any) {
-      // Manejar el error del backend
-      const backendError =
-        err.response?.data?.error || "Error al actualizar la rutina";
-      setError(backendError);
-      setSuccessMessage(null);
+    } catch (error) {
+      console.error("Error al actualizar la rutina:", error);
+      alert("Error al actualizar la rutina.");
     }
   };
 
@@ -220,13 +234,16 @@ export const useEditRoutineForm = (
 
   const closeImageSelector = () => setIsImageSelectorOpen(false);
 
-  const handleSelectImage = (url: string) => {
+  const handleSelectImage = (key: string, url: string) => {
     if (selectedExercise) {
       const { dayIndex, groupIndex, exerciseIndex } = selectedExercise;
       const updatedDays = [...diasEntrenamiento];
       updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
         exerciseIndex
-      ].imagenUrl = url;
+      ].imagenKey = key; // Actualizar la key
+      updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+        exerciseIndex
+      ].imagenUrl = url; // Actualizar la URL para visualización
       setDiasEntrenamiento(updatedDays);
     }
     closeImageSelector();
@@ -240,7 +257,10 @@ export const useEditRoutineForm = (
     const updatedDays = [...diasEntrenamiento];
     updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
       exerciseIndex
-    ].imagenUrl = "";
+    ].imagenKey = ""; // Eliminar referencia de la base de datos
+    updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios[
+      exerciseIndex
+    ].imagenUrl = ""; // Quitar imagen de la vista
     setDiasEntrenamiento(updatedDays);
   };
 
