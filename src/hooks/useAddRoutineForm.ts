@@ -66,8 +66,6 @@ export const useAddRoutineForm = (
         diasEntrenamiento,
       };
 
-      console.log("routineJson: ", routine);
-
       await api.post("/rutina", routine);
       onRoutineAdded();
       resetForm();

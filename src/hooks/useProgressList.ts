@@ -66,7 +66,6 @@ export const useProgressList = (clienteId: number) => {
       const response = await api.get(
         `/images/list-progress-images/${clienteId}/${progresoId}`
       );
-      console.log(response.data.images.$values);
 
       return response.data.images.$values || [];
     } catch (error) {

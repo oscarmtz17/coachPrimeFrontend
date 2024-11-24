@@ -28,9 +28,6 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
     handleUpload,
   } = useImageSelector();
 
-  console.log("filteredImages: ", filteredImages);
-  console.log("imageName: ", imageName);
-
   return (
     <div style={ImageSelectorStyles.container}>
       <h3 style={ImageSelectorStyles.title}>Imágenes</h3>

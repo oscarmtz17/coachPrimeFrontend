@@ -108,19 +108,13 @@ const useEditProgressForm = (
       await api.put(`/progreso/${clienteId}/${formData.progresoId}`, formData);
 
       // Si hay imágenes para eliminar, enviar solo los keys al backend
-      console.log("imagesToDeletefuera: ", imagesToDelete);
+
       if (imagesToDelete.length > 0) {
         const keysToDelete = imagesToDelete.map((url) => {
           const keyStart = url.indexOf("private/"); // Encuentra el inicio del key
           const keyEnd = url.indexOf("?"); // Encuentra el inicio de los parámetros
           return url.substring(keyStart, keyEnd); // Extrae solo el key sin los parámetros
         });
-
-        console.log(
-          "URL: ",
-          `/images/delete-progress-images/${clienteId}/${formData.progresoId}`
-        );
-        console.log("Payload enviado: ", { imagesToDelete: keysToDelete });
 
         await api.delete(
           `/images/delete-progress-images/${clienteId}/${formData.progresoId}`,

@@ -58,9 +58,6 @@ export const useViewRoutine = (
           ),
         };
 
-        console.log("adaptedRoutine: ", adaptedRoutine.data);
-        console.log("adaptedRoutine: ", adaptedRoutine);
-
         setRoutine(adaptedRoutine);
         setError(null);
       } catch (error: any) {
