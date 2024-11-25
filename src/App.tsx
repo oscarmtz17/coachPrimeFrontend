@@ -5,6 +5,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewRoutine from "./components/ViewRoutine";
@@ -22,7 +24,10 @@ const App: React.FC = () => (
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />{" "}
+        {/* Nueva ruta */}
+        <Route path="/reset-password/:token" element={<ResetPassword />} />{" "}
+        {/* Nueva ruta */}
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
@@ -40,8 +45,7 @@ const App: React.FC = () => (
           <Route
             path="/editar-progreso/:clienteId/:progresoId"
             element={<EditProgressFormWrapper />}
-          />{" "}
-          {/* Nueva ruta para editar progreso */}
+          />
         </Route>
       </Routes>
     </Router>

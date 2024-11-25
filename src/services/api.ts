@@ -92,4 +92,26 @@ function isTokenExpiring(token: string): boolean {
   }
 }
 
+export const sendPasswordReset = async (email: string) => {
+  const response = await axios.post(
+    `${api.defaults.baseURL}/auth/reset-password`,
+    { email }
+  );
+  return response.data;
+};
+
+export const resetPassword = async (
+  token: string,
+  newPassword: string
+): Promise<void> => {
+  const response = await axios.post(
+    `${api.defaults.baseURL}/auth/reset-password`,
+    {
+      token,
+      newPassword,
+    }
+  );
+  return response.data;
+};
+
 export default api;

@@ -131,6 +131,18 @@ const Login: React.FC = () => {
         >
           Crear cuenta
         </p>
+        <p
+          onClick={() => navigate("/forgot-password")}
+          style={{
+            marginTop: "1rem",
+            color: "#bbb",
+            fontSize: "0.9rem",
+            cursor: "pointer",
+            textDecoration: "underline",
+          }}
+        >
+          Olvidé mi contraseña
+        </p>
       </div>
     </div>
   );
