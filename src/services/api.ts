@@ -94,7 +94,7 @@ function isTokenExpiring(token: string): boolean {
 
 export const sendPasswordReset = async (email: string) => {
   const response = await axios.post(
-    `${api.defaults.baseURL}/auth/reset-password`,
+    `${api.defaults.baseURL}/auth/forgot-password`,
     { email }
   );
   return response.data;
