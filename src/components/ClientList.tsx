@@ -1,13 +1,5 @@
 // src/components/ClientList.tsx
 import React from "react";
-import EditClientForm from "./EditClientForm";
-import AddClientForm from "./AddClientForm";
-import AddRoutineForm from "./AddRoutineForm";
-import RoutineList from "./RoutineList";
-import AddDietForm from "./AddDietForm";
-import DietList from "./DietList";
-import AddProgressForm from "./AddProgressForm";
-import ProgressList from "./ProgressList";
 import Modal from "./Modal";
 import { useClientList } from "../hooks/useClientList";
 import ClientListStyles, { buttonStyle } from "../styles/ClientListStyles";
@@ -63,7 +55,10 @@ const ClientList: React.FC = () => {
             <th>Email</th>
             <th>Teléfono</th>
             <th>Sexo</th>
-            <th>Acciones</th>
+            <th>Usuario</th>
+            <th>Progresos</th>
+            <th>Rutinas</th>
+            <th>Dietas</th>
           </tr>
         </thead>
         <tbody>
@@ -77,54 +72,74 @@ const ClientList: React.FC = () => {
               <td>{client.sexo}</td>
               <td>
                 <div style={ClientListStyles.actionButtonContainer}>
-                  <button
-                    onClick={() => handleEditClick(client)}
-                    style={buttonStyle("#007bff", "#fff")}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(client.clienteId)}
-                    style={buttonStyle("#dc3545", "#fff")}
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    onClick={() => handleAddRoutineClick(client)}
-                    style={buttonStyle("#28a745", "#fff")}
-                  >
-                    Agregar Rutina
-                  </button>
-                  <button
-                    onClick={() => handleViewRoutinesClick(client)}
-                    style={buttonStyle("#17a2b8", "#fff")}
-                  >
-                    Ver Rutinas
-                  </button>
-                  <button
-                    onClick={() => handleAddDietClick(client)}
-                    style={buttonStyle("#ffcc00", "#000")}
-                  >
-                    Agregar Dieta
-                  </button>
-                  <button
-                    onClick={() => handleViewDietsClick(client)}
-                    style={buttonStyle("#6c757d", "#fff")}
-                  >
-                    Ver Dietas
-                  </button>
-                  <button
-                    onClick={() => handleAddProgressClick(client)}
-                    style={buttonStyle("#ffc107", "#000")}
-                  >
-                    Agregar Progreso
-                  </button>
-                  <button
-                    onClick={() => handleViewProgressListClick(client)}
-                    style={buttonStyle("#6610f2", "#fff")}
-                  >
-                    Ver Progresos
-                  </button>
+                  <div style={ClientListStyles.buttonGroup}>
+                    <button
+                      onClick={() => handleEditClick(client)}
+                      style={buttonStyle("#007bff", "#fff")}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(client.clienteId)}
+                      style={buttonStyle("#dc3545", "#fff")}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style={ClientListStyles.actionButtonContainer}>
+                  <div style={ClientListStyles.buttonGroup}>
+                    <button
+                      onClick={() => handleAddProgressClick(client)}
+                      style={buttonStyle("#ffcc00", "#000")}
+                    >
+                      Agregar
+                    </button>
+                    <button
+                      onClick={() => handleViewProgressListClick(client)}
+                      style={buttonStyle("#6c757d", "#fff")}
+                    >
+                      Mostrar
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style={ClientListStyles.actionButtonContainer}>
+                  <div style={ClientListStyles.buttonGroup}>
+                    <button
+                      onClick={() => handleAddRoutineClick(client)}
+                      style={buttonStyle("#ffcc00", "#000")}
+                    >
+                      Agregar
+                    </button>
+                    <button
+                      onClick={() => handleViewRoutinesClick(client)}
+                      style={buttonStyle("#6c757d", "#fff")}
+                    >
+                      Mostrar
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style={ClientListStyles.actionButtonContainer}>
+                  <div style={ClientListStyles.buttonGroup}>
+                    <button
+                      onClick={() => handleAddDietClick(client)}
+                      style={buttonStyle("#ffcc00", "#000")}
+                    >
+                      Agregar
+                    </button>
+                    <button
+                      onClick={() => handleViewDietsClick(client)}
+                      style={buttonStyle("#6c757d", "#fff")}
+                    >
+                      Mostrar
+                    </button>
+                  </div>
                 </div>
               </td>
             </tr>

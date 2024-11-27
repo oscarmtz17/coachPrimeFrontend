@@ -62,8 +62,26 @@ const ClientListStyles: Record<string, CSSProperties> = {
   },
   actionButtonContainer: {
     display: "flex",
-    flexWrap: "wrap",
     justifyContent: "center",
+    flexWrap: "wrap", // Permite que se muevan a la siguiente fila si es necesario
+    gap: "0.5rem", // Espaciado entre botones
+  },
+  buttonGroup: {
+    display: "flex",
+    gap: "0.5rem", // Espaciado horizontal entre botones
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  button: {
+    flex: "1",
+    padding: "0.5rem",
+    fontSize: "0.9rem",
+    borderRadius: "5px",
+    cursor: "pointer",
+    textAlign: "center",
+    border: "none",
+    maxWidth: "150px", // Máximo ancho para todos los botones
+    minWidth: "100px", // Mínimo ancho para mantener uniformidad
   },
 };
 
