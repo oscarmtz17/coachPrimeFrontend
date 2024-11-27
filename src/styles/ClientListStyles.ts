@@ -4,8 +4,16 @@ import { CSSProperties } from "react";
 const ClientListStyles: Record<string, CSSProperties> = {
   container: {
     padding: "2rem",
+    paddingRight: "2rem",
     backgroundColor: "#333",
     color: "#fff",
+    borderRadius: "10px",
+    width: "100%",
+    maxWidth: "2000px", // Limita el ancho máximo en pantallas grandes
+    boxSizing: "border-box",
+    overflowX: "auto", // Solo permite scroll horizontal si es necesario
+    overflowY: "hidden", // Evita scroll vertical
+    minHeight: "100%", // Asegura que ocupe toda la altura disponible
   },
   title: {
     color: "#ffcc00",
@@ -50,25 +58,34 @@ const ClientListStyles: Record<string, CSSProperties> = {
   },
   table: {
     width: "100%",
+    minWidth: "1000px", // Garantiza que no se comprima en pantallas pequeñas
     borderCollapse: "collapse",
+    backgroundColor: "#444",
+    borderRadius: "10px",
+    overflow: "hidden",
   },
   tableHeader: {
-    backgroundColor: "#333",
+    backgroundColor: "#222",
     color: "#ffcc00",
+    textAlign: "center",
   },
   tableRow: {
     borderBottom: "1px solid #555",
     textAlign: "center",
   },
+  tableCell: {
+    padding: "10px 15px",
+    textAlign: "center",
+  },
   actionButtonContainer: {
     display: "flex",
-    justifyContent: "center",
-    flexWrap: "wrap", // Permite que se muevan a la siguiente fila si es necesario
-    gap: "0.5rem", // Espaciado entre botones
+    justifyContent: "space-between",
+    gap: "0.5rem",
+    flexWrap: "wrap",
   },
   buttonGroup: {
     display: "flex",
-    gap: "0.5rem", // Espaciado horizontal entre botones
+    gap: "0.5rem",
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -80,8 +97,8 @@ const ClientListStyles: Record<string, CSSProperties> = {
     cursor: "pointer",
     textAlign: "center",
     border: "none",
-    maxWidth: "150px", // Máximo ancho para todos los botones
-    minWidth: "100px", // Mínimo ancho para mantener uniformidad
+    maxWidth: "150px",
+    minWidth: "100px",
   },
 };
 

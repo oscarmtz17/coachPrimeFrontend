@@ -17,10 +17,14 @@ const Dashboard: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "space-between", // Asegura que el contenido se distribuya
         minHeight: "100vh",
+        width: "100%", // Ocupa todo el ancho disponible
         padding: "2rem",
         backgroundColor: "#222",
         color: "#fff",
+        boxSizing: "border-box", // Incluye padding dentro de las dimensiones
+        overflow: "hidden", // Previene scroll innecesario
       }}
     >
       <header
@@ -67,7 +71,7 @@ const Dashboard: React.FC = () => {
         </button>
       </header>
 
-      <main style={{ width: "100%", maxWidth: "1200px" }}>
+      <main style={{ width: "100%", maxWidth: "2000px", flex: "1" }}>
         <ClientList />
       </main>
     </div>

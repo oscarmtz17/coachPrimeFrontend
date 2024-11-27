@@ -64,13 +64,13 @@ const ClientList: React.FC = () => {
         <tbody>
           {filteredClients.map((client) => (
             <tr key={client.clienteId} style={ClientListStyles.tableRow}>
-              <td>{client.clienteId}</td>
-              <td>{client.nombre}</td>
-              <td>{client.apellido}</td>
-              <td>{client.email}</td>
-              <td>{client.telefono}</td>
-              <td>{client.sexo}</td>
-              <td>
+              <td style={ClientListStyles.tableCell}>{client.clienteId}</td>
+              <td style={ClientListStyles.tableCell}>{client.nombre}</td>
+              <td style={ClientListStyles.tableCell}>{client.apellido}</td>
+              <td style={ClientListStyles.tableCell}>{client.email}</td>
+              <td style={ClientListStyles.tableCell}>{client.telefono}</td>
+              <td style={ClientListStyles.tableCell}>{client.sexo}</td>
+              <td style={ClientListStyles.tableCell}>
                 <div style={ClientListStyles.actionButtonContainer}>
                   <div style={ClientListStyles.buttonGroup}>
                     <button
@@ -88,7 +88,7 @@ const ClientList: React.FC = () => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td style={ClientListStyles.tableCell}>
                 <div style={ClientListStyles.actionButtonContainer}>
                   <div style={ClientListStyles.buttonGroup}>
                     <button
@@ -106,7 +106,7 @@ const ClientList: React.FC = () => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td style={ClientListStyles.tableCell}>
                 <div style={ClientListStyles.actionButtonContainer}>
                   <div style={ClientListStyles.buttonGroup}>
                     <button
@@ -124,7 +124,7 @@ const ClientList: React.FC = () => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td style={ClientListStyles.tableCell}>
                 <div style={ClientListStyles.actionButtonContainer}>
                   <div style={ClientListStyles.buttonGroup}>
                     <button
