@@ -58,7 +58,8 @@ const UserProfileStyles: Record<string, CSSProperties> = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    width: "500px",
+    margin: "0 auto",
     height: "100%",
   },
   passwordContainer: {
@@ -157,6 +158,9 @@ const UserProfileStyles: Record<string, CSSProperties> = {
     color: "#ffcc00",
     marginTop: "-0.5rem",
     marginBottom: "1.5rem",
+  },
+  error: {
+    color: "red",
   },
 };
 
