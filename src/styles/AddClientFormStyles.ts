@@ -8,7 +8,7 @@ const AddClientFormStyles: Record<string, CSSProperties> = {
     padding: "2rem",
     borderRadius: "8px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-    maxWidth: "400px",
+    width: "500px",
     margin: "0 auto",
   },
   title: {
