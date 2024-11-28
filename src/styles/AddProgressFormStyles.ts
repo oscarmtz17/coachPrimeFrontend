@@ -9,7 +9,7 @@ const AddProgressFormStyles = {
     padding: "1.5rem",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-    maxWidth: "500px",
+    width: "500px",
     margin: "0 auto",
   } as CSSProperties,
 
