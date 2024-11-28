@@ -84,6 +84,7 @@ const ImageSelectorStyles = {
 
   modalContent: {
     textAlign: "center",
+    width: "500px",
   } as CSSProperties,
 
   modalTitle: {
