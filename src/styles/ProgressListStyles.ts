@@ -7,7 +7,7 @@ const ProgressListStyles = {
     padding: "2rem",
     borderRadius: "8px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-    maxWidth: "800px",
+    maxWidth: "1800px",
     margin: "0 auto",
   } as CSSProperties,
 
