@@ -9,6 +9,9 @@ const AddRoutineFormStyles: Record<string, CSSProperties> = {
     padding: "1.5rem",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    width: "1000px",
+    minWidth: "300px",
+    margin: "0 auto",
   },
   title: {
     color: "#ffcc00",
