@@ -7,6 +7,8 @@ const EditClientFormStyles: Record<string, CSSProperties> = {
     color: "#fff",
     padding: "1.5rem",
     borderRadius: "8px",
+    width: "500px",
+    margin: "0 auto",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
   },
   title: {
