@@ -49,7 +49,7 @@ const ClientList: React.FC = () => {
       <table style={ClientListStyles.table}>
         <thead>
           <tr style={ClientListStyles.tableHeader}>
-            <th>ID</th>
+            <th style={{ display: "none" }}>ID</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Email</th>
@@ -64,7 +64,7 @@ const ClientList: React.FC = () => {
         <tbody>
           {filteredClients.map((client) => (
             <tr key={client.clienteId} style={ClientListStyles.tableRow}>
-              <td style={ClientListStyles.tableCell}>{client.clienteId}</td>
+              <td style={{ display: "none" }}>{client.clienteId}</td>
               <td style={ClientListStyles.tableCell}>{client.nombre}</td>
               <td style={ClientListStyles.tableCell}>{client.apellido}</td>
               <td style={ClientListStyles.tableCell}>{client.email}</td>

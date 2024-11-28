@@ -31,7 +31,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
         <table style={RoutineListStyles.table}>
           <thead>
             <tr style={RoutineListStyles.headerRow}>
-              <th>ID</th>
+              <th style={{ display: "none" }}>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Fecha Inicio</th>
@@ -41,7 +41,7 @@ const RoutineList: React.FC<RoutineListProps> = ({ clienteId, onClose }) => {
           <tbody>
             {routines.map((routine) => (
               <tr key={routine.rutinaId} style={RoutineListStyles.row}>
-                <td style={RoutineListStyles.cell}>{routine.rutinaId}</td>
+                <td style={{ display: "none" }}>{routine.rutinaId}</td>
                 <td style={RoutineListStyles.cell}>{routine.nombre}</td>
                 <td style={RoutineListStyles.cell}>{routine.descripcion}</td>
                 <td style={RoutineListStyles.cell}>

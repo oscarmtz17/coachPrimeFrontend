@@ -34,7 +34,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
         <table style={DietListStyles.table}>
           <thead>
             <tr style={DietListStyles.headerRow}>
-              <th>ID</th>
+              <th style={{ display: "none" }}>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Fecha de Inicio</th>
@@ -44,7 +44,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
           <tbody>
             {diets.map((diet) => (
               <tr key={diet.dietaId} style={DietListStyles.row}>
-                <td style={DietListStyles.cell}>{diet.dietaId}</td>
+                <td style={{ display: "none" }}>{diet.dietaId}</td>
                 <td style={DietListStyles.cell}>{diet.nombre}</td>
                 <td style={DietListStyles.cell}>{diet.descripcion}</td>
                 <td style={DietListStyles.cell}>
