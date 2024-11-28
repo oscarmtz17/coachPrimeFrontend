@@ -21,8 +21,8 @@ const ModalStyles = {
     color: "#fff",
     padding: "2rem",
     borderRadius: "8px",
-    maxWidth: "800px",
-    width: "100%",
+    maxWidth: "90%", // Mantén un límite para pantallas pequeñas
+    width: "fit-content", // Ajusta el ancho al contenido hijo
     maxHeight: "80vh",
     overflow: "hidden",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
