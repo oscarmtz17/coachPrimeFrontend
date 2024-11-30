@@ -90,7 +90,7 @@ const Register: React.FC = () => {
           padding: "2rem",
           borderRadius: "10px",
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "1000px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
           textAlign: "center",
         }}
@@ -118,7 +118,7 @@ const Register: React.FC = () => {
               onChange={(e) => setNombre(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -142,7 +142,7 @@ const Register: React.FC = () => {
               onChange={(e) => setApellido(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -166,7 +166,7 @@ const Register: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -191,7 +191,7 @@ const Register: React.FC = () => {
               onBlur={handlePasswordBlur}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -205,7 +205,7 @@ const Register: React.FC = () => {
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",
-                right: "0px",
+                right: "150px",
                 top: "70%",
                 transform: "translateY(-50%)",
                 background: "none",
@@ -233,7 +233,7 @@ const Register: React.FC = () => {
               onBlur={handleConfirmPasswordBlur}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -247,7 +247,7 @@ const Register: React.FC = () => {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               style={{
                 position: "absolute",
-                right: "0px",
+                right: "150px",
                 top: "70%",
                 transform: "translateY(-50%)",
                 background: "none",
@@ -284,7 +284,7 @@ const Register: React.FC = () => {
               }}
               required
               style={{
-                width: "100%",
+                width: "75%",
                 padding: "0.75rem",
                 borderRadius: "5px",
                 border: "1px solid #bbb",
@@ -294,6 +294,104 @@ const Register: React.FC = () => {
               }}
             />
           </div>
+          <div
+            style={{
+              width: "80%",
+              margin: "2rem auto",
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "0.5,0,0,0.5rem",
+            }}
+          >
+            {[
+              {
+                nombre: "Básico",
+                precio: "$0",
+                descripcion: "Hasta 5 clientes",
+                id: "basic",
+              },
+              {
+                nombre: "Intermedio",
+                precio: "$299",
+                descripcion: "Hasta 30 clientes",
+                id: "intermediate",
+              },
+              {
+                nombre: "Premium",
+                precio: "$499",
+                descripcion: "Clientes ilimitados",
+                id: "premium",
+              },
+              {
+                nombre: "Premium Anual",
+                precio: "$4990",
+                descripcion: "Clientes ilimitados \nPago anual",
+                id: "anual",
+              },
+            ].map((plan) => (
+              <div
+                key={plan.id}
+                style={{
+                  border: "1px solid yellow",
+                  borderRadius: "8px",
+                  width: "23%",
+                  padding: "1rem",
+                  backgroundColor: "#333",
+                  color: "#fff",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <h3 style={{ color: "#ffcc00", fontSize: "1.5rem" }}>
+                  {plan.nombre}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "1.25rem",
+                    fontWeight: "bold",
+                    marginBottom: 0,
+                  }}
+                >
+                  {plan.precio}
+                </p>
+                <p
+                  style={{
+                    fontSize: "1.25rem",
+                    fontWeight: "bold",
+                    marginTop: 0,
+                  }}
+                >
+                  mxn/mes
+                </p>
+                <p
+                  style={{
+                    fontSize: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  {plan.descripcion}
+                </p>
+                <button
+                  style={{
+                    padding: "0.5rem 1rem",
+                    backgroundColor: "#ffcc00",
+                    color: "#000",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontSize: "1rem",
+                  }}
+                  //onClick={() => handlePlanSelection(plan.id)} // Implementa esta función
+                >
+                  Seleccionar
+                </button>
+              </div>
+            ))}
+          </div>
+
           {error && (
             <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
           )}
