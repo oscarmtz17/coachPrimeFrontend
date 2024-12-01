@@ -89,7 +89,6 @@ const RegisterStyles: Record<string, CSSProperties> = {
     borderRadius: "5px",
     fontSize: "1.2rem",
     cursor: "pointer",
-    // maxWidth: "50%",
     alignSelf: "center",
   },
   error: {

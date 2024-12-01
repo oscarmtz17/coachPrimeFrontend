@@ -85,6 +85,26 @@ const Register: React.FC = () => {
             />
           </div>
 
+          {/* Teléfono */}
+          <div style={RegisterStyles.inputGroup}>
+            <label htmlFor="phone" style={RegisterStyles.label}>
+              Teléfono
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              inputMode="numeric"
+              maxLength={10}
+              value={phone}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                setPhone(numericValue);
+              }}
+              required
+              style={RegisterStyles.input}
+            />
+          </div>
+
           {/* Contraseña */}
           <div style={RegisterStyles.inputGroup}>
             <label htmlFor="password" style={RegisterStyles.label}>
@@ -136,27 +156,8 @@ const Register: React.FC = () => {
             )}
           </div>
 
-          {/* Teléfono */}
-          <div style={RegisterStyles.inputGroup}>
-            <label htmlFor="phone" style={RegisterStyles.label}>
-              Teléfono
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              inputMode="numeric"
-              maxLength={10}
-              value={phone}
-              onChange={(e) => {
-                const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                setPhone(numericValue);
-              }}
-              required
-              style={RegisterStyles.input}
-            />
-          </div>
-
           {/* Planes */}
+          <h2 style={{ marginBottom: 0 }}>Selecciona Tu Plan</h2>
           <div style={RegisterStyles.planContainer}>
             {[
               {
