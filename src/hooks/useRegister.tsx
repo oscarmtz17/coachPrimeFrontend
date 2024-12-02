@@ -16,7 +16,7 @@ export const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState("basic");
+  const [selectedPlan, setSelectedPlan] = useState<number>(1);
 
   const navigate = useNavigate();
 
@@ -34,24 +34,46 @@ export const useRegister = () => {
     }
 
     setLoading(true);
+
     try {
-      await api.post("/auth/register", {
+      const requestData = {
         nombre,
         apellido,
         email,
         password,
         phone,
-      });
+        planId: selectedPlan, // Plan seleccionado enviado al backend
+      };
 
-      setSuccessMessage("Registro exitoso. Redirigiendo al login...");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+      const response = await api.post("/auth/register", requestData);
+
+      if (selectedPlan === 1) {
+        // Plan Básico: redirigir al login
+        setSuccessMessage("Registro exitoso. Redirigiendo al login...");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else {
+        // Planes de pago: redirigir a Stripe Checkout
+        const { checkoutUrl } = response.data;
+        if (checkoutUrl) {
+          setSuccessMessage("Redirigiendo al pago...");
+          setTimeout(() => {
+            window.location.href = checkoutUrl;
+          }, 2000);
+        } else {
+          throw new Error(
+            "No se pudo obtener la URL de Stripe Checkout. Por favor, inténtalo nuevamente."
+          );
+        }
+      }
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data || "Ocurrió un error al registrarse.");
       } else {
-        setError("Error al registrarse. Por favor intenta de nuevo.");
+        setError(
+          "Error al registrarse o al iniciar el proceso de pago. Por favor intenta de nuevo."
+        );
       }
       console.error(err);
     } finally {
@@ -75,7 +97,7 @@ export const useRegister = () => {
     }
   };
 
-  const handlePlanSelection = (planId: string) => {
+  const handlePlanSelection = (planId: number) => {
     setSelectedPlan(planId);
   };
 

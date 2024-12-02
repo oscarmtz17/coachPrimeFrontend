@@ -164,25 +164,25 @@ const Register: React.FC = () => {
                 nombre: "Básico",
                 precio: "$0",
                 descripcion: "Hasta 5 clientes",
-                id: "basic",
+                id: 1,
               },
               {
                 nombre: "Intermedio",
                 precio: "$299",
                 descripcion: "Hasta 30 clientes",
-                id: "intermediate",
+                id: 2,
               },
               {
                 nombre: "Premium",
                 precio: "$499",
                 descripcion: "Clientes ilimitados",
-                id: "premium",
+                id: 3,
               },
               {
                 nombre: "Premium Anual",
                 precio: "$4990",
                 descripcion: "Clientes ilimitados \nPago anual",
-                id: "anual",
+                id: 4,
               },
             ].map((plan) => (
               <div
@@ -228,7 +228,7 @@ const Register: React.FC = () => {
         </form>
 
         <p
-          onClick={() => navigate("/login")}
+          // onClick={() => navigate("/login")}
           style={{
             marginTop: "1rem",
             color: "#bbb",
