@@ -103,7 +103,7 @@ export const useAddDietForm = (
 
   const handleAddComida = () => {
     const newComida: Comida = {
-      nombre: "",
+      nombre: `Comida ${comidas.length + 1}`, // Asigna el nombre automáticamente
       orden: comidas.length + 1,
       hora: "",
       alimentos: [],
