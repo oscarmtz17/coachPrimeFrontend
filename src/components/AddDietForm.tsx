@@ -2,6 +2,7 @@
 import React from "react";
 import { useAddDietForm } from "../hooks/useAddDietForm";
 import AddDietFormStyles from "../styles/AddDietFormStyles";
+import NumberInput from "../theme/NumberInput";
 
 interface AddDietFormProps {
   clienteId: number;
@@ -30,6 +31,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
     handleAddAlimento,
     handleRemoveAlimento,
     handleAlimentoChange,
+    handleCantidadChange,
   } = useAddDietForm(clienteId, onDietAdded, onClose);
 
   return (
@@ -122,20 +124,13 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
                   )
                 }
               />
-              <input
-                style={AddDietFormStyles.input}
-                placeholder="Cantidad"
-                min={0}
-                type="number"
+              <NumberInput
                 value={alimento.cantidad}
-                onChange={(e) =>
-                  handleAlimentoChange(
-                    comidaIndex,
-                    alimentoIndex,
-                    "cantidad",
-                    Number(e.target.value)
-                  )
+                onChange={(newValue) =>
+                  handleCantidadChange(newValue, comidaIndex, alimentoIndex)
                 }
+                placeholder="Cantidad"
+                style={AddDietFormStyles.input}
               />
               <input
                 style={AddDietFormStyles.input}

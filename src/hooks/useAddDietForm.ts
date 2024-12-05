@@ -19,7 +19,7 @@ interface Comida {
 
 interface Alimento {
   nombre: string;
-  cantidad: number;
+  cantidad: string | number; // Puede ser string durante la edición
   unidad: string;
 }
 
@@ -165,6 +165,21 @@ export const useAddDietForm = (
     setError(null); // Limpiar cualquier mensaje de error anterior
   };
 
+  const handleCantidadChange = (
+    value: string,
+    comidaIndex: number,
+    alimentoIndex: number
+  ) => {
+    const updatedComidas = [...comidas];
+
+    // Actualizar el estado directamente con la cadena
+    updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
+      ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
+      cantidad: value, // Almacenar temporalmente como cadena
+    };
+    setComidas(updatedComidas);
+  };
+
   return {
     nombre,
     setNombre,
@@ -181,5 +196,6 @@ export const useAddDietForm = (
     handleAddAlimento,
     handleRemoveAlimento,
     handleAlimentoChange,
+    handleCantidadChange,
   };
 };
