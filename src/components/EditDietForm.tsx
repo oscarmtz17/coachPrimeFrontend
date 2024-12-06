@@ -2,6 +2,7 @@
 import React from "react";
 import { useEditDietForm } from "../hooks/useEditDietForm";
 import EditDietFormStyles from "../styles/EditDietFormStyles";
+import NumberInput from "../theme/NumberInput";
 
 interface EditDietFormProps {
   clienteId: number;
@@ -32,6 +33,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
     handleAddAlimento,
     handleRemoveAlimento,
     handleAlimentoChange,
+    handleCantidadChange,
   } = useEditDietForm(clienteId, dietaId, onDietUpdated, onClose);
 
   return (
@@ -105,20 +107,13 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
                   )
                 }
               />
-              <input
-                style={EditDietFormStyles.input}
-                placeholder="Cantidad"
-                type="number"
-                min="0" // Evita que se ingresen valores negativos desde la interfaz
+              <NumberInput
                 value={alimento.cantidad}
-                onChange={(e) =>
-                  handleAlimentoChange(
-                    comidaIndex,
-                    alimentoIndex,
-                    "cantidad",
-                    Number(e.target.value)
-                  )
+                onChange={(newValue) =>
+                  handleCantidadChange(newValue, comidaIndex, alimentoIndex)
                 }
+                placeholder="Cantidad"
+                style={EditDietFormStyles.input}
               />
               <input
                 style={EditDietFormStyles.input}

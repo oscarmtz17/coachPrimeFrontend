@@ -4,7 +4,7 @@ import api from "../services/api";
 
 interface Alimento {
   nombre: string;
-  cantidad: number;
+  cantidad: string | number;
   unidad: string;
 }
 
@@ -186,6 +186,21 @@ export const useEditDietForm = (
     setComidas(updatedComidas);
   };
 
+  const handleCantidadChange = (
+    value: string,
+    comidaIndex: number,
+    alimentoIndex: number
+  ) => {
+    const updatedComidas = [...comidas];
+
+    // Actualizar el estado directamente con la cadena
+    updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
+      ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
+      cantidad: value, // Almacenar temporalmente como cadena
+    };
+    setComidas(updatedComidas);
+  };
+
   return {
     nombre,
     setNombre,
@@ -202,5 +217,6 @@ export const useEditDietForm = (
     handleAddAlimento,
     handleRemoveAlimento,
     handleAlimentoChange,
+    handleCantidadChange,
   };
 };
