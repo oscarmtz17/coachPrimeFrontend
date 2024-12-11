@@ -1,4 +1,3 @@
-// src/hooks/useAddDietForm.ts
 import { useState } from "react";
 import api from "../services/api";
 
@@ -19,7 +18,7 @@ interface Comida {
 
 interface Alimento {
   nombre: string;
-  cantidad: string | number; // Puede ser string durante la edición
+  cantidad: string | number;
   unidad: string;
 }
 
@@ -33,10 +32,12 @@ export const useAddDietForm = (
   const [notas, setNotas] = useState("");
   const [comidas, setComidas] = useState<Comida[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+  const markAsDirty = () => setIsFormDirty(true);
 
   const handleAddDiet = async () => {
     try {
-      // Validar que el nombre de la dieta no esté vacío y no exceda 100 caracteres
       if (!nombre.trim()) {
         setError("El nombre de la dieta es obligatorio.");
         return;
@@ -88,30 +89,42 @@ export const useAddDietForm = (
       setDescripcion("");
       setNotas("");
       setComidas([]);
-      setError(null); // Limpiar cualquier error previo
+      setError(null);
+      setIsFormDirty(false);
       onClose();
     } catch (err: any) {
-      // Manejar error del backend
-      if (err.response?.data?.error) {
-        setError(err.response.data.error); // Mostrar el mensaje específico del backend
-      } else {
-        setError("Error al agregar la dieta"); // Mensaje genérico en caso de error inesperado
+      setError(err.response?.data?.error || "Error al agregar la dieta");
+    }
+  };
+
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
       }
-      console.error(err);
+    } else {
+      onClose();
     }
   };
 
   const handleAddComida = () => {
-    const newComida: Comida = {
-      nombre: `Comida ${comidas.length + 1}`, // Asigna el nombre automáticamente
-      orden: comidas.length + 1,
-      hora: "",
-      alimentos: [],
-    };
-    setComidas([...comidas, newComida]);
+    markAsDirty();
+    setComidas([
+      ...comidas,
+      {
+        nombre: `Comida ${comidas.length + 1}`,
+        orden: comidas.length + 1,
+        hora: "",
+        alimentos: [],
+      },
+    ]);
   };
 
   const handleRemoveComida = (index: number) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas.splice(index, 1);
     setComidas(updatedComidas);
@@ -122,19 +135,25 @@ export const useAddDietForm = (
     field: keyof Comida,
     value: string
   ) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas[index] = { ...updatedComidas[index], [field]: value };
     setComidas(updatedComidas);
   };
 
   const handleAddAlimento = (comidaIndex: number) => {
-    const newAlimento: Alimento = { nombre: "", cantidad: 0, unidad: "" };
+    markAsDirty();
     const updatedComidas = [...comidas];
-    updatedComidas[comidaIndex].alimentos.push(newAlimento);
+    updatedComidas[comidaIndex].alimentos.push({
+      nombre: "",
+      cantidad: 0,
+      unidad: "",
+    });
     setComidas(updatedComidas);
   };
 
   const handleRemoveAlimento = (comidaIndex: number, alimentoIndex: number) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas[comidaIndex].alimentos.splice(alimentoIndex, 1);
     setComidas(updatedComidas);
@@ -146,6 +165,7 @@ export const useAddDietForm = (
     field: keyof Alimento,
     value: string | number
   ) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
 
     if (field === "cantidad") {
@@ -170,25 +190,33 @@ export const useAddDietForm = (
     comidaIndex: number,
     alimentoIndex: number
   ) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
-
-    // Actualizar el estado directamente con la cadena
     updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
       ...updatedComidas[comidaIndex].alimentos[alimentoIndex],
-      cantidad: value, // Almacenar temporalmente como cadena
+      cantidad: value,
     };
     setComidas(updatedComidas);
   };
 
   return {
     nombre,
-    setNombre,
     descripcion,
-    setDescripcion,
     notas,
-    setNotas,
     comidas,
     error,
+    setNombre: (value: string) => {
+      setNombre(value);
+      markAsDirty();
+    },
+    setDescripcion: (value: string) => {
+      setDescripcion(value);
+      markAsDirty();
+    },
+    setNotas: (value: string) => {
+      setNotas(value);
+      markAsDirty();
+    },
     handleAddDiet,
     handleAddComida,
     handleRemoveComida,
@@ -197,5 +225,6 @@ export const useAddDietForm = (
     handleRemoveAlimento,
     handleAlimentoChange,
     handleCantidadChange,
+    handleCloseWithConfirmation,
   };
 };

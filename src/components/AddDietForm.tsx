@@ -1,4 +1,3 @@
-// src/components/AddDietForm.tsx
 import React from "react";
 import { useAddDietForm } from "../hooks/useAddDietForm";
 import AddDietFormStyles from "../styles/AddDietFormStyles";
@@ -17,13 +16,13 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
 }) => {
   const {
     nombre,
-    setNombre,
     descripcion,
-    setDescripcion,
     notas,
-    setNotas,
     comidas,
     error,
+    setNombre,
+    setDescripcion,
+    setNotas,
     handleAddDiet,
     handleAddComida,
     handleRemoveComida,
@@ -32,6 +31,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
     handleRemoveAlimento,
     handleAlimentoChange,
     handleCantidadChange,
+    handleCloseWithConfirmation,
   } = useAddDietForm(clienteId, onDietAdded, onClose);
 
   return (
@@ -92,7 +92,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
           />
           <input
             style={AddDietFormStyles.inputTime}
-            type="time" // Cambiar el tipo a "time"
+            type="time"
             placeholder="Hora"
             value={comida.hora}
             onChange={(e) =>
@@ -134,7 +134,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               />
               <input
                 style={AddDietFormStyles.input}
-                placeholder="Unidad(Kg, gr, tazas, etc.)"
+                placeholder="Unidad (Kg, gr, tazas, etc.)"
                 maxLength={10}
                 value={alimento.unidad}
                 onChange={(e) =>
@@ -161,7 +161,10 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
         <button onClick={handleAddDiet} style={AddDietFormStyles.saveButton}>
           Guardar Dieta
         </button>
-        <button onClick={onClose} style={AddDietFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation}
+          style={AddDietFormStyles.cancelButton}
+        >
           Cancelar
         </button>
       </div>
