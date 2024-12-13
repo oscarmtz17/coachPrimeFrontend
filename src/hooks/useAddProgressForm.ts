@@ -20,6 +20,9 @@ const useAddProgressForm = (
   const [error, setError] = useState<string | null>(null);
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+  const markAsDirty = () => setIsFormDirty(true);
 
   const handleSaveProgress = async () => {
     if (isSubmitting) return; // Prevenir múltiples envíos
@@ -88,6 +91,7 @@ const useAddProgressForm = (
     const selectedFiles = event.target.files;
     if (selectedFiles && selectedFiles.length + images.length <= 10) {
       setImages([...images, ...Array.from(selectedFiles)]);
+      markAsDirty();
     } else {
       setError("Puedes subir un máximo de 10 imágenes.");
     }
@@ -95,14 +99,33 @@ const useAddProgressForm = (
 
   const handleRemoveImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
+    markAsDirty();
   };
 
   const handlePositiveInputChange =
-    (setter: React.Dispatch<React.SetStateAction<number>>) =>
+    (
+      setter:
+        | React.Dispatch<React.SetStateAction<number>>
+        | ((value: number) => void)
+    ) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = Math.max(1, Number(event.target.value));
       setter(value);
+      markAsDirty();
     };
+
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
 
   return {
     pesoKg,
@@ -121,18 +144,49 @@ const useAddProgressForm = (
     isSubmitting,
     handleImageUpload,
     handleRemoveImage,
-    setPesoKg,
-    setEstaturaCm,
-    setNivelActividad,
-    setFactorActividad,
-    setCinturaCm,
-    setCaderaCm,
-    setPechoCm,
-    setBrazoCm,
-    setPiernaCm,
-    setNotas,
+    setPesoKg: (value: number) => {
+      setPesoKg(value);
+      markAsDirty();
+    },
+    setEstaturaCm: (value: number) => {
+      setEstaturaCm(value);
+      markAsDirty();
+    },
+    setNivelActividad: (value: string) => {
+      setNivelActividad(value);
+      markAsDirty();
+    },
+    setFactorActividad: (value: number) => {
+      setFactorActividad(value);
+      markAsDirty();
+    },
+    setCinturaCm: (value: number) => {
+      setCinturaCm(value);
+      markAsDirty();
+    },
+    setCaderaCm: (value: number) => {
+      setCaderaCm(value);
+      markAsDirty();
+    },
+    setPechoCm: (value: number) => {
+      setPechoCm(value);
+      markAsDirty();
+    },
+    setBrazoCm: (value: number) => {
+      setBrazoCm(value);
+      markAsDirty();
+    },
+    setPiernaCm: (value: number) => {
+      setPiernaCm(value);
+      markAsDirty();
+    },
+    setNotas: (value: string) => {
+      setNotas(value);
+      markAsDirty();
+    },
     handleSaveProgress,
     handlePositiveInputChange,
+    handleCloseWithConfirmation,
   };
 };
 

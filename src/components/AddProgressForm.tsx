@@ -43,6 +43,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
     setNotas,
     handleSaveProgress,
     handlePositiveInputChange,
+    handleCloseWithConfirmation,
   } = useAddProgressForm(clienteId, onProgressAdded, onClose);
 
   return (
@@ -144,7 +145,10 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         >
           {isSubmitting ? "Guardando..." : "Guardar Progreso"}
         </button>
-        <button onClick={onClose} style={AddProgressFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation}
+          style={AddProgressFormStyles.cancelButton}
+        >
           Cancelar
         </button>
       </div>
