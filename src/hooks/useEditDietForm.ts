@@ -26,6 +26,22 @@ export const useEditDietForm = (
   const [comidas, setComidas] = useState<Comida[]>([]);
   const [notas, setNotas] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+  const markAsDirty = () => setIsFormDirty(true);
+
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
 
   useEffect(() => {
     const fetchDietDetails = async () => {
@@ -126,6 +142,7 @@ export const useEditDietForm = (
     field: keyof Comida,
     value: any
   ) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas[index] = { ...updatedComidas[index], [field]: value };
     setComidas(updatedComidas);
@@ -137,6 +154,7 @@ export const useEditDietForm = (
     field: keyof Alimento,
     value: string | number
   ) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
 
     if (field === "cantidad") {
@@ -157,6 +175,7 @@ export const useEditDietForm = (
   };
 
   const handleAddComida = () => {
+    markAsDirty();
     setComidas([
       ...comidas,
       { nombre: "", orden: comidas.length + 1, hora: "", alimentos: [] },
@@ -169,6 +188,7 @@ export const useEditDietForm = (
   };
 
   const handleAddAlimento = (comidaIndex: number) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas[comidaIndex].alimentos.push({
       nombre: "",
@@ -179,6 +199,7 @@ export const useEditDietForm = (
   };
 
   const handleRemoveAlimento = (comidaIndex: number, alimentoIndex: number) => {
+    markAsDirty();
     const updatedComidas = [...comidas];
     updatedComidas[comidaIndex].alimentos = updatedComidas[
       comidaIndex
@@ -192,6 +213,7 @@ export const useEditDietForm = (
     alimentoIndex: number
   ) => {
     const updatedComidas = [...comidas];
+    markAsDirty();
 
     // Actualizar el estado directamente con la cadena
     updatedComidas[comidaIndex].alimentos[alimentoIndex] = {
@@ -203,11 +225,20 @@ export const useEditDietForm = (
 
   return {
     nombre,
-    setNombre,
+    setNombre: (value: string) => {
+      setNombre(value);
+      markAsDirty();
+    },
     descripcion,
-    setDescripcion,
+    setDescripcion: (value: string) => {
+      setDescripcion(value);
+      markAsDirty();
+    },
     notas,
-    setNotas,
+    setNotas: (value: string) => {
+      setNotas(value);
+      markAsDirty();
+    },
     comidas,
     error,
     handleUpdateDiet,
@@ -218,5 +249,6 @@ export const useEditDietForm = (
     handleRemoveAlimento,
     handleAlimentoChange,
     handleCantidadChange,
+    handleCloseWithConfirmation,
   };
 };

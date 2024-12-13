@@ -34,6 +34,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
     handleRemoveAlimento,
     handleAlimentoChange,
     handleCantidadChange,
+    handleCloseWithConfirmation, // Nueva función para manejar cierre con confirmación
   } = useEditDietForm(clienteId, dietaId, onDietUpdated, onClose);
 
   return (
@@ -155,7 +156,10 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
         >
           Guardar Cambios
         </button>
-        <button onClick={onClose} style={EditDietFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation} // Usamos la nueva función aquí
+          style={EditDietFormStyles.cancelButton}
+        >
           Cerrar
         </button>
       </div>
