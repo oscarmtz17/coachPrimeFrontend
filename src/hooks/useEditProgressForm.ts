@@ -27,6 +27,24 @@ const useEditProgressForm = (
   const [newImages, setNewImages] = useState<File[]>([]); // Nuevas imágenes a subir
   const [error, setError] = useState<string | null>(null);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]); // Lista de imágenes a eliminar
+  const [isFormDirty, setIsFormDirty] = useState(false); // Estado para cambios
+
+  // Marcar el formulario como "modificado"
+  const markAsDirty = () => setIsFormDirty(true);
+
+  // Manejar el cierre con confirmación
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
 
   // Cargar imágenes existentes al iniciar
   useEffect(() => {
@@ -66,6 +84,7 @@ const useEditProgressForm = (
         ? Math.max(1, parsedValue)
         : value,
     }));
+    markAsDirty();
   };
 
   const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,6 +98,7 @@ const useEditProgressForm = (
     }
 
     setNewImages((prev) => [...prev, ...Array.from(files)]);
+    markAsDirty();
     setError(null); // Limpiar error en caso de éxito
   };
 
@@ -94,6 +114,7 @@ const useEditProgressForm = (
     } else {
       setNewImages((prev) => prev.filter((_, i) => i !== index));
     }
+    markAsDirty();
   };
 
   const handleSave = async () => {
@@ -157,6 +178,7 @@ const useEditProgressForm = (
     handleAddImages,
     handleRemoveImage,
     handleSave,
+    handleCloseWithConfirmation,
   };
 };
 

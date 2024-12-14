@@ -39,6 +39,7 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
     handleSave,
     handleAddImages,
     handleRemoveImage,
+    handleCloseWithConfirmation,
   } = useEditProgressForm(clienteId, progress, onSave, onClose);
 
   return (
@@ -139,7 +140,10 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
         <button onClick={handleSave} style={EditProgressFormStyles.saveButton}>
           Guardar Cambios
         </button>
-        <button onClick={onClose} style={EditProgressFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation} // Cambiado para usar la lógica de confirmación
+          style={EditProgressFormStyles.cancelButton}
+        >
           Cancelar
         </button>
       </div>
