@@ -46,6 +46,22 @@ export const useAddRoutineForm = (
     groupIndex: number;
     exerciseIndex: number;
   } | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false); // Nuevo estado
+
+  const markAsDirty = () => setIsFormDirty(true); // Marca el formulario como modificado
+
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
 
   const handleAddRoutine = async () => {
     if (
@@ -124,18 +140,21 @@ export const useAddRoutineForm = (
   const handleAddDay = () => {
     const newDay: DiaEntrenamiento = { diaSemana: "", agrupaciones: [] };
     setDiasEntrenamiento([...diasEntrenamiento, newDay]);
+    markAsDirty();
   };
 
   const handleRemoveDay = (dayIndex: number) => {
     const updatedDays = [...diasEntrenamiento];
     updatedDays.splice(dayIndex, 1);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleDayChange = (index: number, diaSemana: string) => {
     const updatedDays = [...diasEntrenamiento];
     updatedDays[index].diaSemana = diaSemana;
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleAddGroup = (index: number, tipo: string) => {
@@ -147,6 +166,7 @@ export const useAddRoutineForm = (
     const updatedDays = [...diasEntrenamiento];
     updatedDays[index].agrupaciones.push(newGroup);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const createInitialExercises = (tipo: string): Ejercicio[] => {
@@ -202,6 +222,7 @@ export const useAddRoutineForm = (
       [field]: updatedValue,
     };
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleAddExerciseToCircuit = (dayIndex: number, groupIndex: number) => {
@@ -233,9 +254,15 @@ export const useAddRoutineForm = (
 
   return {
     nombre,
-    setNombre,
+    setNombre: (value: string) => {
+      setNombre(value);
+      markAsDirty();
+    },
     descripcion,
-    setDescripcion,
+    setDescripcion: (value: string) => {
+      setDescripcion(value);
+      markAsDirty();
+    },
     diasEntrenamiento,
     setDiasEntrenamiento,
     error,
@@ -254,5 +281,6 @@ export const useAddRoutineForm = (
     handleAddExerciseToCircuit,
     handleAddRoutine,
     handleRemoveExerciseFromCircuit,
+    handleCloseWithConfirmation,
   };
 };

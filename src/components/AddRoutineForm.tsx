@@ -39,6 +39,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
     handleSelectImage,
     handleRemoveImage,
     handleRemoveExerciseFromCircuit,
+    handleCloseWithConfirmation,
   } = useAddRoutineForm(clienteId, usuarioId, onRoutineAdded, onClose);
 
   return (
@@ -245,7 +246,10 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
         >
           Guardar Rutina
         </button>
-        <button onClick={onClose} style={AddRoutineFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation}
+          style={AddRoutineFormStyles.cancelButton}
+        >
           Cancelar
         </button>
       </div>
