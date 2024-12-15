@@ -117,7 +117,7 @@ export const useAddDietForm = (
       {
         nombre: `Comida ${comidas.length + 1}`,
         orden: comidas.length + 1,
-        hora: "",
+        hora: "00:00",
         alimentos: [],
       },
     ]);
