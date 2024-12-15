@@ -38,6 +38,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
     handleSelectImage,
     handleRemoveImage,
     handleRemoveExerciseFromCircuit,
+    handleCloseWithConfirmation,
   } = useEditRoutineForm(rutinaId, onRoutineUpdated, onClose);
 
   return (
@@ -251,7 +252,10 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
         >
           Guardar Cambios
         </button>
-        <button onClick={onClose} style={EditRoutineFormStyles.cancelButton}>
+        <button
+          onClick={handleCloseWithConfirmation} // Llama a la nueva lógica
+          style={EditRoutineFormStyles.cancelButton}
+        >
           Cerrar
         </button>
       </div>

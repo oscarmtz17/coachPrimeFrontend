@@ -39,7 +39,23 @@ export const useEditRoutineForm = (
     groupIndex: number;
     exerciseIndex: number;
   } | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const navigate = useNavigate();
+
+  const markAsDirty = () => setIsFormDirty(true);
+
+  const handleCloseWithConfirmation = () => {
+    if (isFormDirty) {
+      const confirmClose = window.confirm(
+        "Si cierras el formulario sin guardar, se perderán los cambios. ¿Deseas continuar?"
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
 
   useEffect(() => {
     const fetchRoutineDetails = async () => {
@@ -82,17 +98,20 @@ export const useEditRoutineForm = (
     const updatedDays = [...diasEntrenamiento];
     updatedDays[index].diaSemana = diaSemana;
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleAddDay = () => {
     const newDay: DiaEntrenamiento = { diaSemana: "", agrupaciones: [] };
     setDiasEntrenamiento([...diasEntrenamiento, newDay]);
+    markAsDirty();
   };
 
   const handleRemoveDay = (dayIndex: number) => {
     const updatedDays = [...diasEntrenamiento];
     updatedDays.splice(dayIndex, 1);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleAddGroup = (dayIndex: number, tipo: string) => {
@@ -103,12 +122,14 @@ export const useEditRoutineForm = (
     const updatedDays = [...diasEntrenamiento];
     updatedDays[dayIndex].agrupaciones.push(newGroup);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleRemoveGroup = (dayIndex: number, groupIndex: number) => {
     const updatedDays = [...diasEntrenamiento];
     updatedDays[dayIndex].agrupaciones.splice(groupIndex, 1);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const createInitialExercises = (tipo: string): Ejercicio[] => {
@@ -150,6 +171,7 @@ export const useEditRoutineForm = (
     const updatedDays = [...diasEntrenamiento];
     updatedDays[dayIndex].agrupaciones[groupIndex].ejercicios.push(newExercise);
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleRemoveExercise = (
@@ -163,6 +185,7 @@ export const useEditRoutineForm = (
       1
     );
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleExerciseChange = (
@@ -179,6 +202,7 @@ export const useEditRoutineForm = (
       [field]: value,
     };
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleUpdateRoutine = async () => {
@@ -247,6 +271,7 @@ export const useEditRoutineForm = (
       setDiasEntrenamiento(updatedDays);
     }
     closeImageSelector();
+    markAsDirty();
   };
 
   const handleRemoveImage = (
@@ -262,6 +287,7 @@ export const useEditRoutineForm = (
       exerciseIndex
     ].imagenUrl = ""; // Quitar imagen de la vista
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   const handleRemoveExerciseFromCircuit = (
@@ -275,13 +301,20 @@ export const useEditRoutineForm = (
       1
     );
     setDiasEntrenamiento(updatedDays);
+    markAsDirty();
   };
 
   return {
     nombre,
-    setNombre,
+    setNombre: (value: string) => {
+      setNombre(value);
+      markAsDirty();
+    },
     descripcion,
-    setDescripcion,
+    setDescripcion: (value: string) => {
+      setDescripcion(value);
+      markAsDirty();
+    },
     diasEntrenamiento,
     error,
     successMessage,
@@ -300,5 +333,6 @@ export const useEditRoutineForm = (
     closeImageSelector,
     handleSelectImage,
     handleRemoveImage,
+    handleCloseWithConfirmation,
   };
 };
