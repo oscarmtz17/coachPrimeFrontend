@@ -1,5 +1,5 @@
 // src/hooks/useClientList.ts
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "../services/api";
 import EditClientForm from "../components/EditClientForm";
 import AddClientForm from "../components/AddClientForm";
@@ -21,8 +21,14 @@ interface Client {
   usuarioId: number;
 }
 
+interface Suscripcion {
+  planId: number;
+  // ... otras propiedades de la suscripción
+}
+
 export const useClientList = () => {
   const [clients, setClients] = useState<Client[]>([]);
+  const [suscripcion, setSuscripcion] = useState<Suscripcion | null>(null);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -41,9 +47,32 @@ export const useClientList = () => {
     }
   };
 
+  const fetchSuscripcion = async () => {
+    try {
+      const response = await api.get("/Suscripcion/actual");
+      setSuscripcion(response.data);
+    } catch (err) {
+      console.error("Error al obtener la suscripción:", err);
+      // Opcional: manejar el error, quizás el usuario no tiene suscripción
+      // y se le debe asignar el plan básico por defecto en la UI.
+      setSuscripcion({ planId: 1 }); // Fallback a plan básico si falla
+    }
+  };
+
   useEffect(() => {
     fetchClients();
+    fetchSuscripcion();
   }, []);
+
+  const clientCount = useMemo(() => clients.length, [clients]);
+
+  const canAddClient = useMemo(() => {
+    if (!suscripcion) return false; // No permitir si no se ha cargado la suscripción
+    if (suscripcion.planId === 1 && clientCount >= 3) {
+      return false; // Límite para el plan básico
+    }
+    return true; // Permitir en otros casos
+  }, [clientCount, suscripcion]);
 
   useEffect(() => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -164,6 +193,8 @@ export const useClientList = () => {
     setSearchTerm,
     isModalOpen,
     modalContent,
+    canAddClient,
+    clientCount,
     handleAddClick,
     handleEditClick,
     handleDeleteClick,

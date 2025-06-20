@@ -12,6 +12,8 @@ const ClientList: React.FC = () => {
     setSearchTerm,
     isModalOpen,
     modalContent,
+    canAddClient,
+    clientCount,
     handleAddClick,
     handleEditClick,
     handleDeleteClick,
@@ -26,7 +28,7 @@ const ClientList: React.FC = () => {
 
   return (
     <div style={ClientListStyles.container}>
-      <h2 style={ClientListStyles.title}>Lista de Clientes</h2>
+      <h2 style={ClientListStyles.title}>Lista de Clientes ({clientCount})</h2>
       {error && <p style={ClientListStyles.error}>{error}</p>}
       <input
         type="text"
@@ -36,7 +38,15 @@ const ClientList: React.FC = () => {
         style={ClientListStyles.searchInput}
       />
       <div style={ClientListStyles.buttonContainer}>
-        <button onClick={handleAddClick} style={ClientListStyles.addButton}>
+        <button
+          onClick={handleAddClick}
+          style={{
+            ...ClientListStyles.addButton,
+            backgroundColor: canAddClient ? "#28a745" : "#6c757d",
+            cursor: canAddClient ? "pointer" : "not-allowed",
+          }}
+          disabled={!canAddClient}
+        >
           Agregar Cliente
         </button>
         <button
@@ -46,6 +56,15 @@ const ClientList: React.FC = () => {
           Refrescar Lista
         </button>
       </div>
+      {!canAddClient && (
+        <p style={{ color: "yellow", textAlign: "center", marginTop: "1rem" }}>
+          Has alcanzado el límite de clientes para tu plan.{" "}
+          <a href="/profile" style={{ color: "#00aaff" }}>
+            Actualiza tu plan
+          </a>{" "}
+          para agregar más.
+        </p>
+      )}
       <table style={ClientListStyles.table}>
         <thead>
           <tr style={ClientListStyles.tableHeader}>

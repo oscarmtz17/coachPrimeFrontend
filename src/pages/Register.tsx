@@ -163,14 +163,8 @@ const Register: React.FC = () => {
               {
                 nombre: "Básico",
                 precio: "$0",
-                descripcion: "Hasta 5 clientes",
+                descripcion: "Hasta 3 clientes",
                 id: 1,
-              },
-              {
-                nombre: "Intermedio",
-                precio: "$299",
-                descripcion: "Hasta 30 clientes",
-                id: 2,
               },
               {
                 nombre: "Premium",
