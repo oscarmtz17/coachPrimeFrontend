@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../components/Modal";
 import { useUserProfile } from "../hooks/useUserProfile";
 import UserProfileStyles from "../styles/UserProfileStyles";
@@ -21,6 +21,9 @@ const UserProfile: React.FC = () => {
     showCurrentPassword,
     showNewPassword,
     showConfirmNewPassword,
+    suscripcion,
+    handleManageSubscription,
+    handleUpgradePlan,
     handleNombreChange,
     handleApellidoChange,
     handleTelefonoChange,
@@ -40,6 +43,9 @@ const UserProfile: React.FC = () => {
     setShowNewPassword,
     validatePasswords,
   } = useUserProfile();
+
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
 
   return (
     <div style={UserProfileStyles.container}>
@@ -135,6 +141,34 @@ const UserProfile: React.FC = () => {
         </button>
       </div>
 
+      {/* Sección de Suscripción */}
+      <div style={UserProfileStyles.subscriptionSection}>
+        <h3 style={UserProfileStyles.title}>Tu Plan Actual</h3>
+        {suscripcion ? (
+          <>
+            <p style={UserProfileStyles.planName}>
+              Plan:{" "}
+              {suscripcion.planId === 1
+                ? "Básico"
+                : suscripcion.planId === 3
+                ? "Premium"
+                : suscripcion.planId === 4
+                ? "Premium Anual"
+                : "Desconocido"}
+            </p>
+            {suscripcion.planId === 1 && (
+              <button
+                onClick={() => setIsUpgradeModalOpen(true)}
+                style={UserProfileStyles.manageButton}
+              >
+                Mejorar Plan
+              </button>
+            )}
+          </>
+        ) : (
+          <p>Cargando información del plan...</p>
+        )}
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div style={UserProfileStyles.modalContainer}>
           <h3 style={UserProfileStyles.modalTitle}>Cambiar Contraseña</h3>
@@ -216,6 +250,43 @@ const UserProfile: React.FC = () => {
             <button onClick={closeModal} style={UserProfileStyles.cancelButton}>
               Cancelar
             </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      >
+        <div style={{ padding: "2rem", textAlign: "center" }}>
+          <h3 style={UserProfileStyles.title}>Elige tu nuevo plan</h3>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "2rem",
+              marginTop: "1rem",
+            }}
+          >
+            {[
+              { id: 3, nombre: "Premium", precio: "$499/mes" },
+              { id: 4, nombre: "Premium Anual", precio: "$4990/año" },
+            ].map((plan) => (
+              <div
+                key={plan.id}
+                style={{
+                  ...UserProfileStyles.planCard,
+                  ...(hoveredPlan === plan.id
+                    ? UserProfileStyles.planCardHover
+                    : {}),
+                }}
+                onClick={() => handleUpgradePlan(plan.id)}
+                onMouseEnter={() => setHoveredPlan(plan.id)}
+                onMouseLeave={() => setHoveredPlan(null)}
+              >
+                <h4>{plan.nombre}</h4>
+                <p>{plan.precio}</p>
+              </div>
+            ))}
           </div>
         </div>
       </Modal>

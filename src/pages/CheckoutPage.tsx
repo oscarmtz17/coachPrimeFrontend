@@ -1,13 +1,25 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../services/api";
 
 const CheckoutPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const planId = searchParams.get("planId");
+
   const handleCheckout = async () => {
+    if (!planId) {
+      alert("No se especificó un plan. Por favor, selecciona un plan primero.");
+      return;
+    }
+
     try {
-      const { data } = await api.post("/Stripe/create-checkout-session");
+      const { data } = await api.post("/Stripe/create-checkout-session", {
+        planId: parseInt(planId),
+      });
       window.location.href = data.url; // Redirige al checkout de Stripe
     } catch (error) {
       console.error("Error al iniciar el checkout:", error);
+      alert("Error al iniciar el checkout. Por favor, intenta de nuevo.");
     }
   };
 
@@ -25,9 +37,16 @@ const CheckoutPage: React.FC = () => {
           cursor: "pointer",
         }}
         onClick={handleCheckout}
+        disabled={!planId}
       >
         Suscribirse
       </button>
+      {!planId && (
+        <p style={{ color: "red", marginTop: "10px" }}>
+          Error: No se especificó un plan. Por favor, selecciona un plan
+          primero.
+        </p>
+      )}
     </div>
   );
 };

@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 
+interface Suscripcion {
+  planId: number;
+  estadoSuscripcionId: number;
+  plan: {
+    nombre: string;
+  };
+}
+
 export const useUserProfile = () => {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -20,6 +28,7 @@ export const useUserProfile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [suscripcion, setSuscripcion] = useState<Suscripcion | null>(null);
   const userId = localStorage.getItem("userId");
 
   // Fetch user data
@@ -43,8 +52,26 @@ export const useUserProfile = () => {
     }
   };
 
+  const fetchSuscripcion = async () => {
+    try {
+      const response = await api.get("/Suscripcion/actual");
+      setSuscripcion(response.data);
+    } catch (error) {
+      console.error("Error al obtener la suscripción del usuario:", error);
+      // Si no se encuentra una suscripción, se asume que el usuario tiene el plan Básico.
+      setSuscripcion({
+        planId: 1,
+        estadoSuscripcionId: 0, // Estado que representa "No suscrito"
+        plan: {
+          nombre: "Básico",
+        },
+      });
+    }
+  };
+
   useEffect(() => {
     fetchUserData();
+    fetchSuscripcion();
   }, [userId]);
 
   // Fetch user logo
@@ -159,6 +186,35 @@ export const useUserProfile = () => {
     }
   };
 
+  const handleUpgradePlan = async (planId: number) => {
+    try {
+      const response = await api.post(
+        "/stripe/create-checkout-session-for-upgrade",
+        { planId }
+      );
+      const { url } = response.data;
+      window.location.href = url;
+    } catch (error) {
+      console.error("Error al crear la sesión de checkout:", error);
+      alert(
+        "No se pudo iniciar el proceso de mejora de plan. Inténtelo de nuevo."
+      );
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    try {
+      const response = await api.post("/stripe/create-portal-session");
+      const { url } = response.data;
+      window.location.href = url;
+    } catch (error) {
+      console.error("Error al crear la sesión del portal de Stripe:", error);
+      alert(
+        "No se pudo abrir el portal de gestión de suscripciones. Inténtelo de nuevo."
+      );
+    }
+  };
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -241,6 +297,9 @@ export const useUserProfile = () => {
     showCurrentPassword,
     showNewPassword,
     showConfirmNewPassword,
+    suscripcion,
+    handleManageSubscription,
+    handleUpgradePlan,
     handleNombreChange,
     handleApellidoChange,
     handleTelefonoChange,

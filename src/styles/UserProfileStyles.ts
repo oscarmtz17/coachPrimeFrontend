@@ -162,6 +162,41 @@ const UserProfileStyles: Record<string, CSSProperties> = {
   error: {
     color: "red",
   },
+  subscriptionSection: {
+    width: "100%",
+    maxWidth: "500px",
+    marginTop: "2rem",
+    padding: "1.5rem",
+    border: "1px solid #ffcc00",
+    borderRadius: "8px",
+    backgroundColor: "#2a2a2a",
+  },
+  planName: {
+    fontSize: "1.2rem",
+    color: "#fff",
+    marginBottom: "1rem",
+  },
+  manageButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "0.75rem 1.5rem",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    width: "100%",
+    fontSize: "1rem",
+  },
+  planCard: {
+    padding: "1rem",
+    border: "1px solid #ffcc00",
+    borderRadius: "8px",
+    cursor: "pointer",
+    width: "150px",
+    transition: "transform 0.2s",
+  },
+  planCardHover: {
+    transform: "scale(1.05)",
+  },
 };
 
 export default UserProfileStyles;
