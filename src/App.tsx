@@ -17,7 +17,6 @@ import ViewDiet from "./components/ViewDiet";
 import EditDietFormWrapper from "./components/EditDietFormWrapper";
 import EditProgressFormWrapper from "./components/EditProgressFormWrapper";
 import UserProfile from "./pages/UserProfile";
-import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
 
@@ -38,7 +37,6 @@ const App: React.FC = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/cancel" element={<CancelPage />} />
           {/* Rutas protegidas */}
