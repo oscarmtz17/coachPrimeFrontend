@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/api";
 
+const PASSWORD_REQUIREMENTS_MSG =
+  "La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:\n" +
+  "- Tenga al menos 8 caracteres.\n" +
+  "- Contenga al menos una letra mayúscula.\n" +
+  "- Contenga al menos una letra minúscula.\n" +
+  "- Contenga al menos un número.\n" +
+  "- Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).";
+
 const ResetPassword: React.FC = () => {
   const { token } = useParams();
   const decodedToken = decodeURIComponent(token || ""); // Decodificar token
@@ -21,14 +29,7 @@ const ResetPassword: React.FC = () => {
 
   const handlePasswordBlur = () => {
     if (!validatePassword(password)) {
-      setPasswordError(
-        `La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:
-        - Tenga al menos 8 caracteres.
-        - Contenga al menos una letra mayúscula.
-        - Contenga al menos una letra minúscula.
-        - Contenga al menos un número.
-        - Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).`
-      );
+      setPasswordError(PASSWORD_REQUIREMENTS_MSG);
     } else if (confirmPassword && password !== confirmPassword) {
       setPasswordError("Las contraseñas no coinciden.");
     } else {
@@ -47,14 +48,7 @@ const ResetPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validatePassword(password)) {
-      setPasswordError(
-        `La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:
-        - Tenga al menos 8 caracteres.
-        - Contenga al menos una letra mayúscula.
-        - Contenga al menos una letra minúscula.
-        - Contenga al menos un número.
-        - Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).`
-      );
+      setPasswordError(PASSWORD_REQUIREMENTS_MSG);
       return;
     }
 
@@ -76,40 +70,16 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#222",
-        color: "#fff",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          padding: "2rem",
-          borderRadius: "10px",
-          width: "100%",
-          maxWidth: "400px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{ marginBottom: "1rem", fontSize: "1.8rem", color: "#ffcc00" }}
-        >
+    <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
+      <div className="bg-black bg-opacity-80 p-8 rounded-xl w-full max-w-sm shadow-lg text-center">
+        <h2 className="mb-6 text-3xl font-bold text-primary">
           Restablecer Contraseña
         </h2>
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div style={{ marginBottom: "1rem", position: "relative" }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="relative">
             <label
               htmlFor="password"
-              style={{ display: "block", marginBottom: "0.5rem" }}
+              className="block mb-2 text-left text-sm font-medium text-gray-300"
             >
               Nueva Contraseña
             </label>
@@ -120,38 +90,20 @@ const ResetPassword: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={handlePasswordBlur}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "5px",
-                border: "1px solid #bbb",
-                outline: "none",
-                backgroundColor: "#333",
-                color: "#fff",
-              }}
+              className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary pr-20"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "70%",
-                transform: "translateY(-50%)",
-                background: "none",
-                border: "none",
-                color: "#bbb",
-                cursor: "pointer",
-                fontSize: "0.9rem",
-              }}
+              className="absolute right-2 top-9 text-gray-400 text-sm font-semibold focus:outline-none hover:text-primary"
             >
               {showPassword ? "Ocultar" : "Mostrar"}
             </button>
           </div>
-          <div style={{ marginBottom: "1rem", position: "relative" }}>
+          <div className="relative">
             <label
               htmlFor="confirmPassword"
-              style={{ display: "block", marginBottom: "0.5rem" }}
+              className="block mb-2 text-left text-sm font-medium text-gray-300"
             >
               Confirmar Contraseña
             </label>
@@ -162,56 +114,30 @@ const ResetPassword: React.FC = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={handleConfirmPasswordBlur}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "5px",
-                border: "1px solid #bbb",
-                outline: "none",
-                backgroundColor: "#333",
-                color: "#fff",
-              }}
+              className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary pr-20"
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "70%",
-                transform: "translateY(-50%)",
-                background: "none",
-                border: "none",
-                color: "#bbb",
-                cursor: "pointer",
-                fontSize: "0.9rem",
-              }}
+              className="absolute right-2 top-9 text-gray-400 text-sm font-semibold focus:outline-none hover:text-primary"
             >
               {showConfirmPassword ? "Ocultar" : "Mostrar"}
             </button>
           </div>
-          <div>
-            {passwordError && (
-              <small style={{ color: "red", fontSize: "0.9rem" }}>
-                {passwordError}
-              </small>
-            )}
-          </div>
-          {message && (
-            <p style={{ marginBottom: "1rem", color: "#bbb" }}>{message}</p>
+          {passwordError && (
+            <small className="text-red-500 text-xs whitespace-pre-line">
+              {passwordError}
+            </small>
           )}
+          {message && <p className="mb-2 text-gray-400">{message}</p>}
           <button
             type="submit"
             disabled={loading}
-            style={{
-              backgroundColor: loading ? "#bbb" : "#ffcc00",
-              color: "#000",
-              padding: "0.75rem",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "1.2rem",
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
+            className={`bg-primary text-black p-3 rounded-md text-lg font-semibold cursor-pointer transition-colors border-none mt-2 ${
+              loading
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
+            }`}
           >
             {loading ? "Cargando..." : "Restablecer"}
           </button>
