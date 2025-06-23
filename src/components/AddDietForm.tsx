@@ -1,6 +1,5 @@
 import React from "react";
 import { useAddDietForm } from "../hooks/useAddDietForm";
-import AddDietFormStyles from "../styles/AddDietFormStyles";
 import NumberInput from "../theme/NumberInput";
 
 interface AddDietFormProps {
@@ -35,55 +34,72 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
   } = useAddDietForm(clienteId, onDietAdded, onClose);
 
   return (
-    <div style={AddDietFormStyles.formContainer}>
-      <h3 style={AddDietFormStyles.title}>Agregar Nueva Dieta</h3>
-      {error && <p style={AddDietFormStyles.error}>{error}</p>}
+    <div className="w-full max-w-3xl mx-auto bg-black bg-opacity-90 p-8 rounded-xl shadow-lg">
+      <h3 className="text-2xl font-bold text-primary mb-6 text-center">
+        Agregar Nueva Dieta
+      </h3>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-      <div style={AddDietFormStyles.inputContainer}>
-        <label style={AddDietFormStyles.label}>Nombre de la Dieta:</label>
-        <input
-          style={AddDietFormStyles.input}
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          maxLength={70}
-        />
-      </div>
-      <div style={AddDietFormStyles.inputContainer}>
-        <label style={AddDietFormStyles.label}>Descripción:</label>
-        <textarea
-          style={AddDietFormStyles.textarea}
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
-      </div>
-      <div style={AddDietFormStyles.inputContainer}>
-        <label style={AddDietFormStyles.label}>Notas:</label>
-        <textarea
-          style={AddDietFormStyles.textarea}
-          value={notas}
-          onChange={(e) => setNotas(e.target.value)}
-        />
+      <div className="flex flex-col gap-4 mb-4">
+        <div className="flex flex-col gap-2">
+          <label className="text-primary font-semibold">
+            Nombre de la Dieta:
+          </label>
+          <input
+            className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            maxLength={70}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-primary font-semibold">Descripción:</label>
+          <textarea
+            className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary resize-vertical min-h-[60px]"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-primary font-semibold">Notas:</label>
+          <textarea
+            className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary resize-vertical min-h-[40px]"
+            value={notas}
+            onChange={(e) => setNotas(e.target.value)}
+          />
+        </div>
       </div>
 
-      <button onClick={handleAddComida} style={AddDietFormStyles.addButton}>
+      <button
+        onClick={handleAddComida}
+        className="mb-6 bg-primary text-black py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
+      >
         Agregar Comida
       </button>
 
       {comidas.map((comida, comidaIndex) => (
-        <div key={comidaIndex} style={AddDietFormStyles.dayContainer}>
-          <h4 style={AddDietFormStyles.subtitle}>Comida {comidaIndex + 1}</h4>
+        <div key={comidaIndex} className="mb-8 p-4 rounded-lg bg-dark-gray">
+          <h4 className="text-lg font-bold text-primary mb-2">
+            Comida {comidaIndex + 1}
+          </h4>
 
-          <div style={AddDietFormStyles.buttonWrapper}>
+          <div className="flex gap-2 mb-2">
             <button
               onClick={() => handleAddAlimento(comidaIndex)}
-              style={AddDietFormStyles.addButton}
+              className="bg-primary text-black py-1 px-4 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
               Agregar Alimento
+            </button>
+            <button
+              onClick={() => handleRemoveComida(comidaIndex)}
+              className="bg-danger text-white py-1 px-4 rounded-md font-semibold cursor-pointer transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+            >
+              Quitar Comida
             </button>
           </div>
 
           <input
-            style={AddDietFormStyles.input}
+            className="w-full p-2 rounded-md border border-border-gray bg-secondary text-white mb-2 focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="Nombre de la comida"
             value={comida.nombre}
             onChange={(e) =>
@@ -91,7 +107,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
             }
           />
           <input
-            style={AddDietFormStyles.inputTime}
+            className="w-full p-2 rounded-md border border-border-gray bg-secondary text-white mb-2 focus:outline-none focus:ring-2 focus:ring-primary"
             type="time"
             placeholder="Hora"
             value={comida.hora}
@@ -99,20 +115,14 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               handleComidaChange(comidaIndex, "hora", e.target.value)
             }
           />
-          <button
-            onClick={() => handleRemoveComida(comidaIndex)}
-            style={AddDietFormStyles.removeButton}
-          >
-            Quitar Comida
-          </button>
 
           {comida.alimentos.map((alimento, alimentoIndex) => (
             <div
               key={alimentoIndex}
-              style={AddDietFormStyles.alimentoContainer}
+              className="grid grid-cols-1 md:grid-cols-4 gap-2 items-stretch mb-2 bg-black bg-opacity-60 p-2 rounded-md"
             >
               <input
-                style={AddDietFormStyles.input}
+                className="flex-1 p-2 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Nombre del alimento"
                 value={alimento.nombre}
                 onChange={(e) =>
@@ -130,10 +140,19 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
                   handleCantidadChange(newValue, comidaIndex, alimentoIndex)
                 }
                 placeholder="Cantidad"
-                style={AddDietFormStyles.input}
+                style={{
+                  flex: 1,
+                  padding: "0.5rem",
+                  borderRadius: "0.375rem",
+                  border: "1px solid var(--border-gray)",
+                  backgroundColor: "var(--secondary)",
+                  color: "white",
+                  textAlign: "center",
+                  height: "100%",
+                }}
               />
               <input
-                style={AddDietFormStyles.input}
+                className="flex-1 p-2 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Unidad (Kg, gr, tazas, etc.)"
                 maxLength={10}
                 value={alimento.unidad}
@@ -148,7 +167,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
               />
               <button
                 onClick={() => handleRemoveAlimento(comidaIndex, alimentoIndex)}
-                style={AddDietFormStyles.removeButton}
+                className="bg-danger text-white py-1 px-3 rounded-md font-semibold cursor-pointer transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 h-full"
               >
                 Quitar Alimento
               </button>
@@ -157,13 +176,16 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
         </div>
       ))}
 
-      <div style={AddDietFormStyles.buttonContainer}>
-        <button onClick={handleAddDiet} style={AddDietFormStyles.saveButton}>
+      <div className="flex justify-between gap-4 mt-8">
+        <button
+          onClick={handleAddDiet}
+          className="flex-1 bg-primary text-black py-3 px-6 rounded-md text-base font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
+        >
           Guardar Dieta
         </button>
         <button
           onClick={handleCloseWithConfirmation}
-          style={AddDietFormStyles.cancelButton}
+          className="flex-1 bg-danger text-white py-3 px-6 rounded-md text-base font-semibold cursor-pointer transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
           Cancelar
         </button>
