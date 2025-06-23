@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
-import background from "../assets/homeBackground.webp";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -9,19 +8,8 @@ const Home: React.FC = () => {
 
   return (
     <div
-      style={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        backgroundImage: `url(${background})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        color: "#fff",
-        textAlign: "center",
-      }}
+      className="relative flex flex-col items-center justify-center min-h-screen bg-cover bg-center text-white text-center"
+      style={{ backgroundImage: "url('/homeBackground.webp')" }}
     >
       {/* Superposición oscura para mejorar el contraste */}
       <div
@@ -40,103 +28,55 @@ const Home: React.FC = () => {
       <img
         src={logo}
         alt="CoachPrime Logo"
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          width: "120px",
-          cursor: "pointer",
-          zIndex: 2,
-        }}
+        className="absolute top-5 left-5 w-28 cursor-pointer z-20"
         onClick={() => navigate("/")}
       />
 
-      {/* Contenido principal con estilo y sombra de texto */}
+      {/* Contenido principal */}
       <h1
-        style={{
-          fontSize: "clamp(2rem, 5vw, 3rem)",
-          fontWeight: "bold",
-          marginBottom: "1rem",
-          zIndex: 2,
-          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)", // Sombra en el texto
-        }}
+        className="z-20 font-bold mb-4 text-shadow-lg text-[clamp(2rem,5vw,3rem)]"
+        style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
       >
         Empower Your Clients
       </h1>
       <p
-        style={{
-          fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
-          marginBottom: "2rem",
-          zIndex: 2,
-          textShadow: "1px 1px 3px rgba(0, 0, 0, 0.7)", // Sombra en el texto
-        }}
+        className="z-20 mb-8 text-[clamp(1rem,2.5vw,1.2rem)] text-shadow-md"
+        style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.7)" }}
       >
         Tu plataforma para alcanzar tus objetivos de fitness y bienestar.
       </p>
 
-      {/* Botón "Get Started" con transición de desvanecimiento */}
+      {/* Botón "Get Started" */}
       <div
-        style={{
-          opacity: !showOptions ? 1 : 0,
-          transition: "opacity 0.5s ease",
-          zIndex: 2,
-        }}
+        className={`z-20 transition-opacity duration-500 ${
+          showOptions ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
       >
         <button
           onClick={() => setShowOptions(true)}
-          style={{
-            backgroundColor: "#ffcc00",
-            color: "#000",
-            padding: "1rem 2rem",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "1.2rem",
-            cursor: "pointer",
-            maxWidth: "90%",
-            width: "300px",
-          }}
+          className="bg-primary text-black py-4 px-8 rounded-md text-lg font-semibold cursor-pointer transition-colors border-none max-w-[90%] w-[300px] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
           Get Started
         </button>
       </div>
 
-      {/* Opciones "Iniciar sesión" y "Crear cuenta" con transición de desvanecimiento y desplazamiento */}
+      {/* Opciones "Iniciar sesión" y "Crear cuenta" */}
       <div
-        style={{
-          marginTop: "1.5rem",
-          zIndex: 2,
-          opacity: showOptions ? 1 : 0,
-          transform: showOptions ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 0.5s ease, transform 0.5s ease",
-          position: "absolute",
-          top: "60%",
-        }}
+        className={`z-20 absolute left-1/2 -translate-x-1/2 mt-6 transition-all duration-500 ${
+          showOptions
+            ? "opacity-100 translate-y-0 pointer-events-auto top-2/3"
+            : "opacity-0 translate-y-5 pointer-events-none top-2/3"
+        }`}
       >
         <button
           onClick={() => navigate("/login")}
-          style={{
-            backgroundColor: "#ffcc00",
-            color: "#000",
-            padding: "1rem 2rem",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "1.2rem",
-            cursor: "pointer",
-            marginBottom: "1rem",
-            maxWidth: "90%",
-            width: "300px",
-          }}
+          className="bg-primary text-black py-4 px-8 rounded-md text-lg font-semibold cursor-pointer transition-colors border-none mb-4 max-w-[90%] w-[300px] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
           Iniciar sesión
         </button>
         <p
           onClick={() => navigate("/register")}
-          style={{
-            color: "#fff",
-            fontSize: "0.9rem",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
+          className="text-white text-sm cursor-pointer underline hover:text-primary transition-colors"
         >
           Crear cuenta
         </p>
