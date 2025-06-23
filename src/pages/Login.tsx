@@ -23,40 +23,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#222", // Fondo oscuro para continuar con la paleta
-        color: "#fff",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          padding: "2rem",
-          borderRadius: "10px",
-          width: "100%",
-          maxWidth: "400px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{ marginBottom: "1rem", fontSize: "1.8rem", color: "#ffcc00" }}
-        >
-          Iniciar Sesión
-        </h2>
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div style={{ marginBottom: "1rem" }}>
+    <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
+      <div className="bg-black bg-opacity-80 p-8 rounded-xl w-full max-w-sm shadow-lg text-center">
+        <h2 className="mb-6 text-3xl font-bold text-primary">Iniciar Sesión</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
             <label
               htmlFor="email"
-              style={{ display: "block", marginBottom: "0.5rem" }}
+              className="block mb-2 text-left text-sm font-medium text-gray-300"
             >
               Email
             </label>
@@ -66,21 +40,13 @@ const Login: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "5px",
-                border: "1px solid #bbb",
-                outline: "none",
-                backgroundColor: "#333",
-                color: "#fff",
-              }}
+              className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div>
             <label
               htmlFor="password"
-              style={{ display: "block", marginBottom: "0.5rem" }}
+              className="block mb-2 text-left text-sm font-medium text-gray-300"
             >
               Contraseña
             </label>
@@ -90,56 +56,26 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "5px",
-                border: "1px solid #bbb",
-                outline: "none",
-                backgroundColor: "#333",
-                color: "#fff",
-              }}
+              className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
-          {error && (
-            <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            style={{
-              backgroundColor: "#ffcc00",
-              color: "#000",
-              padding: "0.75rem",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "1.2rem",
-              cursor: "pointer",
-            }}
+            className="bg-primary text-black p-3 mt-2 border-none rounded-md text-lg font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
           >
             Iniciar sesión
           </button>
         </form>
         <p
           onClick={() => navigate("/register")}
-          style={{
-            marginTop: "1rem",
-            color: "#bbb",
-            fontSize: "0.9rem",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
+          className="mt-6 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors"
         >
           Crear cuenta
         </p>
         <p
           onClick={() => navigate("/forgot-password")}
-          style={{
-            marginTop: "1rem",
-            color: "#bbb",
-            fontSize: "0.9rem",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
+          className="mt-4 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors"
         >
           Olvidé mi contraseña
         </p>
