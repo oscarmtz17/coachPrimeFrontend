@@ -2,7 +2,6 @@
 import React from "react";
 import Modal from "./Modal";
 import { useClientList } from "../hooks/useClientList";
-import ClientListStyles, { buttonStyle } from "../styles/ClientListStyles";
 
 const ClientList: React.FC = () => {
   const {
@@ -24,147 +23,150 @@ const ClientList: React.FC = () => {
     handleAddProgressClick,
     handleViewProgressListClick,
     closeModal,
+    fetchClients,
   } = useClientList();
 
   return (
-    <div style={ClientListStyles.container}>
-      <h2 style={ClientListStyles.title}>Lista de Clientes ({clientCount})</h2>
-      {error && <p style={ClientListStyles.error}>{error}</p>}
+    <div className="w-full max-w-7xl mx-auto bg-black bg-opacity-80 p-8 rounded-xl shadow-lg mt-8">
+      <h2 className="text-2xl font-bold text-primary mb-6 text-center">
+        Lista de Clientes ({clientCount})
+      </h2>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <input
         type="text"
         placeholder="Buscar por nombre, apellido, email o teléfono..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={ClientListStyles.searchInput}
+        className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white mb-6 focus:outline-none focus:ring-2 focus:ring-primary"
       />
-      <div style={ClientListStyles.buttonContainer}>
+      <div className="flex flex-wrap gap-4 mb-6 justify-center">
         <button
           onClick={handleAddClick}
-          style={{
-            ...ClientListStyles.addButton,
-            backgroundColor: canAddClient ? "#28a745" : "#6c757d",
-            cursor: canAddClient ? "pointer" : "not-allowed",
-          }}
           disabled={!canAddClient}
+          className={`py-2 px-6 rounded-md text-base font-semibold transition-colors border-none ${
+            canAddClient
+              ? "bg-success text-white cursor-pointer hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-dark"
+              : "bg-gray-500 text-white cursor-not-allowed"
+          }`}
         >
           Agregar Cliente
         </button>
         <button
-          onClick={useClientList().fetchClients}
-          style={ClientListStyles.refreshButton}
+          onClick={fetchClients}
+          className="py-2 px-6 rounded-md text-base font-semibold bg-info text-white cursor-pointer transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
           Refrescar Lista
         </button>
       </div>
       {!canAddClient && (
-        <p style={{ color: "yellow", textAlign: "center", marginTop: "1rem" }}>
+        <p className="text-yellow-400 text-center mt-4">
           Has alcanzado el límite de clientes para tu plan.{" "}
-          <a href="/profile" style={{ color: "#00aaff" }}>
+          <a
+            href="/profile"
+            className="text-info underline hover:text-primary transition-colors"
+          >
             Actualiza tu plan
           </a>{" "}
           para agregar más.
         </p>
       )}
-      <table style={ClientListStyles.table}>
-        <thead>
-          <tr style={ClientListStyles.tableHeader}>
-            <th style={{ display: "none" }}>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Sexo</th>
-            <th>Usuario</th>
-            <th>Progresos</th>
-            <th>Rutinas</th>
-            <th>Dietas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredClients.map((client) => (
-            <tr key={client.clienteId} style={ClientListStyles.tableRow}>
-              <td style={{ display: "none" }}>{client.clienteId}</td>
-              <td style={ClientListStyles.tableCell}>{client.nombre}</td>
-              <td style={ClientListStyles.tableCell}>{client.apellido}</td>
-              <td style={ClientListStyles.tableCell}>{client.email}</td>
-              <td style={ClientListStyles.tableCell}>{client.telefono}</td>
-              <td style={ClientListStyles.tableCell}>{client.sexo}</td>
-              <td style={ClientListStyles.tableCell}>
-                <div style={ClientListStyles.actionButtonContainer}>
-                  <div style={ClientListStyles.buttonGroup}>
+      <div className="overflow-x-auto mt-6">
+        <table className="min-w-full bg-dark text-white rounded-lg overflow-hidden">
+          <thead>
+            <tr className="bg-secondary text-primary">
+              <th className="hidden">ID</th>
+              <th className="py-3 px-4">Nombre</th>
+              <th className="py-3 px-4">Apellido</th>
+              <th className="py-3 px-4">Email</th>
+              <th className="py-3 px-4">Teléfono</th>
+              <th className="py-3 px-4">Sexo</th>
+              <th className="py-3 px-4">Usuario</th>
+              <th className="py-3 px-4">Progresos</th>
+              <th className="py-3 px-4">Rutinas</th>
+              <th className="py-3 px-4">Dietas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredClients.map((client) => (
+              <tr
+                key={client.clienteId}
+                className="border-b border-border-gray hover:bg-dark-gray transition-colors"
+              >
+                <td className="hidden">{client.clienteId}</td>
+                <td className="py-2 px-4">{client.nombre}</td>
+                <td className="py-2 px-4">{client.apellido}</td>
+                <td className="py-2 px-4">{client.email}</td>
+                <td className="py-2 px-4">{client.telefono}</td>
+                <td className="py-2 px-4">{client.sexo}</td>
+                <td className="py-2 px-4">
+                  <div className="flex gap-2 flex-wrap justify-center">
                     <button
                       onClick={() => handleEditClick(client)}
-                      style={buttonStyle("#007bff", "#fff")}
+                      className="bg-info text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
                       Editar
                     </button>
                     <button
                       onClick={() => handleDeleteClick(client.clienteId)}
-                      style={buttonStyle("#dc3545", "#fff")}
+                      className="bg-danger text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
                     >
                       Eliminar
                     </button>
                   </div>
-                </div>
-              </td>
-              <td style={ClientListStyles.tableCell}>
-                <div style={ClientListStyles.actionButtonContainer}>
-                  <div style={ClientListStyles.buttonGroup}>
+                </td>
+                <td className="py-2 px-4">
+                  <div className="flex gap-2 flex-wrap justify-center">
                     <button
                       onClick={() => handleAddProgressClick(client)}
-                      style={buttonStyle("#ffcc00", "#000")}
+                      className="bg-primary text-black py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     >
                       Agregar
                     </button>
                     <button
                       onClick={() => handleViewProgressListClick(client)}
-                      style={buttonStyle("#6c757d", "#fff")}
+                      className="bg-gray-500 text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     >
                       Mostrar
                     </button>
                   </div>
-                </div>
-              </td>
-              <td style={ClientListStyles.tableCell}>
-                <div style={ClientListStyles.actionButtonContainer}>
-                  <div style={ClientListStyles.buttonGroup}>
+                </td>
+                <td className="py-2 px-4">
+                  <div className="flex gap-2 flex-wrap justify-center">
                     <button
                       onClick={() => handleAddRoutineClick(client)}
-                      style={buttonStyle("#ffcc00", "#000")}
+                      className="bg-primary text-black py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     >
                       Agregar
                     </button>
                     <button
                       onClick={() => handleViewRoutinesClick(client)}
-                      style={buttonStyle("#6c757d", "#fff")}
+                      className="bg-gray-500 text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     >
                       Mostrar
                     </button>
                   </div>
-                </div>
-              </td>
-              <td style={ClientListStyles.tableCell}>
-                <div style={ClientListStyles.actionButtonContainer}>
-                  <div style={ClientListStyles.buttonGroup}>
+                </td>
+                <td className="py-2 px-4">
+                  <div className="flex gap-2 flex-wrap justify-center">
                     <button
                       onClick={() => handleAddDietClick(client)}
-                      style={buttonStyle("#ffcc00", "#000")}
+                      className="bg-primary text-black py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     >
                       Agregar
                     </button>
                     <button
                       onClick={() => handleViewDietsClick(client)}
-                      style={buttonStyle("#6c757d", "#fff")}
+                      className="bg-gray-500 text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     >
                       Mostrar
                     </button>
                   </div>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         {modalContent}
       </Modal>
