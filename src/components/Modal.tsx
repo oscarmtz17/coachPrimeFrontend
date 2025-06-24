@@ -1,6 +1,5 @@
 // src/components/Modal.tsx
 import React from "react";
-import modalStyles from "../styles/ModalStyles";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,12 +11,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={modalStyles.overlay}>
-      <div style={modalStyles.content}>
-        {/* <button onClick={onClose} style={modalStyles.closeButton}>
-          X
-        </button> */}
-        <div style={modalStyles.body}>{children}</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+      <div className="relative bg-dark p-6 rounded-xl shadow-2xl max-h-[90vh] w-full max-w-lg md:max-w-2xl overflow-y-auto">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 bg-danger text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          aria-label="Cerrar modal"
+        >
+          ×
+        </button>
+        <div className="mt-2">{children}</div>
       </div>
     </div>
   );
