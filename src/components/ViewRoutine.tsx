@@ -1,9 +1,6 @@
 // src/components/ViewRoutine.tsx
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ViewRoutineStyles, {
-  actionButtonStyle,
-} from "../styles/ViewRoutineStyles";
 import { useViewRoutine } from "../hooks/useViewRoutine";
 
 const ViewRoutine: React.FC = () => {
@@ -19,82 +16,93 @@ const ViewRoutine: React.FC = () => {
   } = useViewRoutine(rutinaId, navigate);
 
   return (
-    <div style={ViewRoutineStyles.background}>
-      <div style={ViewRoutineStyles.container}>
-        {error && <p style={ViewRoutineStyles.error}>{error}</p>}
+    <div className="bg-zinc-900 min-h-screen pt-8 flex justify-center items-center p-4 md:p-8">
+      <div className="bg-zinc-800 text-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {routine && (
           <>
-            <h3 style={ViewRoutineStyles.title}>{routine.nombre}</h3>
-            <p style={ViewRoutineStyles.description}>{routine.descripcion}</p>
-            <div style={ViewRoutineStyles.buttonContainer}>
+            <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
+              {routine.nombre}
+            </h3>
+            <p className="text-gray-300 text-center mb-4">
+              {routine.descripcion}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
               <button
                 onClick={handleDownloadPdf}
-                style={actionButtonStyle("#007bff")}
+                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
               >
                 Descargar PDF
               </button>
               <button
                 onClick={handleEditRoutine}
-                style={actionButtonStyle("#ffc107")}
+                className="bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition-colors"
               >
                 Editar Rutina
               </button>
               <button
                 onClick={handleDeleteRoutine}
-                style={actionButtonStyle("#dc3545")}
+                className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
               >
                 Eliminar Rutina
               </button>
             </div>
             {routine.diasEntrenamiento.map((dia, diaIndex) => (
-              <div key={diaIndex} style={ViewRoutineStyles.dayContainer}>
-                <h4 style={ViewRoutineStyles.dayTitle}>{dia.diaSemana}</h4>
+              <div key={diaIndex} className="mb-6">
+                <h4 className="text-yellow-400 text-xl font-semibold mb-2">
+                  {dia.diaSemana}
+                </h4>
                 {dia.agrupaciones.map((agrupacion, groupIndex) => (
                   <div
                     key={groupIndex}
-                    style={ViewRoutineStyles.groupContainer}
+                    className="bg-zinc-700 p-4 rounded-lg mb-4"
                   >
-                    <h5 style={ViewRoutineStyles.groupTitle}>
+                    <h5 className="text-yellow-400 text-lg font-semibold mb-3">
                       {agrupacion.tipo}
                     </h5>
-                    <table style={ViewRoutineStyles.table}>
-                      <thead>
-                        <tr style={ViewRoutineStyles.headerRow}>
-                          <th>Nombre</th>
-                          <th>Series</th>
-                          <th>Repeticiones</th>
-                          <th>Imagen</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {agrupacion.ejercicios.map((ejercicio, exIndex) => (
-                          <tr key={exIndex} style={ViewRoutineStyles.row}>
-                            <td style={ViewRoutineStyles.cell}>
-                              {ejercicio.nombre}
-                            </td>
-                            <td style={ViewRoutineStyles.cell}>
-                              {ejercicio.series}
-                            </td>
-                            <td style={ViewRoutineStyles.cell}>
-                              {ejercicio.repeticiones}
-                            </td>
-                            <td style={ViewRoutineStyles.cell}>
-                              {ejercicio.imagenUrl ? (
-                                <img
-                                  src={ejercicio.imagenUrl} // Usar la URL firmada
-                                  alt={ejercicio.nombre}
-                                  style={ViewRoutineStyles.image}
-                                />
-                              ) : (
-                                <p style={ViewRoutineStyles.noImage}>
-                                  Imagen no disponible
-                                </p>
-                              )}
-                            </td>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse mb-4">
+                        <thead>
+                          <tr className="bg-zinc-600 text-yellow-400 text-center">
+                            <th className="p-3">Nombre</th>
+                            <th className="p-3">Series</th>
+                            <th className="p-3">Repeticiones</th>
+                            <th className="p-3">Imagen</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {agrupacion.ejercicios.map((ejercicio, exIndex) => (
+                            <tr
+                              key={exIndex}
+                              className="text-center border-b border-zinc-600"
+                            >
+                              <td className="p-3 text-white">
+                                {ejercicio.nombre}
+                              </td>
+                              <td className="p-3 text-white">
+                                {ejercicio.series}
+                              </td>
+                              <td className="p-3 text-white">
+                                {ejercicio.repeticiones}
+                              </td>
+                              <td className="p-3">
+                                {ejercicio.imagenUrl ? (
+                                  <img
+                                    src={ejercicio.imagenUrl}
+                                    alt={ejercicio.nombre}
+                                    className="w-24 h-24 object-cover rounded mx-auto"
+                                  />
+                                ) : (
+                                  <p className="text-gray-400 italic">
+                                    Imagen no disponible
+                                  </p>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 ))}
               </div>
