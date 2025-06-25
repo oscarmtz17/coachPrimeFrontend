@@ -3,7 +3,6 @@ import api from "../services/api";
 
 interface Diet {
   nombre: string;
-  descripcion: string;
   clienteId: number;
   comidas: Comida[];
   notas: string;
@@ -28,7 +27,6 @@ export const useAddDietForm = (
   onClose: () => void
 ) => {
   const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
   const [notas, setNotas] = useState("");
   const [comidas, setComidas] = useState<Comida[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +74,6 @@ export const useAddDietForm = (
 
       const diet: Diet = {
         nombre,
-        descripcion,
         clienteId,
         comidas,
         notas,
@@ -86,7 +83,6 @@ export const useAddDietForm = (
 
       onDietAdded();
       setNombre("");
-      setDescripcion("");
       setNotas("");
       setComidas([]);
       setError(null);
@@ -201,16 +197,11 @@ export const useAddDietForm = (
 
   return {
     nombre,
-    descripcion,
     notas,
     comidas,
     error,
     setNombre: (value: string) => {
       setNombre(value);
-      markAsDirty();
-    },
-    setDescripcion: (value: string) => {
-      setDescripcion(value);
       markAsDirty();
     },
     setNotas: (value: string) => {

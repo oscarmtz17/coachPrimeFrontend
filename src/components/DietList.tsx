@@ -2,13 +2,6 @@
 import React from "react";
 import { useDietList } from "../hooks/useDietList";
 
-interface Diet {
-  dietaId: number;
-  nombre: string;
-  descripcion: string;
-  fechaAsignacion: string;
-}
-
 interface DietListProps {
   clienteId: number;
   onClose: () => void;
@@ -37,7 +30,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
               <tr className="bg-secondary text-primary">
                 <th className="hidden">ID</th>
                 <th className="py-3 px-4">Nombre</th>
-                <th className="py-3 px-4">Descripción</th>
+                <th className="py-3 px-4">Notas</th>
                 <th className="py-3 px-4">Fecha de Inicio</th>
                 <th className="py-3 px-4">Acciones</th>
               </tr>
@@ -50,7 +43,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
                 >
                   <td className="hidden">{diet.dietaId}</td>
                   <td className="py-2 px-4">{diet.nombre}</td>
-                  <td className="py-2 px-4">{diet.descripcion}</td>
+                  <td className="py-2 px-4">{diet.notas}</td>
                   <td className="py-2 px-4">
                     {new Date(diet.fechaAsignacion).toLocaleDateString("es-ES")}
                   </td>

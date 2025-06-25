@@ -19,8 +19,6 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
   const {
     nombre,
     setNombre,
-    descripcion,
-    setDescripcion,
     notas,
     setNotas,
     comidas,
@@ -51,14 +49,6 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           maxLength={70}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-yellow-400 font-bold block">Descripción:</label>
-        <textarea
-          className="w-full p-2 rounded border border-gray-300 bg-zinc-700 text-white resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
         />
       </div>
       <div className="mb-4">

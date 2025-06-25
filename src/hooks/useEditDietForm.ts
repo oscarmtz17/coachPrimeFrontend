@@ -22,7 +22,7 @@ export const useEditDietForm = (
   onClose: () => void
 ) => {
   const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+
   const [comidas, setComidas] = useState<Comida[]>([]);
   const [notas, setNotas] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +56,6 @@ export const useEditDietForm = (
         };
 
         setNombre(adaptedDiet.nombre);
-        setDescripcion(adaptedDiet.descripcion);
         setComidas(adaptedDiet.comidas);
         setNotas(adaptedDiet.notas);
       } catch (error) {
@@ -109,7 +108,6 @@ export const useEditDietForm = (
 
       const diet = {
         nombre,
-        descripcion,
         clienteId,
         comidas: comidas.map((comida) => ({
           nombre: comida.nombre,
@@ -227,11 +225,6 @@ export const useEditDietForm = (
     nombre,
     setNombre: (value: string) => {
       setNombre(value);
-      markAsDirty();
-    },
-    descripcion,
-    setDescripcion: (value: string) => {
-      setDescripcion(value);
       markAsDirty();
     },
     notas,

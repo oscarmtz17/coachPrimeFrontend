@@ -6,7 +6,7 @@ import api from "../services/api";
 interface Diet {
   dietaId: number;
   nombre: string;
-  descripcion: string;
+  notas: string;
   fechaAsignacion: string;
 }
 

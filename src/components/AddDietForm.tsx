@@ -15,12 +15,10 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
 }) => {
   const {
     nombre,
-    descripcion,
     notas,
     comidas,
     error,
     setNombre,
-    setDescripcion,
     setNotas,
     handleAddDiet,
     handleAddComida,
@@ -50,14 +48,6 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             maxLength={70}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-primary font-semibold">Descripción:</label>
-          <textarea
-            className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary resize-vertical min-h-[60px]"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
           />
         </div>
         <div className="flex flex-col gap-2">
