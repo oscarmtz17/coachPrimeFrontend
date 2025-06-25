@@ -1,7 +1,6 @@
 // src/components/EditDietForm.tsx
 import React from "react";
 import { useEditDietForm } from "../hooks/useEditDietForm";
-import EditDietFormStyles from "../styles/EditDietFormStyles";
 import NumberInput from "../theme/NumberInput";
 
 interface EditDietFormProps {
@@ -34,43 +33,49 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
     handleRemoveAlimento,
     handleAlimentoChange,
     handleCantidadChange,
-    handleCloseWithConfirmation, // Nueva función para manejar cierre con confirmación
+    handleCloseWithConfirmation,
   } = useEditDietForm(clienteId, dietaId, onDietUpdated, onClose);
 
   return (
-    <div style={EditDietFormStyles.container}>
-      <h3 style={EditDietFormStyles.title}>Editar Dieta</h3>
-      {error && <p style={EditDietFormStyles.error}>{error}</p>}
-      <div style={EditDietFormStyles.inputContainer}>
-        <label style={EditDietFormStyles.label}>Nombre de la Dieta:</label>
+    <div className="bg-zinc-800 text-white p-8 rounded-lg max-w-4xl mx-auto">
+      <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
+        Editar Dieta
+      </h3>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <div className="mb-4">
+        <label className="text-yellow-400 font-bold block">
+          Nombre de la Dieta:
+        </label>
         <input
-          style={EditDietFormStyles.input}
+          className="w-full p-2 rounded border border-gray-300 bg-zinc-700 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           maxLength={70}
         />
       </div>
-      <div style={EditDietFormStyles.inputContainer}>
-        <label style={EditDietFormStyles.label}>Descripción:</label>
+      <div className="mb-4">
+        <label className="text-yellow-400 font-bold block">Descripción:</label>
         <textarea
-          style={EditDietFormStyles.textarea}
+          className="w-full p-2 rounded border border-gray-300 bg-zinc-700 text-white resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
       </div>
-      <div style={EditDietFormStyles.inputContainer}>
-        <label style={EditDietFormStyles.label}>Notas:</label>
+      <div className="mb-4">
+        <label className="text-yellow-400 font-bold block">Notas:</label>
         <textarea
-          style={EditDietFormStyles.textarea}
+          className="w-full p-2 rounded border border-gray-300 bg-zinc-700 text-white resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
           value={notas}
           onChange={(e) => setNotas(e.target.value)}
         />
       </div>
       {comidas.map((comida, comidaIndex) => (
-        <div key={comidaIndex} style={EditDietFormStyles.mealContainer}>
-          <h4 style={EditDietFormStyles.mealTitle}>Comida {comida.orden}</h4>
+        <div key={comidaIndex} className="bg-zinc-700 p-4 rounded-lg mb-4">
+          <h4 className="text-yellow-400 text-xl font-semibold mb-3">
+            Comida {comida.orden}
+          </h4>
           <input
-            style={EditDietFormStyles.input}
+            className="w-full p-2 rounded border border-gray-300 bg-zinc-600 text-white mb-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             placeholder="Nombre de la comida"
             value={comida.nombre}
             onChange={(e) =>
@@ -78,7 +83,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
             }
           />
           <input
-            style={EditDietFormStyles.inputTime}
+            className="p-2 rounded border border-gray-300 bg-zinc-600 text-white mx-2 mb-2 w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             type="time"
             placeholder="Hora"
             value={comida.hora}
@@ -88,15 +93,15 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
           />
           <button
             onClick={() => handleRemoveComida(comidaIndex)}
-            style={EditDietFormStyles.deleteButton}
+            className="bg-red-600 text-white py-1 px-3 rounded text-sm mt-2 hover:bg-red-700 transition-colors"
           >
             Eliminar Comida
           </button>
 
           {comida.alimentos.map((alimento, alimentoIndex) => (
-            <div key={alimentoIndex} style={EditDietFormStyles.foodContainer}>
+            <div key={alimentoIndex} className="flex flex-col gap-2 mb-2">
               <input
-                style={EditDietFormStyles.input}
+                className="w-full p-2 rounded border border-gray-300 bg-zinc-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Nombre del alimento"
                 value={alimento.nombre}
                 onChange={(e) =>
@@ -114,10 +119,18 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
                   handleCantidadChange(newValue, comidaIndex, alimentoIndex)
                 }
                 placeholder="Cantidad"
-                style={EditDietFormStyles.input}
+                style={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #d1d5db",
+                  backgroundColor: "#52525b",
+                  color: "#ffffff",
+                  outline: "none",
+                }}
               />
               <input
-                style={EditDietFormStyles.input}
+                className="w-full p-2 rounded border border-gray-300 bg-zinc-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Unidad(Kg, gr, tazas, etc.)"
                 maxLength={10}
                 value={alimento.unidad}
@@ -132,7 +145,7 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
               />
               <button
                 onClick={() => handleRemoveAlimento(comidaIndex, alimentoIndex)}
-                style={EditDietFormStyles.deleteButton}
+                className="bg-red-600 text-white py-1 px-3 rounded text-sm hover:bg-red-700 transition-colors"
               >
                 Eliminar Alimento
               </button>
@@ -140,25 +153,28 @@ const EditDietForm: React.FC<EditDietFormProps> = ({
           ))}
           <button
             onClick={() => handleAddAlimento(comidaIndex)}
-            style={EditDietFormStyles.addButton}
+            className="bg-blue-600 text-white py-2 px-4 rounded mt-4 hover:bg-blue-700 transition-colors"
           >
             Agregar Alimento
           </button>
         </div>
       ))}
-      <button onClick={handleAddComida} style={EditDietFormStyles.addButton}>
+      <button
+        onClick={handleAddComida}
+        className="bg-blue-600 text-white py-2 px-4 rounded mt-4 hover:bg-blue-700 transition-colors"
+      >
         Agregar Comida
       </button>
-      <div style={EditDietFormStyles.buttonContainer}>
+      <div className="flex justify-between mt-6">
         <button
           onClick={handleUpdateDiet}
-          style={EditDietFormStyles.saveButton}
+          className="bg-yellow-400 text-black py-2 px-4 rounded font-semibold hover:bg-yellow-300 transition-colors"
         >
           Guardar Cambios
         </button>
         <button
-          onClick={handleCloseWithConfirmation} // Usamos la nueva función aquí
-          style={EditDietFormStyles.cancelButton}
+          onClick={handleCloseWithConfirmation}
+          className="bg-gray-300 text-zinc-800 py-2 px-4 rounded font-semibold hover:bg-gray-400 transition-colors"
         >
           Cerrar
         </button>
