@@ -64,7 +64,9 @@ const useEditProgressForm = (
   }, [clienteId, progress.progresoId]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     const parsedValue = parseFloat(value);

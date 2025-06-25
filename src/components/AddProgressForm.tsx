@@ -107,14 +107,52 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         </label>
         <select
           value={nivelActividad}
-          onChange={(e) => setNivelActividad(e.target.value)}
+          onChange={(e) => {
+            const nivel = e.target.value;
+            let factor = factorActividad;
+            switch (nivel) {
+              case "Muy ligera":
+                factor = 1.2;
+                break;
+              case "Ligera":
+                factor = 1.375;
+                break;
+              case "Moderada":
+                factor = 1.55;
+                break;
+              case "Activa":
+                factor = 1.725;
+                break;
+              case "Muy activa":
+                factor = 1.9;
+                break;
+              default:
+                break;
+            }
+            setNivelActividad(nivel);
+            setFactorActividad(factor);
+          }}
           className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Selecciona nivel</option>
-          <option value="Sedentario">Sedentario</option>
-          <option value="Ligero">Ligero</option>
-          <option value="Activo con moderación">Activo con moderación</option>
-          <option value="Muy activo">Muy activo</option>
+          <option value="Muy ligera">
+            Muy ligera (1.2) - Sentado, tumbado. Poco o nada ejercicio
+          </option>
+          <option value="Ligera">
+            Ligera (1.375) - De pie, conducir, planchar, caminar. Deporte 1-3
+            veces/semana
+          </option>
+          <option value="Moderada">
+            Moderada (1.55) - Limpiar, caminar rápido, cargar peso. Deporte 3-5
+            veces/semana
+          </option>
+          <option value="Activa">
+            Activa (1.725) - Construcción, subir escaleras. Deporte 6-7
+            veces/semana
+          </option>
+          <option value="Muy activa">
+            Muy activa (1.9) - Trabajos de fuerza, correr. Deporte 2 horas/día
+          </option>
         </select>
       </div>
 
@@ -125,9 +163,9 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
         <input
           type="number"
           value={factorActividad}
-          onChange={(e) =>
-            setFactorActividad(Math.max(1.2, Number(e.target.value)))
-          }
+          min={1.2}
+          step={0.01}
+          onChange={(e) => setFactorActividad(Number(e.target.value))}
           className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
