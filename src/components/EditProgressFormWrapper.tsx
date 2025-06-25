@@ -1,7 +1,6 @@
 // src/components/EditProgressFormWrapper.tsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import EditProgressForm from "./EditProgressForm";
 import api from "../services/api";
 
@@ -47,21 +46,27 @@ const EditProgressFormWrapper: React.FC = () => {
 
   if (!clienteId || !progresoId) {
     return (
-      <p style={errorStyle}>Error: falta información de cliente o progreso.</p>
+      <p className="text-red-500 text-center text-xl">
+        Error: falta información de cliente o progreso.
+      </p>
     );
   }
 
   if (error) {
-    return <p style={errorStyle}>{error}</p>;
+    return <p className="text-red-500 text-center text-xl">{error}</p>;
   }
 
   if (!progress) {
-    return <p style={loadingStyle}>Cargando progreso...</p>;
+    return (
+      <p className="text-yellow-400 text-center text-xl">
+        Cargando progreso...
+      </p>
+    );
   }
 
   return (
-    <div style={backgroundStyle}>
-      <div style={formContainerStyle}>
+    <div className="bg-zinc-900 min-h-screen flex justify-center items-center p-4 md:p-8">
+      <div className="max-w-2xl w-full">
         <EditProgressForm
           clienteId={parseInt(clienteId)}
           progress={progress}
@@ -71,37 +76,6 @@ const EditProgressFormWrapper: React.FC = () => {
       </div>
     </div>
   );
-};
-
-// Estilos para el fondo y el contenedor del formulario
-const backgroundStyle: React.CSSProperties = {
-  backgroundColor: "#222",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "2rem",
-};
-
-const formContainerStyle: React.CSSProperties = {
-  maxWidth: "600px", // Ajusta el ancho del formulario
-  width: "100%",
-  padding: "2rem",
-  borderRadius: "8px",
-  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-  backgroundColor: "#333",
-};
-
-const errorStyle: React.CSSProperties = {
-  color: "red",
-  textAlign: "center",
-  fontSize: "1.2rem",
-};
-
-const loadingStyle: React.CSSProperties = {
-  color: "#ffcc00",
-  textAlign: "center",
-  fontSize: "1.2rem",
 };
 
 export default EditProgressFormWrapper;
