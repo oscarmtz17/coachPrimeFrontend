@@ -14,7 +14,7 @@ const EditDietFormWrapper: React.FC = () => {
   }
 
   return (
-    <div style={backgroundStyle}>
+    <div className="bg-zinc-900 min-h-screen flex justify-center items-center p-4 md:p-8">
       <EditDietForm
         clienteId={parseInt(clienteId)}
         dietaId={parseInt(dietaId)}
@@ -23,15 +23,6 @@ const EditDietFormWrapper: React.FC = () => {
       />
     </div>
   );
-};
-
-const backgroundStyle: React.CSSProperties = {
-  backgroundColor: "#222",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "2rem",
 };
 
 export default EditDietFormWrapper;
