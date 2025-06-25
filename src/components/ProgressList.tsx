@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useProgressList } from "../hooks/useProgressList";
-import ProgressListStyles from "../styles/ProgressListStyles";
 
 interface ProgressListProps {
   clienteId: number;
@@ -38,104 +37,121 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
 
   if (loading) {
     return (
-      <p style={ProgressListStyles.loading}>
+      <p className="text-yellow-400 text-center text-xl">
         Cargando registros de progreso...
       </p>
     );
   }
 
   return (
-    <div style={ProgressListStyles.container}>
-      <h3 style={ProgressListStyles.title}>Progresos del Cliente</h3>
-      {error && <p style={ProgressListStyles.error}>{error}</p>}
+    <div className="bg-zinc-800 p-6 rounded-lg shadow-lg max-w-7xl mx-auto">
+      <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
+        Progresos del Cliente
+      </h3>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {!error && progressList.length > 0 ? (
-        <table style={ProgressListStyles.table}>
-          <thead>
-            <tr style={ProgressListStyles.headerRow}>
-              <th>Fecha</th>
-              <th>Peso (kg)</th>
-              <th>Estatura (cm)</th>
-              <th>Nivel de Actividad</th>
-              <th>Factor Actividad</th>
-              <th>Cintura (cm)</th>
-              <th>Cadera (cm)</th>
-              <th>Pecho (cm)</th>
-              <th>Brazo (cm)</th>
-              <th>Pierna (cm)</th>
-              <th>Notas</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {progressList.map((progress) => (
-              <tr key={progress.progresoId} style={ProgressListStyles.row}>
-                <td style={ProgressListStyles.cell}>
-                  {new Date(progress.fechaRegistro).toLocaleDateString()}
-                </td>
-                <td style={ProgressListStyles.cell}>{progress.pesoKg}</td>
-                <td style={ProgressListStyles.cell}>{progress.estaturaCm}</td>
-                <td style={ProgressListStyles.cell}>
-                  {progress.nivelActividad}
-                </td>
-                <td style={ProgressListStyles.cell}>
-                  {progress.factorActividad}
-                </td>
-                <td style={ProgressListStyles.cell}>{progress.cinturaCm}</td>
-                <td style={ProgressListStyles.cell}>{progress.caderaCm}</td>
-                <td style={ProgressListStyles.cell}>{progress.pechoCm}</td>
-                <td style={ProgressListStyles.cell}>{progress.brazoCm}</td>
-                <td style={ProgressListStyles.cell}>{progress.piernaCm}</td>
-                <td style={ProgressListStyles.cell}>{progress.notas}</td>
-                <td style={ProgressListStyles.actionCell}>
-                  <button
-                    onClick={() => handleEditProgress(progress)}
-                    style={ProgressListStyles.actionButton("#28a745")}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProgress(progress.progresoId)}
-                    style={ProgressListStyles.actionButton("#dc3545")}
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    onClick={() => handleViewImages(progress.progresoId)}
-                    style={ProgressListStyles.actionButton("#007bff")}
-                  >
-                    Ver Imágenes
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse mb-4">
+            <thead>
+              <tr className="bg-zinc-700 text-yellow-400 text-center">
+                <th className="p-3">Fecha</th>
+                <th className="p-3">Peso (kg)</th>
+                <th className="p-3">Estatura (cm)</th>
+                <th className="p-3">Nivel de Actividad</th>
+                <th className="p-3">Factor Actividad</th>
+                <th className="p-3">Cintura (cm)</th>
+                <th className="p-3">Cadera (cm)</th>
+                <th className="p-3">Pecho (cm)</th>
+                <th className="p-3">Brazo (cm)</th>
+                <th className="p-3">Pierna (cm)</th>
+                <th className="p-3">Notas</th>
+                <th className="p-3">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {progressList.map((progress) => (
+                <tr
+                  key={progress.progresoId}
+                  className="text-center border-b border-zinc-600"
+                >
+                  <td className="p-3 text-white">
+                    {new Date(progress.fechaRegistro).toLocaleDateString()}
+                  </td>
+                  <td className="p-3 text-white">{progress.pesoKg}</td>
+                  <td className="p-3 text-white">{progress.estaturaCm}</td>
+                  <td className="p-3 text-white">{progress.nivelActividad}</td>
+                  <td className="p-3 text-white">{progress.factorActividad}</td>
+                  <td className="p-3 text-white">{progress.cinturaCm}</td>
+                  <td className="p-3 text-white">{progress.caderaCm}</td>
+                  <td className="p-3 text-white">{progress.pechoCm}</td>
+                  <td className="p-3 text-white">{progress.brazoCm}</td>
+                  <td className="p-3 text-white">{progress.piernaCm}</td>
+                  <td className="p-3 text-white">{progress.notas}</td>
+                  <td className="p-3">
+                    <div className="flex flex-col gap-2 justify-center">
+                      <button
+                        onClick={() => handleEditProgress(progress)}
+                        className="bg-green-600 text-white py-1 px-2 rounded text-sm border-none cursor-pointer hover:bg-green-700 transition-colors"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleDeleteProgress(progress.progresoId)
+                        }
+                        className="bg-red-600 text-white py-1 px-2 rounded text-sm border-none cursor-pointer hover:bg-red-700 transition-colors"
+                      >
+                        Eliminar
+                      </button>
+                      <button
+                        onClick={() => handleViewImages(progress.progresoId)}
+                        className="bg-blue-600 text-white py-1 px-2 rounded text-sm border-none cursor-pointer hover:bg-blue-700 transition-colors"
+                      >
+                        Ver Imágenes
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p style={ProgressListStyles.noData}>
+        <p className="text-yellow-400 text-center text-xl">
           No hay registros de progreso disponibles.
         </p>
       )}
-      <button onClick={onClose} style={ProgressListStyles.closeButton}>
+      <button
+        onClick={onClose}
+        className="bg-gray-300 text-zinc-800 py-2 px-4 rounded cursor-pointer w-full hover:bg-gray-400 transition-colors"
+      >
         Cerrar
       </button>
 
       {modalOpen && (
-        <div style={ProgressListStyles.modal}>
-          <h4>Imágenes del Progreso</h4>
-          <div style={ProgressListStyles.imageContainer}>
-            {images.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Imagen ${index + 1}`}
-                style={ProgressListStyles.thumbnail}
-                onClick={() => window.open(image, "_blank")}
-              />
-            ))}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-800 text-white p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <h4 className="text-yellow-400 text-xl font-semibold mb-4">
+              Imágenes del Progreso
+            </h4>
+            <div className="flex flex-wrap gap-4 justify-center">
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Imagen ${index + 1}`}
+                  className="w-24 h-24 object-cover rounded cursor-pointer transition-transform hover:scale-105"
+                  onClick={() => window.open(image, "_blank")}
+                />
+              ))}
+            </div>
+            <button
+              onClick={closeModal}
+              className="bg-gray-300 text-zinc-800 py-2 px-4 rounded cursor-pointer w-full mt-4 hover:bg-gray-400 transition-colors"
+            >
+              Cerrar
+            </button>
           </div>
-          <button onClick={closeModal} style={ProgressListStyles.closeButton}>
-            Cerrar
-          </button>
         </div>
       )}
     </div>
