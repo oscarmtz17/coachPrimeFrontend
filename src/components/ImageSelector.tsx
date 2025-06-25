@@ -1,9 +1,7 @@
 // src/components/ImageSelector.tsx
-import React, { useEffect } from "react";
-import api from "../services/api";
+import React from "react";
 import Modal from "./Modal";
 import useImageSelector from "../hooks/useImageSelector";
-import ImageSelectorStyles from "../styles/ImageSelectorStyles";
 
 interface ImageSelectorProps {
   onSelect: (key: string, url: string) => void;
@@ -15,10 +13,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
     setSelectedCategory,
     searchTerm,
     setSearchTerm,
-    file,
-    setFile,
     previewUrl,
-    setPreviewUrl,
     isPreviewOpen,
     setIsPreviewOpen,
     imageName,
@@ -29,9 +24,11 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
   } = useImageSelector();
 
   return (
-    <div style={ImageSelectorStyles.container}>
-      <h3 style={ImageSelectorStyles.title}>Imágenes</h3>
-      <p style={ImageSelectorStyles.advestise}>
+    <div className="text-center">
+      <h3 className="text-center text-yellow-400 text-2xl font-semibold mb-4">
+        Imágenes
+      </h3>
+      <p className="bg-zinc-700 p-3 rounded text-yellow-400 mb-4 text-sm text-center">
         <strong>¡Importante!:</strong> Por tu privacidad nos aseguramos que las
         imágenes que subas solo podrán ser vistas por ti, ningún otro usuario
         puede visualizar o usar tus imágenes.
@@ -39,7 +36,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        style={ImageSelectorStyles.select}
+        className="inline-block mx-auto p-2 rounded border border-gray-300 bg-zinc-700 text-white mr-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
       >
         <option value="">Seleccione una categoría</option>
         <option value="back">Espalda</option>
@@ -50,20 +47,20 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       {selectedCategory && (
         <button
           onClick={() => document.getElementById("fileInput")?.click()}
-          style={ImageSelectorStyles.uploadButton}
+          className="bg-blue-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-700 transition-colors"
         >
           Subir Imagen
         </button>
       )}
 
       {selectedCategory && (
-        <div style={ImageSelectorStyles.searchContainer}>
+        <div className="mt-3 text-center">
           <input
             type="text"
             placeholder="Buscar imagen por nombre"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={ImageSelectorStyles.searchInput}
+            className="p-2 rounded border border-gray-300 w-4/5 bg-zinc-700 text-white mb-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
         </div>
       )}
@@ -71,28 +68,28 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
       <input
         type="file"
         id="fileInput"
-        style={ImageSelectorStyles.fileInput}
+        className="hidden"
         accept=".jpeg, .png"
         onChange={handleFileChange}
       />
 
-      <div style={ImageSelectorStyles.imageGrid}>
+      <div className="flex flex-wrap gap-4 justify-center mt-6">
         {filteredImages.map((image, index) => {
           const fileName =
             image.key
-              ?.split("/") // Asegúrate de que Key existe
+              ?.split("/")
               .pop()
               ?.replace(/\.[^/.]+$/, "") || "Nombre no disponible";
 
           return (
-            <div key={index} style={ImageSelectorStyles.imageContainer}>
+            <div key={index} className="text-center">
               <img
-                src={image.url} // Asegúrate de que Url está siendo utilizado aquí
+                src={image.url}
                 alt={fileName}
-                style={ImageSelectorStyles.image}
+                className="w-24 h-24 object-cover rounded cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => onSelect(image.key || "", image.url || "")}
               />
-              <p style={ImageSelectorStyles.imageName}>{image.imageName}</p>
+              <p className="text-yellow-400 text-sm mt-1">{image.imageName}</p>
             </div>
           );
         })}
@@ -100,15 +97,15 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
 
       {isPreviewOpen && previewUrl && (
         <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)}>
-          <div style={ImageSelectorStyles.modalContent}>
-            <h4 style={ImageSelectorStyles.modalTitle}>
+          <div className="text-center w-full max-w-md">
+            <h4 className="text-yellow-400 text-xl font-semibold mb-4">
               Vista previa de la imagen
             </h4>
-            <div style={ImageSelectorStyles.modalImageContainer}>
+            <div className="flex justify-center mb-4">
               <img
                 src={previewUrl}
                 alt="Preview"
-                style={ImageSelectorStyles.modalImage}
+                className="w-36 h-36 object-cover rounded"
               />
             </div>
             <input
@@ -118,22 +115,23 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onSelect }) => {
               value={imageName}
               onChange={(e) => setImageName(e.target.value)}
               required
-              style={ImageSelectorStyles.modalInput}
+              className="p-2 rounded border border-gray-300 w-4/5 bg-zinc-700 text-white mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
-            <div>
+            <div className="flex gap-3 justify-center">
               <button
                 onClick={handleUpload}
                 disabled={!imageName}
-                style={{
-                  ...ImageSelectorStyles.modalButton,
-                  backgroundColor: !imageName ? "#ccc" : "#4CAF50",
-                }}
+                className={`text-white py-2 px-4 rounded cursor-pointer mr-3 transition-colors ${
+                  !imageName
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
               >
                 Aceptar
               </button>
               <button
                 onClick={() => setIsPreviewOpen(false)}
-                style={ImageSelectorStyles.modalCancelButton}
+                className="bg-red-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-red-700 transition-colors"
               >
                 Cancelar
               </button>
