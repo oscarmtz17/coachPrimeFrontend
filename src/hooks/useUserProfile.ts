@@ -7,6 +7,7 @@ interface Suscripcion {
   plan: {
     nombre: string;
   };
+  fechaFin?: string | Date;
 }
 
 export const useUserProfile = () => {
@@ -30,6 +31,22 @@ export const useUserProfile = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [suscripcion, setSuscripcion] = useState<Suscripcion | null>(null);
   const userId = localStorage.getItem("userId");
+
+  // Constantes y lógica de planes
+  const UPGRADE_PLANS = [
+    { id: 3, nombre: "Premium", precio: "$499/mes" },
+    { id: 4, nombre: "Premium Anual", precio: "$4990/año" },
+  ];
+
+  const isPremium =
+    suscripcion && (suscripcion.planId === 3 || suscripcion.planId === 4);
+  const isPremiumInactive =
+    isPremium && ![2, 6].includes(suscripcion.estadoSuscripcionId);
+  const isBasic = suscripcion && suscripcion.planId === 1;
+
+  // Estado para el modal de upgrade y el plan hovered
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
 
   // Fetch user data
   const fetchUserData = async () => {
@@ -280,7 +297,50 @@ export const useUserProfile = () => {
   const handleNewPasswordBlur = () => validatePasswords();
   const handleConfirmNewPasswordBlur = () => validatePasswords();
 
+  // Utilidad para obtener el nombre del plan
+  const getPlanNombre = (planId: number) => {
+    switch (planId) {
+      case 1:
+        return "Básico";
+      case 3:
+        return "Premium";
+      case 4:
+        return "Premium Anual";
+      default:
+        return "Desconocido";
+    }
+  };
+
+  // Utilidad para obtener el nombre del estatus
+  const getEstatusNombre = (estatusId?: number) => {
+    const map: Record<number, string> = {
+      1: "Pendiente",
+      2: "Activa",
+      3: "Expirada",
+      4: "Cancelada",
+      5: "Suspendida",
+      6: "Reactivada",
+      7: "Prueba",
+    };
+    return estatusId ? map[estatusId] || "Desconocido" : "Desconocido";
+  };
+
+  // Utilidad para formatear fecha
+  const formatFecha = (fecha?: string | Date) => {
+    if (!fecha) return null;
+    const dateObj = typeof fecha === "string" ? new Date(fecha) : fecha;
+    return dateObj.toLocaleDateString("es-MX", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return {
+    UPGRADE_PLANS,
+    isPremium,
+    isPremiumInactive,
+    isBasic,
     nombre,
     apellido,
     telefono,
@@ -321,5 +381,12 @@ export const useUserProfile = () => {
     handleNewPasswordBlur,
     handleConfirmNewPasswordBlur,
     validatePasswords,
+    getPlanNombre,
+    getEstatusNombre,
+    formatFecha,
+    isUpgradeModalOpen,
+    setIsUpgradeModalOpen,
+    hoveredPlan,
+    setHoveredPlan,
   };
 };

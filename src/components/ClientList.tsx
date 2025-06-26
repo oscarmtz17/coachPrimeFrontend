@@ -24,6 +24,7 @@ const ClientList: React.FC = () => {
     handleViewProgressListClick,
     closeModal,
     fetchClients,
+    suscripcion,
   } = useClientList();
 
   return (
@@ -58,7 +59,7 @@ const ClientList: React.FC = () => {
           Refrescar Lista
         </button>
       </div>
-      {!canAddClient && (
+      {!canAddClient && suscripcion?.planId === 1 && (
         <p className="text-yellow-400 text-center mt-4">
           Has alcanzado el límite de clientes para tu plan.{" "}
           <a
@@ -70,6 +71,21 @@ const ClientList: React.FC = () => {
           para agregar más.
         </p>
       )}
+      {!canAddClient &&
+        suscripcion?.planId !== 1 &&
+        clientCount >= 3 &&
+        ![2, 6, 7].includes(suscripcion?.estadoSuscripcionId ?? 0) && (
+          <p className="text-yellow-400 text-center mt-4">
+            Tienes un plan premium, pero tu suscripción no está activa. Por
+            favor, reactiva tu suscripción para poder agregar más clientes.
+            <a
+              href="/profile"
+              className="text-info underline hover:text-primary transition-colors ml-1"
+            >
+              Gestionar suscripción
+            </a>
+          </p>
+        )}
       <div className="overflow-x-auto mt-6">
         <table className="min-w-full bg-dark text-white rounded-lg overflow-hidden">
           <thead>

@@ -3,11 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useUserProfile } from "../hooks/useUserProfile";
 
-const UPGRADE_PLANS = [
-  { id: 3, nombre: "Premium", precio: "$499/mes" },
-  { id: 4, nombre: "Premium Anual", precio: "$4990/año" },
-];
-
 const UserProfile: React.FC = () => {
   const navigate = useNavigate();
   const {
@@ -28,7 +23,6 @@ const UserProfile: React.FC = () => {
     showNewPassword,
     showConfirmNewPassword,
     suscripcion,
-    handleManageSubscription,
     handleUpgradePlan,
     handleNombreChange,
     handleApellidoChange,
@@ -48,10 +42,17 @@ const UserProfile: React.FC = () => {
     setShowCurrentPassword,
     setShowNewPassword,
     validatePasswords,
+    getPlanNombre,
+    getEstatusNombre,
+    formatFecha,
+    UPGRADE_PLANS,
+    isPremiumInactive,
+    isBasic,
+    isUpgradeModalOpen,
+    setIsUpgradeModalOpen,
+    hoveredPlan,
+    setHoveredPlan,
   } = useUserProfile();
-
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
-  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
@@ -184,16 +185,25 @@ const UserProfile: React.FC = () => {
         {suscripcion ? (
           <>
             <p className="text-xl text-white mb-4">
-              Plan:{" "}
-              {suscripcion.planId === 1
-                ? "Básico"
-                : suscripcion.planId === 3
-                ? "Premium"
-                : suscripcion.planId === 4
-                ? "Premium Anual"
-                : "Desconocido"}
+              Plan: {getPlanNombre(suscripcion.planId)}
             </p>
-            {suscripcion.planId === 1 && (
+            <p className="text-lg text-primary mb-4">
+              Estatus: {getEstatusNombre(suscripcion.estadoSuscripcionId)}
+            </p>
+            {suscripcion.fechaFin && (
+              <p className="text-base text-white mb-4">
+                Fecha de finalización: {formatFecha(suscripcion.fechaFin)}
+              </p>
+            )}
+            {isPremiumInactive && (
+              <button
+                onClick={() => handleUpgradePlan(suscripcion.planId)}
+                className="w-full bg-success text-white py-3 px-6 border-none rounded cursor-pointer text-base mb-2"
+              >
+                Pagar Suscripción
+              </button>
+            )}
+            {isBasic && (
               <button
                 onClick={() => setIsUpgradeModalOpen(true)}
                 className="w-full bg-info text-white py-3 px-6 border-none rounded cursor-pointer text-base"

@@ -23,6 +23,7 @@ interface Client {
 
 interface Suscripcion {
   planId: number;
+  estadoSuscripcionId?: number;
   // ... otras propiedades de la suscripción
 }
 
@@ -68,10 +69,19 @@ export const useClientList = () => {
 
   const canAddClient = useMemo(() => {
     if (!suscripcion) return false; // No permitir si no se ha cargado la suscripción
+    // Si es plan básico, máximo 3 clientes
     if (suscripcion.planId === 1 && clientCount >= 3) {
-      return false; // Límite para el plan básico
+      return false;
     }
-    return true; // Permitir en otros casos
+    // Si es plan premium, solo permitir agregar más de 3 clientes si el estado es Activa, Reactivada o Prueba
+    if (
+      suscripcion.planId !== 1 &&
+      clientCount >= 3 &&
+      ![2, 6, 7].includes(suscripcion.estadoSuscripcionId ?? 0)
+    ) {
+      return false;
+    }
+    return true;
   }, [clientCount, suscripcion]);
 
   useEffect(() => {
@@ -206,5 +216,6 @@ export const useClientList = () => {
     handleViewProgressListClick,
     closeModal,
     fetchClients,
+    suscripcion,
   };
 };
