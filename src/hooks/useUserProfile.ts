@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 
 interface Suscripcion {
+  suscripcionId: number;
   planId: number;
   estadoSuscripcionId: number;
   plan: {
     nombre: string;
   };
   fechaFin?: string | Date;
+  stripeSubscriptionId?: string;
 }
 
 export const useUserProfile = () => {
@@ -77,6 +79,7 @@ export const useUserProfile = () => {
       console.error("Error al obtener la suscripción del usuario:", error);
       // Si no se encuentra una suscripción, se asume que el usuario tiene el plan Básico.
       setSuscripcion({
+        suscripcionId: 0, // Fallback ficticio para el plan básico
         planId: 1,
         estadoSuscripcionId: 0, // Estado que representa "No suscrito"
         plan: {
@@ -336,6 +339,22 @@ export const useUserProfile = () => {
     });
   };
 
+  const handleCancelSubscription = async () => {
+    if (!suscripcion) return;
+    if (!window.confirm("¿Estás seguro de que deseas cancelar tu suscripción?"))
+      return;
+    try {
+      await api.post(`/Suscripcion/cancelar`, {
+        suscripcionId: suscripcion.suscripcionId,
+      });
+      alert("Suscripción cancelada correctamente.");
+      fetchSuscripcion(); // refresca el estado
+    } catch (error) {
+      alert("Error al cancelar la suscripción.");
+      console.error(error);
+    }
+  };
+
   return {
     UPGRADE_PLANS,
     isPremium,
@@ -388,5 +407,6 @@ export const useUserProfile = () => {
     setIsUpgradeModalOpen,
     hoveredPlan,
     setHoveredPlan,
+    handleCancelSubscription,
   };
 };

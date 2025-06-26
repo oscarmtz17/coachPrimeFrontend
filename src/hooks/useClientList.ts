@@ -24,6 +24,7 @@ interface Client {
 interface Suscripcion {
   planId: number;
   estadoSuscripcionId?: number;
+  fechaFin?: string | Date;
   // ... otras propiedades de la suscripción
 }
 
@@ -72,6 +73,16 @@ export const useClientList = () => {
     // Si es plan básico, máximo 3 clientes
     if (suscripcion.planId === 1 && clientCount >= 3) {
       return false;
+    }
+    // Si la suscripción está cancelada pero la fecha actual es menor a fechaFin, permitir
+    if (
+      suscripcion.planId !== 1 &&
+      clientCount >= 3 &&
+      suscripcion.estadoSuscripcionId === 4 &&
+      suscripcion.fechaFin &&
+      new Date() < new Date(suscripcion.fechaFin)
+    ) {
+      return true;
     }
     // Si es plan premium, solo permitir agregar más de 3 clientes si el estado es Activa, Reactivada o Prueba
     if (

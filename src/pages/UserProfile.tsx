@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useUserProfile } from "../hooks/useUserProfile";
@@ -52,6 +52,7 @@ const UserProfile: React.FC = () => {
     setIsUpgradeModalOpen,
     hoveredPlan,
     setHoveredPlan,
+    handleCancelSubscription,
   } = useUserProfile();
 
   const handleBackToDashboard = () => {
@@ -203,6 +204,15 @@ const UserProfile: React.FC = () => {
                 Pagar Suscripción
               </button>
             )}
+            {suscripcion &&
+              [2, 6].includes(suscripcion.estadoSuscripcionId) && (
+                <button
+                  onClick={handleCancelSubscription}
+                  className="w-full bg-gray-200 text-gray-700 py-2 px-4 border border-gray-400 rounded cursor-pointer text-sm mt-2 hover:bg-gray-300 transition-colors"
+                >
+                  Cancelar Suscripción
+                </button>
+              )}
             {isBasic && (
               <button
                 onClick={() => setIsUpgradeModalOpen(true)}
