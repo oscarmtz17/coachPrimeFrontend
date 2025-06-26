@@ -11,6 +11,15 @@ const Dashboard: React.FC = () => {
     navigate("/profile");
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-between min-h-screen w-full p-8 bg-dark text-white box-border overflow-hidden">
       <header className="w-full max-w-5xl mb-8 text-center">
@@ -24,7 +33,7 @@ const Dashboard: React.FC = () => {
           Perfil
         </button>
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className="bg-primary text-black py-3 px-6 rounded-md text-base cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
           Cerrar sesión

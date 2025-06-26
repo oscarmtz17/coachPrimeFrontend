@@ -6,7 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import api from "../services/api";
+import api, { logoutUser } from "../services/api";
 
 interface User {
   id: number;
@@ -19,8 +19,8 @@ interface User {
 interface AuthContextType {
   isAuthenticated: boolean;
   currentUser: User | null;
-  login: (token: string) => void;
-  logout: () => void;
+  login: (token: string, refreshToken: string, userId: number) => void;
+  logout: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -31,7 +31,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     return !!token;
   });
 
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       if (token) {
         try {
           const response = await api.get("/auth/current-user", {
@@ -50,7 +50,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.error("Error fetching user data:", error);
           setIsAuthenticated(false);
           setCurrentUser(null);
-          localStorage.removeItem("token");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("userId");
         }
       }
     };
@@ -60,9 +62,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  const login = (token: string) => {
+  const login = (token: string, refreshToken: string, userId: number) => {
     setIsAuthenticated(true);
-    localStorage.setItem("token", token);
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("userId", userId.toString());
     api
       .get("/auth/current-user", {
         headers: { Authorization: `Bearer ${token}` },
@@ -73,10 +77,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await logoutUser();
     setIsAuthenticated(false);
     setCurrentUser(null);
-    localStorage.removeItem("token");
   };
 
   return (

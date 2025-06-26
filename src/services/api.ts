@@ -43,8 +43,8 @@ api.interceptors.request.use(
         const response = await axios.post(
           `${api.defaults.baseURL}/auth/refresh`,
           {
-            accessToken,
-            refreshToken,
+            AccessToken: accessToken,
+            RefreshToken: refreshToken,
           }
         );
 
@@ -58,10 +58,12 @@ api.interceptors.request.use(
           config.headers["Authorization"] = `Bearer ${newAccessToken}`;
         } else {
           console.error("Tokens faltantes en la respuesta de refresh");
+          clearAuthData();
           window.location.href = "/login";
         }
       } catch (error) {
         console.error("Error al refrescar el token:", error);
+        clearAuthData();
         window.location.href = "/login";
       }
     } else if (accessToken) {
@@ -72,6 +74,26 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+// Interceptor para manejar respuestas de error
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      console.log("Error 401 - Token expirado o inválido");
+      clearAuthData();
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Función para limpiar datos de autenticación
+function clearAuthData() {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("userId");
+}
 
 // Verifica si el token está por expirar (menos de 3 minutos de vigencia)
 function isTokenExpiring(token: string): boolean {
@@ -112,6 +134,25 @@ export const resetPassword = async (
     }
   );
   return response.data;
+};
+
+export const logoutUser = async (): Promise<void> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      await api.post(
+        "/auth/logout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    }
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+  } finally {
+    clearAuthData();
+  }
 };
 
 export default api;

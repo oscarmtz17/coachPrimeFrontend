@@ -14,8 +14,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await loginUser(email, password);
-      localStorage.setItem("token", response.token);
-      login(response.token);
+      login(response.token, response.refreshToken, response.userId);
       navigate("/dashboard");
     } catch (error) {
       setError("Credenciales incorrectas. Inténtalo nuevamente.");
