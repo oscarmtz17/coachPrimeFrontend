@@ -44,7 +44,7 @@ const ProgressList: React.FC<ProgressListProps> = ({ clienteId, onClose }) => {
   }
 
   return (
-    <div className="bg-zinc-800 p-6 rounded-lg shadow-lg max-w-7xl mx-auto">
+    <div className="bg-zinc-800 p-6 rounded-lg shadow-lg w-full max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-full mx-auto">
       <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
         Progresos del Cliente
       </h3>
