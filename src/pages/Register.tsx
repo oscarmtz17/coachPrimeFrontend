@@ -1,27 +1,7 @@
 import React from "react";
 import { useRegister } from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
-
-const PLANES = [
-  {
-    nombre: "Básico",
-    precio: "$0",
-    descripcion: "Hasta 3 clientes",
-    id: 1,
-  },
-  {
-    nombre: "Premium",
-    precio: "$499",
-    descripcion: "Clientes ilimitados",
-    id: 3,
-  },
-  {
-    nombre: "Premium Anual",
-    precio: "$4990",
-    descripcion: "Clientes ilimitados \nPago anual",
-    id: 4,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const Register: React.FC = () => {
   const {
@@ -54,19 +34,56 @@ const Register: React.FC = () => {
   } = useRegister();
 
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const PLANES = [
+    {
+      nombre: t("plans.basic"),
+      precio: "$0",
+      descripcion: t("plans.basicDesc"),
+      id: 1,
+    },
+    {
+      nombre: t("plans.premium"),
+      precio: "$499",
+      descripcion: t("plans.premiumDesc"),
+      id: 3,
+    },
+    {
+      nombre: t("plans.premiumYear"),
+      precio: "$4990",
+      descripcion: t("plans.premiumYearDesc"),
+      id: 4,
+    },
+  ];
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
+    <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4 relative">
+      {/* Selector de idioma en la esquina superior derecha */}
+      <div className="absolute top-5 right-5 z-30">
+        <select
+          value={i18n.language}
+          onChange={handleLanguageChange}
+          className="bg-gray-700 text-white py-2 px-3 rounded"
+        >
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       <div className="bg-black bg-opacity-80 p-6 sm:p-10 rounded-xl w-full max-w-lg shadow-lg">
         <button
           type="button"
           onClick={() => navigate("/")}
           className="mb-4 text-primary font-semibold hover:underline focus:outline-none"
         >
-          ← Regresar
+          ← {t("common.back")}
         </button>
         <h2 className="text-3xl font-bold text-primary mb-6 text-center">
-          Registrarse
+          {t("register.title")}
         </h2>
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -76,7 +93,7 @@ const Register: React.FC = () => {
                 htmlFor="nombre"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Nombre
+                {t("register.name")}
               </label>
               <input
                 id="nombre"
@@ -93,7 +110,7 @@ const Register: React.FC = () => {
                 htmlFor="apellido"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Apellido
+                {t("register.lastName")}
               </label>
               <input
                 id="apellido"
@@ -110,7 +127,7 @@ const Register: React.FC = () => {
                 htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Email
+                {t("register.email")}
               </label>
               <input
                 id="email"
@@ -127,7 +144,7 @@ const Register: React.FC = () => {
                 htmlFor="phone"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Teléfono
+                {t("register.phone")}
               </label>
               <input
                 id="phone"
@@ -149,7 +166,7 @@ const Register: React.FC = () => {
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Contraseña
+                {t("register.password")}
               </label>
               <input
                 id="password"
@@ -165,7 +182,7 @@ const Register: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-2 top-9 text-primary text-sm font-semibold focus:outline-none"
               >
-                {showPassword ? "Ocultar" : "Mostrar"}
+                {showPassword ? t("register.hide") : t("register.show")}
               </button>
             </div>
             {/* Confirmar Contraseña */}
@@ -174,7 +191,7 @@ const Register: React.FC = () => {
                 htmlFor="confirmPassword"
                 className="block mb-2 text-sm font-medium text-gray-300"
               >
-                Confirmar Contraseña
+                {t("register.confirmPassword")}
               </label>
               <input
                 id="confirmPassword"
@@ -190,7 +207,7 @@ const Register: React.FC = () => {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-2 top-9 text-primary text-sm font-semibold focus:outline-none"
               >
-                {showConfirmPassword ? "Ocultar" : "Mostrar"}
+                {showConfirmPassword ? t("register.hide") : t("register.show")}
               </button>
             </div>
             {passwordError && (
@@ -199,7 +216,7 @@ const Register: React.FC = () => {
           </div>
           {/* Planes */}
           <h2 className="text-lg font-bold text-primary mb-2 mt-4">
-            Selecciona Tu Plan
+            {t("register.selectPlan")}
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 mb-2">
             {PLANES.map((plan) => (
@@ -240,14 +257,14 @@ const Register: React.FC = () => {
                 : "bg-gray-400 text-gray-600 cursor-not-allowed"
             }`}
           >
-            {loading ? "Registrando..." : "Registrar"}
+            {loading ? t("register.loading") : t("register.registerButton")}
           </button>
         </form>
         <p
           className="mt-6 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors text-center"
           onClick={() => navigate("/login")}
         >
-          ¿Ya tienes una cuenta? Iniciar sesión
+          {t("register.alreadyAccount")}
         </p>
       </div>
     </div>

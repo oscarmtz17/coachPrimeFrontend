@@ -55,5 +55,28 @@
         "createAccount": "Create Account",
         "forgotPassword": "Forgot my password",
         "invalidCredentials": "Incorrect credentials. Please try again."
+    },
+    "register": {
+        "title": "Register",
+        "name": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "show": "Show",
+        "hide": "Hide",
+        "selectPlan": "Select Your Plan",
+        "registerButton": "Register",
+        "loading": "Registering...",
+        "alreadyAccount": "Already have an account? Login"
+    },
+    "plans": {
+        "basic": "Basic",
+        "basicDesc": "Up to 3 clients",
+        "premium": "Premium",
+        "premiumDesc": "Unlimited clients",
+        "premiumYear": "Premium Annual",
+        "premiumYearDesc": "Unlimited clients\nAnnual payment"
     }
 }
