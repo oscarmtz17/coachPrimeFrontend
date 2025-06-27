@@ -46,5 +46,14 @@
         "getStarted": "Get Started",
         "login": "Login",
         "createAccount": "Create Account"
+    },
+    "login": {
+        "title": "Login",
+        "email": "Email",
+        "password": "Password",
+        "loginButton": "Login",
+        "createAccount": "Create Account",
+        "forgotPassword": "Forgot my password",
+        "invalidCredentials": "Incorrect credentials. Please try again."
     }
 }
