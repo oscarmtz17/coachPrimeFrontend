@@ -1,16 +1,33 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
+import { useTranslation } from "react-i18next";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showOptions, setShowOptions] = useState(false);
+  const { t, i18n } = useTranslation();
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+  };
 
   return (
     <div
       className="relative flex flex-col items-center justify-center min-h-screen bg-cover bg-center text-white text-center"
       style={{ backgroundImage: "url('/homeBackground.webp')" }}
     >
+      {/* Selector de idioma en la esquina superior derecha */}
+      <div className="absolute top-5 right-5 z-30">
+        <select
+          value={i18n.language}
+          onChange={handleLanguageChange}
+          className="bg-yellow-400 text-white py-2 px-3 rounded"
+        >
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       {/* Superposición oscura para mejorar el contraste */}
       <div
         style={{
@@ -37,13 +54,13 @@ const Home: React.FC = () => {
         className="z-20 font-bold mb-4 text-shadow-lg text-[clamp(2rem,5vw,3rem)]"
         style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
       >
-        Empower Your Clients
+        {t("home.title")}
       </h1>
       <p
         className="z-20 mb-8 text-[clamp(1rem,2.5vw,1.2rem)] text-shadow-md"
         style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.7)" }}
       >
-        Tu plataforma para alcanzar tus objetivos de fitness y bienestar.
+        {t("home.subtitle")}
       </p>
 
       {/* Botón "Get Started" */}
@@ -56,7 +73,7 @@ const Home: React.FC = () => {
           onClick={() => setShowOptions(true)}
           className="bg-primary text-black py-4 px-8 rounded-md text-lg font-semibold cursor-pointer transition-colors border-none max-w-[90%] w-[300px] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
-          Get Started
+          {t("home.getStarted")}
         </button>
       </div>
 
@@ -72,13 +89,13 @@ const Home: React.FC = () => {
           onClick={() => navigate("/login")}
           className="bg-primary text-black py-4 px-8 rounded-md text-lg font-semibold cursor-pointer transition-colors border-none mb-4 max-w-[90%] w-[300px] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
-          Iniciar sesión
+          {t("home.login")}
         </button>
         <p
           onClick={() => navigate("/register")}
           className="text-white text-sm cursor-pointer underline hover:text-primary transition-colors"
         >
-          Crear cuenta
+          {t("home.createAccount")}
         </p>
       </div>
     </div>

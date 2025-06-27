@@ -39,5 +39,12 @@
     "modal": {
         "accept": "Aceptar",
         "cancel": "Cancelar"
+    },
+    "home": {
+        "title": "Haz crecer tu comunidad fitness",
+        "subtitle": "Gestiona tu negocio fitness con profesionalismo y enfoque.",
+        "getStarted": "Comenzar",
+        "login": "Iniciar sesión",
+        "createAccount": "Crear cuenta"
     }
 }

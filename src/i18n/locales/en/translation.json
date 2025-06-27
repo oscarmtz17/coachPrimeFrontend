@@ -39,5 +39,12 @@
     "modal": {
         "accept": "Accept",
         "cancel": "Cancel"
+    },
+    "home": {
+        "title": "Grow your fitness community",
+        "subtitle": "Manage your fitness business with professionalism and focus.",
+        "getStarted": "Get Started",
+        "login": "Login",
+        "createAccount": "Create Account"
     }
 }
