@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { sendPasswordReset } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,8 +19,15 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
-      <div className="bg-black bg-opacity-80 p-8 rounded-xl w-full max-w-sm shadow-lg text-center">
-        <h2 className="mb-6 text-3xl font-bold text-primary">
+      <div className="bg-black bg-opacity-80 p-6 sm:p-10 rounded-xl w-full max-w-lg shadow-lg">
+        <button
+          type="button"
+          onClick={() => navigate("/login")}
+          className="mb-4 text-primary font-semibold hover:underline focus:outline-none self-start"
+        >
+          ← Regresar
+        </button>
+        <h2 className="mb-6 text-3xl font-bold text-primary text-center">
           Recuperar Contraseña
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
