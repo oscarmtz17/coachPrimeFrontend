@@ -95,7 +95,7 @@ function clearAuthData() {
   localStorage.removeItem("userId");
 }
 
-// Verifica si el token está por expirar (menos de 3 minutos de vigencia)
+// Verifica si el token está por expirar (menos de 1 hora de vigencia)
 function isTokenExpiring(token: string): boolean {
   try {
     const tokenData = JSON.parse(atob(token.split(".")[1]));
@@ -107,7 +107,7 @@ function isTokenExpiring(token: string): boolean {
       expirationTime - currentTime,
       "ms"
     );
-    return expirationTime - currentTime < 3 * 60 * 1000; // Refrescar si quedan menos de 3 minutos
+    return expirationTime - currentTime < 60 * 60 * 1000; // Refrescar si quedan menos de 1 hora
   } catch (error) {
     console.error("Error al decodificar el token:", error);
     return true; // Forzar el refresh si el token es inválido
