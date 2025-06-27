@@ -78,5 +78,12 @@
         "premiumDesc": "Clientes ilimitados",
         "premiumYear": "Premium Anual",
         "premiumYearDesc": "Clientes ilimitados \nPago anual"
+    },
+    "forgotPassword": {
+        "title": "Recuperar Contraseña",
+        "emailLabel": "Ingresa tu correo",
+        "sendButton": "Enviar",
+        "success": "Hemos enviado un enlace de recuperación a tu correo.",
+        "error": "Hubo un problema. Por favor, intenta de nuevo."
     }
 }

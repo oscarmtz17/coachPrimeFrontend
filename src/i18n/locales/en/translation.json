@@ -78,5 +78,12 @@
         "premiumDesc": "Unlimited clients",
         "premiumYear": "Premium Annual",
         "premiumYearDesc": "Unlimited clients\nAnnual payment"
+    },
+    "forgotPassword": {
+        "title": "Recover Password",
+        "emailLabel": "Enter your email",
+        "sendButton": "Send",
+        "success": "We have sent a recovery link to your email.",
+        "error": "There was a problem. Please try again."
     }
 }
