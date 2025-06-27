@@ -58,6 +58,13 @@ const Register: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
       <div className="bg-black bg-opacity-80 p-6 sm:p-10 rounded-xl w-full max-w-lg shadow-lg">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="mb-4 text-primary font-semibold hover:underline focus:outline-none"
+        >
+          ← Regresar
+        </button>
         <h2 className="text-3xl font-bold text-primary mb-6 text-center">
           Registrarse
         </h2>

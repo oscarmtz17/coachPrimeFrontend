@@ -23,8 +23,17 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-dark text-white p-4">
-      <div className="bg-black bg-opacity-80 p-8 rounded-xl w-full max-w-sm shadow-lg text-center">
-        <h2 className="mb-6 text-3xl font-bold text-primary">Iniciar Sesión</h2>
+      <div className="bg-black bg-opacity-80 p-6 sm:p-10 rounded-xl w-full max-w-lg shadow-lg">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="mb-4 text-primary font-semibold hover:underline focus:outline-none self-start"
+        >
+          ← Regresar
+        </button>
+        <h2 className="mb-6 text-3xl font-bold text-primary text-center">
+          Iniciar Sesión
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label
@@ -68,13 +77,13 @@ const Login: React.FC = () => {
         </form>
         <p
           onClick={() => navigate("/register")}
-          className="mt-6 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors"
+          className="mt-6 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors text-center"
         >
           Crear cuenta
         </p>
         <p
           onClick={() => navigate("/forgot-password")}
-          className="mt-4 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors"
+          className="mt-4 text-gray-400 text-sm cursor-pointer underline hover:text-primary transition-colors text-center"
         >
           Olvidé mi contraseña
         </p>
