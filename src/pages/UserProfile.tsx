@@ -2,8 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useUserProfile } from "../hooks/useUserProfile";
+import { useTranslation } from "react-i18next";
 
 const UserProfile: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const {
     nombre,
@@ -59,9 +61,13 @@ const UserProfile: React.FC = () => {
     navigate("/dashboard");
   };
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
   return (
     <div className="flex flex-col items-center bg-dark text-primary min-h-screen p-8">
-      <div className="w-full max-w-lg flex justify-start mb-4">
+      <div className="w-full max-w-lg flex justify-between mb-4">
         <button
           onClick={handleBackToDashboard}
           className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 transition-colors flex items-center gap-2"
@@ -79,14 +85,23 @@ const UserProfile: React.FC = () => {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          Regresar al Dashboard
+          {t("common.back")}
         </button>
+        {/* Selector de idioma */}
+        <select
+          value={i18n.language}
+          onChange={handleLanguageChange}
+          className="bg-gray-700 text-white py-2 px-3 rounded ml-4"
+        >
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
       </div>
       <h2 className="text-3xl text-primary text-center mb-4">
-        Perfil del Usuario
+        {t("profile.title")}
       </h2>
       <div className="w-full max-w-lg flex flex-col gap-4 bg-black bg-opacity-80 p-8 rounded-xl shadow-lg">
-        <label className="text-primary font-bold">Nombre:</label>
+        <label className="text-primary font-bold">{t("profile.name")}:</label>
         <input
           type="text"
           value={nombre}
@@ -94,7 +109,9 @@ const UserProfile: React.FC = () => {
           disabled={!isEditing}
           className="w-full p-2 rounded border border-border-gray bg-dark-gray text-white text-base disabled:opacity-50"
         />
-        <label className="text-primary font-bold">Apellido:</label>
+        <label className="text-primary font-bold">
+          {t("profile.lastName")}:
+        </label>
         <input
           type="text"
           value={apellido}
@@ -102,7 +119,7 @@ const UserProfile: React.FC = () => {
           disabled={!isEditing}
           className="w-full p-2 rounded border border-border-gray bg-dark-gray text-white text-base disabled:opacity-50"
         />
-        <label className="text-primary font-bold">Teléfono:</label>
+        <label className="text-primary font-bold">{t("profile.phone")}:</label>
         <input
           type="text"
           value={telefono}
@@ -112,7 +129,7 @@ const UserProfile: React.FC = () => {
           className="w-full p-2 rounded border border-border-gray bg-dark-gray text-white text-base disabled:opacity-50"
         />
         {error && <p className="text-red-500 text-center">{error}</p>}
-        <label className="text-primary font-bold">Email:</label>
+        <label className="text-primary font-bold">{t("profile.email")}:</label>
         <input
           type="email"
           value={email}
@@ -120,7 +137,7 @@ const UserProfile: React.FC = () => {
           className="w-full p-2 rounded border border-border-gray bg-dark-gray text-white text-base opacity-50"
         />
         <p className="text-sm text-primary -mt-2 mb-6">
-          El email no se puede modificar
+          {t("profile.emailNotEditable")}
         </p>
         {isEditing ? (
           <div className="flex justify-between gap-4">
@@ -128,13 +145,13 @@ const UserProfile: React.FC = () => {
               onClick={handleSaveChanges}
               className="flex-1 bg-success text-white py-3 px-6 border-none rounded cursor-pointer text-base"
             >
-              Guardar Cambios
+              {t("common.save")}
             </button>
             <button
               onClick={handleCancel}
               className="flex-1 bg-danger text-white py-3 px-6 border-none rounded cursor-pointer text-base"
             >
-              Cancelar
+              {t("common.cancel")}
             </button>
           </div>
         ) : (
@@ -142,17 +159,17 @@ const UserProfile: React.FC = () => {
             onClick={handleEdit}
             className="w-full bg-info text-white py-3 px-6 border-none rounded cursor-pointer mb-8"
           >
-            Editar Datos
+            {t("common.edit")}
           </button>
         )}
         <button
           onClick={openModal}
           className="w-full bg-primary text-black py-3 px-6 border-none rounded cursor-pointer mb-4"
         >
-          Cambiar Contraseña
+          {t("profile.changePassword")}
         </button>
         <h3 className="text-xl text-primary font-bold mb-2">
-          {previewLogo ? "Cambiar Logo" : "Subir Logo"}
+          {previewLogo ? t("profile.changeLogo") : t("profile.uploadLogo")}
         </h3>
         <input
           type="file"
@@ -175,25 +192,26 @@ const UserProfile: React.FC = () => {
               : "bg-gray-400 text-white cursor-not-allowed"
           }`}
         >
-          Subir Logotipo
+          {t("profile.uploadLogoButton")}
         </button>
       </div>
       {/* Sección de Suscripción */}
       <div className="w-full max-w-lg mt-8 p-6 border border-primary rounded-lg bg-light-gray">
         <h3 className="text-2xl text-primary text-center mb-4">
-          Tu Plan Actual
+          {t("plan.currentPlan")}
         </h3>
         {suscripcion ? (
           <>
             <p className="text-xl text-white mb-4">
-              Plan: {getPlanNombre(suscripcion.planId)}
+              {t("plan.plan")}: {getPlanNombre(suscripcion.planId)}
             </p>
             <p className="text-lg text-primary mb-4">
-              Estatus: {getEstatusNombre(suscripcion.estadoSuscripcionId)}
+              {t("plan.status")}:{" "}
+              {getEstatusNombre(suscripcion.estadoSuscripcionId)}
             </p>
             {suscripcion.fechaFin && (
               <p className="text-base text-white mb-4">
-                Fecha de finalización: {formatFecha(suscripcion.fechaFin)}
+                {t("plan.endDate")}: {formatFecha(suscripcion.fechaFin)}
               </p>
             )}
             {isPremiumInactive && (
@@ -201,7 +219,7 @@ const UserProfile: React.FC = () => {
                 onClick={() => handleUpgradePlan(suscripcion.planId)}
                 className="w-full bg-success text-white py-3 px-6 border-none rounded cursor-pointer text-base mb-2"
               >
-                Pagar Suscripción
+                {t("plan.paySubscription")}
               </button>
             )}
             {suscripcion &&
@@ -210,7 +228,7 @@ const UserProfile: React.FC = () => {
                   onClick={handleCancelSubscription}
                   className="w-full bg-gray-200 text-gray-700 py-2 px-4 border border-gray-400 rounded cursor-pointer text-sm mt-2 hover:bg-gray-300 transition-colors"
                 >
-                  Cancelar Suscripción
+                  {t("plan.cancelSubscription")}
                 </button>
               )}
             {isBasic && (
@@ -218,20 +236,24 @@ const UserProfile: React.FC = () => {
                 onClick={() => setIsUpgradeModalOpen(true)}
                 className="w-full bg-info text-white py-3 px-6 border-none rounded cursor-pointer text-base"
               >
-                Mejorar Plan
+                {t("plan.upgradePlan")}
               </button>
             )}
           </>
         ) : (
-          <p className="text-white">Cargando información del plan...</p>
+          <p className="text-white">{t("plan.loading")}</p>
         )}
       </div>
       {/* Modal de cambio de contraseña */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div className="flex flex-col items-center justify-center w-96 mx-auto h-full">
-          <h3 className="text-2xl text-primary mb-6">Cambiar Contraseña</h3>
+          <h3 className="text-2xl text-primary mb-6">
+            {t("password.changePassword")}
+          </h3>
           <div className="flex flex-col justify-center items-center gap-4 w-4/5 mx-auto">
-            <label className="text-primary font-bold">Contraseña Actual:</label>
+            <label className="text-primary font-bold">
+              {t("password.current")}:
+            </label>
             <div className="relative w-full">
               <input
                 type={showCurrentPassword ? "text" : "password"}
@@ -244,10 +266,12 @@ const UserProfile: React.FC = () => {
                 onMouseUp={() => setShowCurrentPassword(false)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none text-primary cursor-pointer text-sm"
               >
-                {showCurrentPassword ? "Ocultar" : "Mostrar"}
+                {showCurrentPassword ? t("password.hide") : t("password.show")}
               </button>
             </div>
-            <label className="text-primary font-bold">Nueva Contraseña:</label>
+            <label className="text-primary font-bold">
+              {t("password.new")}:
+            </label>
             <div className="relative w-full">
               <input
                 type={showNewPassword ? "text" : "password"}
@@ -261,11 +285,11 @@ const UserProfile: React.FC = () => {
                 onMouseUp={() => setShowNewPassword(false)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none text-primary cursor-pointer text-sm"
               >
-                {showNewPassword ? "Ocultar" : "Mostrar"}
+                {showNewPassword ? t("password.hide") : t("password.show")}
               </button>
             </div>
             <label className="text-primary font-bold">
-              Confirmar Nueva Contraseña:
+              {t("password.confirmNew")}:
             </label>
             <div className="relative w-full">
               <input
@@ -280,7 +304,9 @@ const UserProfile: React.FC = () => {
                 onMouseUp={() => setShowConfirmNewPassword(false)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none text-primary cursor-pointer text-sm"
               >
-                {showConfirmNewPassword ? "Ocultar" : "Mostrar"}
+                {showConfirmNewPassword
+                  ? t("password.hide")
+                  : t("password.show")}
               </button>
             </div>
             {passwordError && (
@@ -304,13 +330,13 @@ const UserProfile: React.FC = () => {
                     : "hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-dark"
                 }`}
               >
-                Aceptar
+                {t("modal.accept")}
               </button>
               <button
                 onClick={closeModal}
                 className="bg-danger text-white py-3 px-6 border-none rounded cursor-pointer text-base hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-dark"
               >
-                Cancelar
+                {t("modal.cancel")}
               </button>
             </div>
           </div>
@@ -322,7 +348,9 @@ const UserProfile: React.FC = () => {
         onClose={() => setIsUpgradeModalOpen(false)}
       >
         <div className="p-8 text-center">
-          <h3 className="text-2xl text-primary mb-6">Elige tu nuevo plan</h3>
+          <h3 className="text-2xl text-primary mb-6">
+            {t("plan.chooseNewPlan")}
+          </h3>
           <div className="flex justify-center gap-8 mt-4">
             {UPGRADE_PLANS.map((plan) => (
               <div

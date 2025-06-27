@@ -19,6 +19,7 @@ import EditProgressFormWrapper from "./components/EditProgressFormWrapper";
 import UserProfile from "./pages/UserProfile";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
+import "./i18n";
 
 console.log("credential", process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 

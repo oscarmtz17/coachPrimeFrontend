@@ -1,0 +1,43 @@
+{
+    "common": {
+        "back": "Back",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit"
+    },
+    "profile": {
+        "title": "User Profile",
+        "name": "Name",
+        "lastName": "Last Name",
+        "phone": "Phone",
+        "email": "Email",
+        "emailNotEditable": "Email cannot be changed",
+        "changePassword": "Change Password",
+        "changeLogo": "Change Logo",
+        "uploadLogo": "Upload Logo",
+        "uploadLogoButton": "Upload Logo"
+    },
+    "plan": {
+        "currentPlan": "Your Current Plan",
+        "plan": "Plan",
+        "status": "Status",
+        "endDate": "End Date",
+        "paySubscription": "Pay Subscription",
+        "cancelSubscription": "Cancel Subscription",
+        "upgradePlan": "Upgrade Plan",
+        "loading": "Loading plan information...",
+        "chooseNewPlan": "Choose your new plan"
+    },
+    "password": {
+        "changePassword": "Change Password",
+        "current": "Current Password",
+        "new": "New Password",
+        "confirmNew": "Confirm New Password",
+        "show": "Show",
+        "hide": "Hide"
+    },
+    "modal": {
+        "accept": "Accept",
+        "cancel": "Cancel"
+    }
+}
