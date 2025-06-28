@@ -149,5 +149,17 @@
         "updatePlan": "Actualiza tu plan",
         "manageSubscription": "Gestionar suscripción",
         "searchPlaceholder": "Buscar por nombre, apellido, email o teléfono..."
+    },
+    "editClient": {
+        "title": "Editar Cliente",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "email": "Email",
+        "phone": "Teléfono",
+        "phonePlaceholder": "Ejemplo: 1234567890",
+        "phoneValidation": "Debe tener exactamente 10 dígitos",
+        "gender": "Sexo",
+        "male": "Masculino",
+        "female": "Femenino"
     }
 }
