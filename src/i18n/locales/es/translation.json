@@ -85,5 +85,18 @@
         "sendButton": "Enviar",
         "success": "Hemos enviado un enlace de recuperación a tu correo.",
         "error": "Hubo un problema. Por favor, intenta de nuevo."
+    },
+    "resetPassword": {
+        "title": "Restablecer Contraseña",
+        "newPassword": "Nueva Contraseña",
+        "confirmPassword": "Confirmar Contraseña",
+        "show": "Mostrar",
+        "hide": "Ocultar",
+        "requirements": "La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:\n- Tenga al menos 8 caracteres.\n- Contenga al menos una letra mayúscula.\n- Contenga al menos una letra minúscula.\n- Contenga al menos un número.\n- Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).",
+        "noMatch": "Las contraseñas no coinciden.",
+        "success": "Contraseña restablecida correctamente.",
+        "error": "Hubo un problema. Por favor, intenta de nuevo.",
+        "loading": "Cargando...",
+        "resetButton": "Restablecer"
     }
 }

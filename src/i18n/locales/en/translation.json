@@ -85,5 +85,18 @@
         "sendButton": "Send",
         "success": "We have sent a recovery link to your email.",
         "error": "There was a problem. Please try again."
+    },
+    "resetPassword": {
+        "title": "Reset Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "show": "Show",
+        "hide": "Hide",
+        "requirements": "The new password does not meet the security requirements. Make sure:\n- It has at least 8 characters.\n- It contains at least one uppercase letter.\n- It contains at least one lowercase letter.\n- It contains at least one number.\n- It includes at least one special character (e.g., !@#$%^&*).",
+        "noMatch": "Passwords do not match.",
+        "success": "Password reset successfully.",
+        "error": "There was a problem. Please try again.",
+        "loading": "Loading...",
+        "resetButton": "Reset"
     }
 }
