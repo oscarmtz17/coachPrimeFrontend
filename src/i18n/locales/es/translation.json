@@ -108,5 +108,10 @@
         "title": "Pago Cancelado",
         "message": "Parece que no completaste el pago. Si deseas intentarlo nuevamente, ingresa con tu usuario y contraseña y vuelve a seleccionar tu plan en tu perfil.",
         "goToRegister": "Iniciar Sesión"
+    },
+    "dashboard": {
+        "title": "Bienvenido al Dashboard",
+        "profile": "Perfil",
+        "logout": "Cerrar sesión"
     }
 }

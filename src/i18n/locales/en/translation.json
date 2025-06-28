@@ -108,5 +108,10 @@
         "title": "Payment Cancelled",
         "message": "It seems you did not complete the payment. If you want to try again, log in with your user and password and select your plan again in your profile.",
         "goToRegister": "Login"
+    },
+    "dashboard": {
+        "title": "Welcome to the Dashboard",
+        "profile": "Profile",
+        "logout": "Logout"
     }
 }
