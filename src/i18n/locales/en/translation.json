@@ -103,5 +103,10 @@
         "title": "Payment Successful!",
         "message": "Thank you for registering. Your account has been successfully activated.",
         "goToLogin": "Go to Login"
+    },
+    "cancel": {
+        "title": "Payment Cancelled",
+        "message": "It seems you did not complete the payment. If you want to try again, log in with your user and password and select your plan again in your profile.",
+        "goToRegister": "Login"
     }
 }

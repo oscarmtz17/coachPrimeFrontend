@@ -103,5 +103,10 @@
         "title": "¡Pago Exitoso!",
         "message": "Gracias por tu registro. Tu cuenta ha sido activada exitosamente.",
         "goToLogin": "Ir a Iniciar Sesión"
+    },
+    "cancel": {
+        "title": "Pago Cancelado",
+        "message": "Parece que no completaste el pago. Si deseas intentarlo nuevamente, ingresa con tu usuario y contraseña y vuelve a seleccionar tu plan en tu perfil.",
+        "goToRegister": "Iniciar Sesión"
     }
 }
