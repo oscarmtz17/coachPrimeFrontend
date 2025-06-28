@@ -125,5 +125,29 @@
         "gender": "Sexo",
         "male": "Masculino",
         "female": "Femenino"
+    },
+    "clientList": {
+        "title": "Lista de Clientes",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "email": "Email",
+        "phone": "Teléfono",
+        "gender": "Sexo",
+        "user": "Usuario",
+        "progress": "Progresos",
+        "routines": "Rutinas",
+        "diets": "Dietas",
+        "addClient": "Agregar Cliente",
+        "refresh": "Refrescar Lista",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "add": "Agregar",
+        "show": "Mostrar",
+        "limitReached": "Has alcanzado el límite de clientes para tu plan.",
+        "toAddMore": "para agregar más.",
+        "subscriptionInactive": "Tienes un plan premium, pero tu suscripción no está activa. Por favor, reactiva tu suscripción para poder agregar más clientes.",
+        "updatePlan": "Actualiza tu plan",
+        "manageSubscription": "Gestionar suscripción",
+        "searchPlaceholder": "Buscar por nombre, apellido, email o teléfono..."
     }
 }
