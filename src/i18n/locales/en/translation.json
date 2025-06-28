@@ -113,5 +113,17 @@
         "title": "Welcome to the Dashboard",
         "profile": "Profile",
         "logout": "Logout"
+    },
+    "addClient": {
+        "title": "Add Client",
+        "name": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "phonePlaceholder": "Example: 5558887766",
+        "phoneValidation": "Must be exactly 10 digits",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female"
     }
 }
