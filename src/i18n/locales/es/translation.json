@@ -98,5 +98,10 @@
         "error": "Hubo un problema. Por favor, intenta de nuevo.",
         "loading": "Cargando...",
         "resetButton": "Restablecer"
+    },
+    "success": {
+        "title": "¡Pago Exitoso!",
+        "message": "Gracias por tu registro. Tu cuenta ha sido activada exitosamente.",
+        "goToLogin": "Ir a Iniciar Sesión"
     }
 }

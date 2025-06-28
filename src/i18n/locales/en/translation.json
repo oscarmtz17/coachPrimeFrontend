@@ -98,5 +98,10 @@
         "error": "There was a problem. Please try again.",
         "loading": "Loading...",
         "resetButton": "Reset"
+    },
+    "success": {
+        "title": "Payment Successful!",
+        "message": "Thank you for registering. Your account has been successfully activated.",
+        "goToLogin": "Go to Login"
     }
 }
