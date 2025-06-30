@@ -189,5 +189,22 @@
     "editDiet": "Editar Dieta",
     "deleteDiet": "Eliminar Dieta",
     "close": "Cerrar"
+  },
+  "editDiet": {
+    "title": "Editar Dieta",
+    "dietName": "Nombre de la Dieta",
+    "notes": "Notas",
+    "meal": "Comida",
+    "addMeal": "Agregar Comida",
+    "removeMeal": "Eliminar Comida",
+    "addFood": "Agregar Alimento",
+    "removeFood": "Eliminar Alimento",
+    "mealNamePlaceholder": "Nombre de la comida",
+    "timePlaceholder": "Hora",
+    "foodNamePlaceholder": "Nombre del alimento",
+    "quantityPlaceholder": "Cantidad",
+    "unitPlaceholder": "Unidad (Kg, gr, tazas, etc.)",
+    "saveChanges": "Guardar Cambios",
+    "close": "Cerrar"
   }
 }

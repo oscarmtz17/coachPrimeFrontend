@@ -189,5 +189,22 @@
     "editDiet": "Edit Diet",
     "deleteDiet": "Delete Diet",
     "close": "Close"
+  },
+  "editDiet": {
+    "title": "Edit Diet",
+    "dietName": "Diet Name",
+    "notes": "Notes",
+    "meal": "Meal",
+    "addMeal": "Add Meal",
+    "removeMeal": "Remove Meal",
+    "addFood": "Add Food",
+    "removeFood": "Remove Food",
+    "mealNamePlaceholder": "Meal name",
+    "timePlaceholder": "Time",
+    "foodNamePlaceholder": "Food name",
+    "quantityPlaceholder": "Quantity",
+    "unitPlaceholder": "Unit (Kg, gr, cups, etc.)",
+    "saveChanges": "Save Changes",
+    "close": "Close"
   }
 }
