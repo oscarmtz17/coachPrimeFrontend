@@ -310,5 +310,12 @@
     "addExerciseToCircuit": "Agregar Ejercicio al Circuito",
     "saveRoutine": "Guardar Rutina",
     "cancel": "Cancelar"
+  },
+  "editRoutine": {
+    "title": "Editar Rutina",
+    "removeImage": "Quitar Imagen",
+    "addExercise": "Agregar Ejercicio",
+    "saveChanges": "Guardar Cambios",
+    "close": "Cerrar"
   }
 }

@@ -1,5 +1,6 @@
 // src/components/EditRoutineForm.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useEditRoutineForm } from "../hooks/useEditRoutineForm";
 import Modal from "./Modal";
 import ImageSelector from "./ImageSelector";
@@ -15,6 +16,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
   onRoutineUpdated,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const {
     nombre,
     setNombre,
@@ -40,10 +42,30 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
     handleCloseWithConfirmation,
   } = useEditRoutineForm(rutinaId, onRoutineUpdated, onClose);
 
+  // Días de la semana (valores en inglés, textos traducidos)
+  const weekDays = [
+    { value: "Monday", label: t("addRoutine.monday") },
+    { value: "Tuesday", label: t("addRoutine.tuesday") },
+    { value: "Wednesday", label: t("addRoutine.wednesday") },
+    { value: "Thursday", label: t("addRoutine.thursday") },
+    { value: "Friday", label: t("addRoutine.friday") },
+    { value: "Saturday", label: t("addRoutine.saturday") },
+    { value: "Sunday", label: t("addRoutine.sunday") },
+  ];
+
+  // Agrupaciones (valores en inglés, textos traducidos)
+  const groupTypes = [
+    { value: "Single Exercise", label: t("addRoutine.singleExercise") },
+    { value: "Bi-Set", label: t("addRoutine.biSet") },
+    { value: "Tri-Set", label: t("addRoutine.triSet") },
+    { value: "Quad-Set", label: t("addRoutine.quadSet") },
+    { value: "Circuit", label: t("addRoutine.circuit") },
+  ];
+
   return (
     <div className="bg-zinc-800 text-white p-6 rounded-lg w-full max-w-4xl mx-auto">
       <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
-        Editar Rutina
+        {t("editRoutine.title")}
       </h3>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {successMessage && (
@@ -52,7 +74,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
 
       <div className="flex flex-col gap-2 mb-4">
         <label className="text-yellow-400 font-bold">
-          Nombre de la Rutina:
+          {t("addRoutine.routineName")}:
         </label>
         <input
           value={nombre}
@@ -62,7 +84,9 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
       </div>
 
       <div className="flex flex-col gap-2 mb-4">
-        <label className="text-yellow-400 font-bold">Descripción:</label>
+        <label className="text-yellow-400 font-bold">
+          {t("addRoutine.description")}:
+        </label>
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
@@ -74,20 +98,20 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
         onClick={handleAddDay}
         className="bg-blue-600 text-white py-2 px-4 rounded mt-4 hover:bg-blue-700 transition-colors"
       >
-        Agregar Día de Entrenamiento
+        {t("addRoutine.addDay")}
       </button>
 
       {diasEntrenamiento.map((dia, dayIndex) => (
         <div key={dayIndex} className="bg-zinc-700 p-4 rounded-lg mb-4">
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-yellow-400 text-xl font-semibold">
-              Día de la Semana
+              {t("addRoutine.weekDay")}
             </h4>
             <button
               onClick={() => handleRemoveDay(dayIndex)}
               className="bg-red-600 text-white border-none py-1 px-3 rounded cursor-pointer text-sm hover:bg-red-700 transition-colors"
             >
-              Quitar Día
+              {t("addRoutine.removeDay")}
             </button>
           </div>
 
@@ -96,47 +120,48 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
             onChange={(e) => handleDayChange(dayIndex, e.target.value)}
             className="p-2 rounded border border-gray-300 bg-zinc-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 mb-4"
           >
-            <option value="">Selecciona un día</option>
-            <option value="Lunes">Lunes</option>
-            <option value="Martes">Martes</option>
-            <option value="Miércoles">Miércoles</option>
-            <option value="Jueves">Jueves</option>
-            <option value="Viernes">Viernes</option>
-            <option value="Sábado">Sábado</option>
-            <option value="Domingo">Domingo</option>
+            <option value="">{t("addRoutine.selectDay")}</option>
+            {weekDays.map((d) => (
+              <option key={d.value} value={d.value}>
+                {d.label}
+              </option>
+            ))}
           </select>
 
           <h4 className="text-yellow-400 text-xl font-semibold mt-4 mb-2">
-            Agrupación
+            {t("addRoutine.group")}
           </h4>
           <select
             onChange={(e) => handleAddGroup(dayIndex, e.target.value)}
             className="p-2 rounded border border-gray-300 bg-zinc-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 mb-4"
           >
-            <option value="">Selecciona una agrupación</option>
-            <option value="Ejercicio Individual">Ejercicio Individual</option>
-            <option value="Bi-Serie">Bi-Serie</option>
-            <option value="Tri-Serie">Tri-Serie</option>
-            <option value="Cuatri-Serie">Cuatri-Serie</option>
-            <option value="Circuito">Circuito</option>
+            <option value="">{t("addRoutine.selectGroup")}</option>
+            {groupTypes.map((g) => (
+              <option key={g.value} value={g.value}>
+                {g.label}
+              </option>
+            ))}
           </select>
 
           {dia.agrupaciones.map((agrupacion, groupIndex) => (
             <div key={groupIndex} className="p-3 rounded bg-zinc-600 mt-2">
               <div className="flex justify-between items-center mb-3">
-                <h5 className="font-bold text-yellow-400">{agrupacion.tipo}</h5>
+                <h5 className="font-bold text-yellow-400">
+                  {groupTypes.find((g) => g.value === agrupacion.tipo)?.label ||
+                    agrupacion.tipo}
+                </h5>
                 <button
                   onClick={() => handleRemoveGroup(dayIndex, groupIndex)}
                   className="bg-red-600 text-white border-none py-1 px-3 rounded cursor-pointer text-sm hover:bg-red-700 transition-colors"
                 >
-                  Quitar Agrupación
+                  {t("addRoutine.removeGroup")}
                 </button>
               </div>
 
               {agrupacion.ejercicios.map((ejercicio, exerciseIndex) => (
                 <div key={exerciseIndex} className="flex flex-col gap-2 mb-2">
                   <label className="text-yellow-400 text-sm font-bold">
-                    Nombre del Ejercicio
+                    {t("addRoutine.exerciseName")}
                   </label>
                   <input
                     value={ejercicio.nombre}
@@ -152,7 +177,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                     className="p-2 rounded border border-gray-300 bg-zinc-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   />
                   <label className="text-yellow-400 text-sm font-bold">
-                    Series
+                    {t("addRoutine.series")}
                   </label>
                   <input
                     type="number"
@@ -170,7 +195,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                     className="p-2 rounded border border-gray-300 bg-zinc-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   />
                   <label className="text-yellow-400 text-sm font-bold">
-                    Repeticiones
+                    {t("addRoutine.repetitions")}
                   </label>
                   <input
                     type="number"
@@ -192,7 +217,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                     <div className="flex items-center gap-2">
                       <img
                         src={ejercicio.imagenUrl || ejercicio.imagenKey}
-                        alt="Imagen del Ejercicio"
+                        alt={t("addRoutine.exerciseImage")}
                         className="w-24 h-24 object-cover rounded border border-gray-300"
                       />
                       <button
@@ -201,7 +226,7 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                         }
                         className="bg-red-600 text-white border-none py-1 px-3 rounded cursor-pointer text-sm hover:bg-red-700 transition-colors"
                       >
-                        Quitar Imagen
+                        {t("editRoutine.removeImage")}
                       </button>
                     </div>
                   ) : (
@@ -211,12 +236,12 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                       }
                       className="bg-blue-600 text-white py-2 px-4 rounded mt-2 hover:bg-blue-700 transition-colors"
                     >
-                      Seleccionar Imagen para Ejercicio
+                      {t("addRoutine.selectExerciseImage")}
                     </button>
                   )}
 
-                  {/* Botón para quitar ejercicio solo si la agrupación es tipo Circuito */}
-                  {agrupacion.tipo === "Circuito" && (
+                  {/* Botón para quitar ejercicio solo si la agrupación es tipo Circuit */}
+                  {agrupacion.tipo === "Circuit" && (
                     <button
                       onClick={() =>
                         handleRemoveExerciseFromCircuit(
@@ -227,18 +252,18 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
                       }
                       className="bg-red-600 text-white border-none py-1 px-3 rounded cursor-pointer text-sm hover:bg-red-700 transition-colors"
                     >
-                      Quitar Ejercicio
+                      {t("addRoutine.removeExercise")}
                     </button>
                   )}
                 </div>
               ))}
 
-              {agrupacion.tipo === "Circuito" && (
+              {agrupacion.tipo === "Circuit" && (
                 <button
                   onClick={() => handleAddExercise(dayIndex, groupIndex)}
                   className="bg-blue-600 text-white py-2 px-4 rounded mt-4 hover:bg-blue-700 transition-colors"
                 >
-                  Agregar Ejercicio
+                  {t("editRoutine.addExercise")}
                 </button>
               )}
             </div>
@@ -251,13 +276,13 @@ const EditRoutineForm: React.FC<EditRoutineFormProps> = ({
           onClick={handleUpdateRoutine}
           className="bg-yellow-400 text-black py-2 px-4 rounded font-semibold hover:bg-yellow-300 transition-colors"
         >
-          Guardar Cambios
+          {t("editRoutine.saveChanges")}
         </button>
         <button
           onClick={handleCloseWithConfirmation}
           className="bg-gray-300 text-zinc-800 py-2 px-4 rounded font-semibold hover:bg-gray-400 transition-colors"
         >
-          Cerrar
+          {t("editRoutine.close")}
         </button>
       </div>
 
