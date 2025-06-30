@@ -1,5 +1,6 @@
 // src/components/AddProgressForm.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import useAddProgressForm from "../hooks/useAddProgressForm";
 
 interface AddProgressFormProps {
@@ -8,25 +9,12 @@ interface AddProgressFormProps {
   onClose: () => void;
 }
 
-const PROGRESS_FIELDS = [
-  { label: "Peso (kg):", valueKey: "pesoKg", setterKey: "setPesoKg" },
-  {
-    label: "Estatura (cm):",
-    valueKey: "estaturaCm",
-    setterKey: "setEstaturaCm",
-  },
-  { label: "Cintura (cm):", valueKey: "cinturaCm", setterKey: "setCinturaCm" },
-  { label: "Cadera (cm):", valueKey: "caderaCm", setterKey: "setCaderaCm" },
-  { label: "Pecho (cm):", valueKey: "pechoCm", setterKey: "setPechoCm" },
-  { label: "Brazo (cm):", valueKey: "brazoCm", setterKey: "setBrazoCm" },
-  { label: "Pierna (cm):", valueKey: "piernaCm", setterKey: "setPiernaCm" },
-];
-
 const AddProgressForm: React.FC<AddProgressFormProps> = ({
   clienteId,
   onProgressAdded,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const {
     pesoKg,
     estaturaCm,
@@ -79,11 +67,51 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
     setPiernaCm,
   };
 
+  const PROGRESS_FIELDS = [
+    {
+      label: t("addProgress.weight"),
+      valueKey: "pesoKg",
+      setterKey: "setPesoKg",
+    },
+    {
+      label: t("addProgress.height"),
+      valueKey: "estaturaCm",
+      setterKey: "setEstaturaCm",
+    },
+    {
+      label: t("addProgress.waist"),
+      valueKey: "cinturaCm",
+      setterKey: "setCinturaCm",
+    },
+    {
+      label: t("addProgress.hip"),
+      valueKey: "caderaCm",
+      setterKey: "setCaderaCm",
+    },
+    {
+      label: t("addProgress.chest"),
+      valueKey: "pechoCm",
+      setterKey: "setPechoCm",
+    },
+    {
+      label: t("addProgress.arm"),
+      valueKey: "brazoCm",
+      setterKey: "setBrazoCm",
+    },
+    {
+      label: t("addProgress.leg"),
+      valueKey: "piernaCm",
+      setterKey: "setPiernaCm",
+    },
+  ];
+
   return (
     <div className="w-full max-w-2xl mx-auto bg-black bg-opacity-90 p-8 rounded-xl shadow-lg">
-      <h3 className="text-2xl font-bold text-primary mb-6 text-center">
-        Registrar Progreso
-      </h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-2xl font-bold text-primary text-center">
+          {t("addProgress.title")}
+        </h3>
+      </div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
       {/* Campos de progreso */}
@@ -103,62 +131,61 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
 
       <div className="flex flex-col gap-2 mb-4">
         <label className="text-primary font-semibold">
-          Nivel de Actividad:
+          {t("addProgress.activityLevel")}:
         </label>
         <select
           value={nivelActividad}
           onChange={(e) => {
-            const nivel = e.target.value;
+            const nivel = e.target.value; // Siempre en inglés
             let factor = factorActividad;
             switch (nivel) {
-              case "Muy ligera":
+              case "Very Light":
                 factor = 1.2;
                 break;
-              case "Ligera":
+              case "Light":
                 factor = 1.375;
                 break;
-              case "Moderada":
+              case "Moderate":
                 factor = 1.55;
                 break;
-              case "Activa":
+              case "Active":
                 factor = 1.725;
                 break;
-              case "Muy activa":
+              case "Very Active":
                 factor = 1.9;
                 break;
               default:
                 break;
             }
-            setNivelActividad(nivel);
+            setNivelActividad(nivel); // Siempre en inglés
             setFactorActividad(factor);
           }}
           className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="">Selecciona nivel</option>
-          <option value="Muy ligera">
-            Muy ligera (1.2) - Sentado, tumbado. Poco o nada ejercicio
+          <option value="">{t("addProgress.selectLevel")}</option>
+          <option value="Very Light">
+            {t("addProgress.veryLight")} (1.2) -{" "}
+            {t("addProgress.veryLightDesc")}
           </option>
-          <option value="Ligera">
-            Ligera (1.375) - De pie, conducir, planchar, caminar. Deporte 1-3
-            veces/semana
+          <option value="Light">
+            {t("addProgress.light")} (1.375) - {t("addProgress.lightDesc")}
           </option>
-          <option value="Moderada">
-            Moderada (1.55) - Limpiar, caminar rápido, cargar peso. Deporte 3-5
-            veces/semana
+          <option value="Moderate">
+            {t("addProgress.moderate")} (1.55) - {t("addProgress.moderateDesc")}
           </option>
-          <option value="Activa">
-            Activa (1.725) - Construcción, subir escaleras. Deporte 6-7
-            veces/semana
+          <option value="Active">
+            {t("addProgress.active")} (1.725) - {t("addProgress.activeDesc")}
           </option>
-          <option value="Muy activa">
-            Muy activa (1.9) - Trabajos de fuerza, correr. Deporte 2 horas/día
+          <option value="Very Active">
+            {t("addProgress.veryActive")} (1.9) -{" "}
+            {t("addProgress.veryActiveDesc")}
           </option>
         </select>
       </div>
 
       <div className="flex flex-col gap-2 mb-4">
         <label className="text-primary font-semibold">
-          Factor de Actividad:
+          {t("addProgress.activityFactor")}:
         </label>
         <input
           type="number"
@@ -171,7 +198,9 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
       </div>
 
       <div className="flex flex-col gap-2 mb-4">
-        <label className="text-primary font-semibold">Notas:</label>
+        <label className="text-primary font-semibold">
+          {t("addProgress.notes")}:
+        </label>
         <textarea
           value={notas}
           onChange={(e) => setNotas(e.target.value)}
@@ -182,7 +211,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
       {/* Sección para subir imágenes */}
       <div className="flex flex-col gap-2 mb-2">
         <label className="text-primary font-semibold">
-          Fotos de Progreso (Máximo 10):
+          {t("addProgress.progressPhotos")} ({t("addProgress.max10")}):
         </label>
         <input
           type="file"
@@ -193,7 +222,7 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
           className="w-full p-3 rounded-md border border-border-gray bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
         />
         <p className="text-gray-400 text-sm">
-          {images.length}/10 imágenes seleccionadas
+          {images.length}/10 {t("addProgress.imagesSelected")}
         </p>
       </div>
 
@@ -226,13 +255,15 @@ const AddProgressForm: React.FC<AddProgressFormProps> = ({
           className="flex-1 bg-primary text-black py-3 px-6 rounded-md text-base font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Guardando..." : "Guardar Progreso"}
+          {isSubmitting
+            ? t("addProgress.saving")
+            : t("addProgress.saveProgress")}
         </button>
         <button
           onClick={handleCloseWithConfirmation}
           className="flex-1 bg-danger text-white py-3 px-6 rounded-md text-base font-semibold cursor-pointer transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-dark"
         >
-          Cancelar
+          {t("addProgress.cancel")}
         </button>
       </div>
     </div>

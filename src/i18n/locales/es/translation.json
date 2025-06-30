@@ -210,5 +210,35 @@
   "editDietWrapper": {
     "title": "Editar Dieta",
     "error": "Error: falta información de cliente o dieta."
+  },
+  "addProgress": {
+    "title": "Registrar Progreso",
+    "weight": "Peso (kg):",
+    "height": "Estatura (cm):",
+    "waist": "Cintura (cm):",
+    "hip": "Cadera (cm):",
+    "chest": "Pecho (cm):",
+    "arm": "Brazo (cm):",
+    "leg": "Pierna (cm):",
+    "activityLevel": "Nivel de Actividad",
+    "selectLevel": "Selecciona nivel",
+    "veryLight": "Muy ligera",
+    "veryLightDesc": "Sentado, tumbado. Poco o nada ejercicio",
+    "light": "Ligera",
+    "lightDesc": "De pie, conducir, planchar, caminar. Deporte 1-3 veces/semana",
+    "moderate": "Moderada",
+    "moderateDesc": "Limpiar, caminar rápido, cargar peso. Deporte 3-5 veces/semana",
+    "active": "Activa",
+    "activeDesc": "Construcción, subir escaleras. Deporte 6-7 veces/semana",
+    "veryActive": "Muy activa",
+    "veryActiveDesc": "Trabajos de fuerza, correr. Deporte 2 horas/día",
+    "activityFactor": "Factor de Actividad",
+    "notes": "Notas",
+    "progressPhotos": "Fotos de Progreso",
+    "max10": "Máximo 10",
+    "imagesSelected": "imágenes seleccionadas",
+    "saveProgress": "Guardar Progreso",
+    "saving": "Guardando...",
+    "cancel": "Cancelar"
   }
 }

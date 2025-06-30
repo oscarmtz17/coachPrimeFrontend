@@ -210,5 +210,35 @@
   "editDietWrapper": {
     "title": "Edit Diet",
     "error": "Error: Missing client or diet information."
+  },
+  "addProgress": {
+    "title": "Record Progress",
+    "weight": "Weight (kg):",
+    "height": "Height (cm):",
+    "waist": "Waist (cm):",
+    "hip": "Hip (cm):",
+    "chest": "Chest (cm):",
+    "arm": "Arm (cm):",
+    "leg": "Leg (cm):",
+    "activityLevel": "Activity Level",
+    "selectLevel": "Select level",
+    "veryLight": "Very Light",
+    "veryLightDesc": "Sitting, lying down. Little or no exercise",
+    "light": "Light",
+    "lightDesc": "Standing, driving, ironing, walking. Sport 1-3 times/week",
+    "moderate": "Moderate",
+    "moderateDesc": "Cleaning, fast walking, carrying weight. Sport 3-5 times/week",
+    "active": "Active",
+    "activeDesc": "Construction, climbing stairs. Sport 6-7 times/week",
+    "veryActive": "Very Active",
+    "veryActiveDesc": "Strength work, running. Sport 2 hours/day",
+    "activityFactor": "Activity Factor",
+    "notes": "Notes",
+    "progressPhotos": "Progress Photos",
+    "max10": "Maximum 10",
+    "imagesSelected": "images selected",
+    "saveProgress": "Save Progress",
+    "saving": "Saving...",
+    "cancel": "Cancel"
   }
 }
