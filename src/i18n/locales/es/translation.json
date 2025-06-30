@@ -350,5 +350,25 @@
     "editRoutine": "Editar Rutina",
     "deleteRoutine": "Eliminar Rutina",
     "close": "Cerrar"
+  },
+  "imageSelector": {
+    "title": "Imágenes",
+    "important": "¡Importante!",
+    "privacy": "Por tu privacidad nos aseguramos que las imágenes que subas solo podrán ser vistas por ti, ningún otro usuario puede visualizar o usar tus imágenes.",
+    "selectCategory": "Seleccione una categoría",
+    "shoulders": "Hombro",
+    "chest": "Pecho",
+    "back": "Espalda",
+    "abs": "Abdomen",
+    "biceps": "Bíceps",
+    "triceps": "Tríceps",
+    "legs": "Piernas y Glúteos",
+    "uploadImage": "Subir Imagen",
+    "searchPlaceholder": "Buscar imagen por nombre",
+    "noName": "Nombre no disponible",
+    "previewTitle": "Vista previa de la imagen",
+    "imageNamePlaceholder": "Nombre de la imagen",
+    "accept": "Aceptar",
+    "cancel": "Cancelar"
   }
 }

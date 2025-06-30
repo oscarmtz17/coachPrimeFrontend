@@ -350,5 +350,25 @@
     "editRoutine": "Edit Routine",
     "deleteRoutine": "Delete Routine",
     "close": "Close"
+  },
+  "imageSelector": {
+    "title": "Images",
+    "important": "Important",
+    "privacy": "For your privacy, the images you upload can only be seen by you. No other user can view or use your images.",
+    "selectCategory": "Select a category",
+    "shoulders": "Shoulders",
+    "chest": "Chest",
+    "back": "Back",
+    "abs": "Abs",
+    "biceps": "Biceps",
+    "triceps": "Triceps",
+    "legs": "Legs and Glutes",
+    "uploadImage": "Upload Image",
+    "searchPlaceholder": "Search image by name",
+    "noName": "Name not available",
+    "previewTitle": "Image Preview",
+    "imageNamePlaceholder": "Image name",
+    "accept": "Accept",
+    "cancel": "Cancel"
   }
 }
