@@ -248,5 +248,10 @@
     "image": "Imagen",
     "newImage": "Nueva Imagen",
     "saveChanges": "Guardar Cambios"
+  },
+  "editProgressWrapper": {
+    "paramError": "Error: falta información de cliente o progreso.",
+    "loadError": "No se pudo cargar el progreso seleccionado.",
+    "loading": "Cargando progreso..."
   }
 }

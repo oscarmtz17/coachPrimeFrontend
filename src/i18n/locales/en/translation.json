@@ -248,5 +248,10 @@
     "image": "Image",
     "newImage": "New Image",
     "saveChanges": "Save Changes"
+  },
+  "editProgressWrapper": {
+    "paramError": "Error: missing client or progress information.",
+    "loadError": "Could not load the selected progress.",
+    "loading": "Loading progress..."
   }
 }

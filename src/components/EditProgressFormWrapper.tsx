@@ -1,5 +1,6 @@
 // src/components/EditProgressFormWrapper.tsx
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import EditProgressForm from "./EditProgressForm";
 import api from "../services/api";
@@ -20,6 +21,7 @@ interface Progress {
 }
 
 const EditProgressFormWrapper: React.FC = () => {
+  const { t } = useTranslation();
   const { clienteId, progresoId } = useParams<{
     clienteId: string;
     progresoId: string;
@@ -36,18 +38,18 @@ const EditProgressFormWrapper: React.FC = () => {
         setProgress(response.data);
         setError(null);
       } catch (err) {
-        setError("No se pudo cargar el progreso seleccionado.");
+        setError(t("editProgressWrapper.loadError"));
         console.error("Error al cargar el progreso:", err);
       }
     };
 
     fetchProgress();
-  }, [clienteId, progresoId]);
+  }, [clienteId, progresoId, t]);
 
   if (!clienteId || !progresoId) {
     return (
       <p className="text-red-500 text-center text-xl">
-        Error: falta información de cliente o progreso.
+        {t("editProgressWrapper.paramError")}
       </p>
     );
   }
@@ -59,7 +61,7 @@ const EditProgressFormWrapper: React.FC = () => {
   if (!progress) {
     return (
       <p className="text-yellow-400 text-center text-xl">
-        Cargando progreso...
+        {t("editProgressWrapper.loading")}
       </p>
     );
   }
