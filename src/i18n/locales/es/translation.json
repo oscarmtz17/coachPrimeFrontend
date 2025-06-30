@@ -1,165 +1,181 @@
 {
-    "common": {
-        "back": "Regresar",
-        "save": "Guardar",
-        "cancel": "Cancelar",
-        "edit": "Editar"
-    },
-    "profile": {
-        "title": "Perfil del Usuario",
-        "name": "Nombre",
-        "lastName": "Apellido",
-        "phone": "Teléfono",
-        "email": "Email",
-        "emailNotEditable": "El email no se puede modificar",
-        "changePassword": "Cambiar Contraseña",
-        "changeLogo": "Cambiar Logo",
-        "uploadLogo": "Subir Logo",
-        "uploadLogoButton": "Subir Logotipo"
-    },
-    "plan": {
-        "currentPlan": "Tu Plan Actual",
-        "plan": "Plan",
-        "status": "Estatus",
-        "endDate": "Fecha de finalización",
-        "paySubscription": "Pagar Suscripción",
-        "cancelSubscription": "Cancelar Suscripción",
-        "upgradePlan": "Mejorar Plan",
-        "loading": "Cargando información del plan...",
-        "chooseNewPlan": "Elige tu nuevo plan"
-    },
-    "password": {
-        "changePassword": "Cambiar Contraseña",
-        "current": "Contraseña Actual",
-        "new": "Nueva Contraseña",
-        "confirmNew": "Confirmar Nueva Contraseña",
-        "show": "Mostrar",
-        "hide": "Ocultar"
-    },
-    "modal": {
-        "accept": "Aceptar",
-        "cancel": "Cancelar"
-    },
-    "home": {
-        "title": "Haz crecer tu comunidad fitness",
-        "subtitle": "Gestiona tu negocio fitness con profesionalismo y enfoque.",
-        "getStarted": "Comenzar",
-        "login": "Iniciar sesión",
-        "createAccount": "Crear cuenta"
-    },
-    "login": {
-        "title": "Iniciar Sesión",
-        "email": "Email",
-        "password": "Contraseña",
-        "loginButton": "Iniciar sesión",
-        "createAccount": "Crear cuenta",
-        "forgotPassword": "Olvidé mi contraseña",
-        "invalidCredentials": "Credenciales incorrectas. Inténtalo nuevamente."
-    },
-    "register": {
-        "title": "Registrarse",
-        "name": "Nombre",
-        "lastName": "Apellido",
-        "email": "Email",
-        "phone": "Teléfono",
-        "password": "Contraseña",
-        "confirmPassword": "Confirmar Contraseña",
-        "show": "Mostrar",
-        "hide": "Ocultar",
-        "selectPlan": "Selecciona Tu Plan",
-        "registerButton": "Registrar",
-        "loading": "Registrando...",
-        "alreadyAccount": "¿Ya tienes una cuenta? Iniciar sesión"
-    },
-    "plans": {
-        "basic": "Básico",
-        "basicDesc": "Hasta 3 clientes",
-        "premium": "Premium",
-        "premiumDesc": "Clientes ilimitados",
-        "premiumYear": "Premium Anual",
-        "premiumYearDesc": "Clientes ilimitados \nPago anual"
-    },
-    "forgotPassword": {
-        "title": "Recuperar Contraseña",
-        "emailLabel": "Ingresa tu correo",
-        "sendButton": "Enviar",
-        "success": "Hemos enviado un enlace de recuperación a tu correo.",
-        "error": "Hubo un problema. Por favor, intenta de nuevo."
-    },
-    "resetPassword": {
-        "title": "Restablecer Contraseña",
-        "newPassword": "Nueva Contraseña",
-        "confirmPassword": "Confirmar Contraseña",
-        "show": "Mostrar",
-        "hide": "Ocultar",
-        "requirements": "La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:\n- Tenga al menos 8 caracteres.\n- Contenga al menos una letra mayúscula.\n- Contenga al menos una letra minúscula.\n- Contenga al menos un número.\n- Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).",
-        "noMatch": "Las contraseñas no coinciden.",
-        "success": "Contraseña restablecida correctamente.",
-        "error": "Hubo un problema. Por favor, intenta de nuevo.",
-        "loading": "Cargando...",
-        "resetButton": "Restablecer"
-    },
-    "success": {
-        "title": "¡Pago Exitoso!",
-        "message": "Gracias por tu registro. Tu cuenta ha sido activada exitosamente.",
-        "goToLogin": "Ir a Iniciar Sesión"
-    },
-    "cancel": {
-        "title": "Pago Cancelado",
-        "message": "Parece que no completaste el pago. Si deseas intentarlo nuevamente, ingresa con tu usuario y contraseña y vuelve a seleccionar tu plan en tu perfil.",
-        "goToRegister": "Iniciar Sesión"
-    },
-    "dashboard": {
-        "title": "Bienvenido al Dashboard",
-        "profile": "Perfil",
-        "logout": "Cerrar sesión"
-    },
-    "addClient": {
-        "title": "Agregar Cliente",
-        "name": "Nombre",
-        "lastName": "Apellido",
-        "email": "Email",
-        "phone": "Teléfono",
-        "phonePlaceholder": "Ejemplo: 5558887766",
-        "phoneValidation": "Debe tener exactamente 10 dígitos",
-        "gender": "Sexo",
-        "male": "Masculino",
-        "female": "Femenino"
-    },
-    "clientList": {
-        "title": "Lista de Clientes",
-        "name": "Nombre",
-        "lastName": "Apellido",
-        "email": "Email",
-        "phone": "Teléfono",
-        "gender": "Sexo",
-        "user": "Usuario",
-        "progress": "Progresos",
-        "routines": "Rutinas",
-        "diets": "Dietas",
-        "addClient": "Agregar Cliente",
-        "refresh": "Refrescar Lista",
-        "edit": "Editar",
-        "delete": "Eliminar",
-        "add": "Agregar",
-        "show": "Mostrar",
-        "limitReached": "Has alcanzado el límite de clientes para tu plan.",
-        "toAddMore": "para agregar más.",
-        "subscriptionInactive": "Tienes un plan premium, pero tu suscripción no está activa. Por favor, reactiva tu suscripción para poder agregar más clientes.",
-        "updatePlan": "Actualiza tu plan",
-        "manageSubscription": "Gestionar suscripción",
-        "searchPlaceholder": "Buscar por nombre, apellido, email o teléfono..."
-    },
-    "editClient": {
-        "title": "Editar Cliente",
-        "name": "Nombre",
-        "lastName": "Apellido",
-        "email": "Email",
-        "phone": "Teléfono",
-        "phonePlaceholder": "Ejemplo: 1234567890",
-        "phoneValidation": "Debe tener exactamente 10 dígitos",
-        "gender": "Sexo",
-        "male": "Masculino",
-        "female": "Femenino"
-    }
+  "common": {
+    "back": "Regresar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar"
+  },
+  "profile": {
+    "title": "Perfil del Usuario",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Teléfono",
+    "email": "Email",
+    "emailNotEditable": "El email no se puede modificar",
+    "changePassword": "Cambiar Contraseña",
+    "changeLogo": "Cambiar Logo",
+    "uploadLogo": "Subir Logo",
+    "uploadLogoButton": "Subir Logotipo"
+  },
+  "plan": {
+    "currentPlan": "Tu Plan Actual",
+    "plan": "Plan",
+    "status": "Estatus",
+    "endDate": "Fecha de finalización",
+    "paySubscription": "Pagar Suscripción",
+    "cancelSubscription": "Cancelar Suscripción",
+    "upgradePlan": "Mejorar Plan",
+    "loading": "Cargando información del plan...",
+    "chooseNewPlan": "Elige tu nuevo plan"
+  },
+  "password": {
+    "changePassword": "Cambiar Contraseña",
+    "current": "Contraseña Actual",
+    "new": "Nueva Contraseña",
+    "confirmNew": "Confirmar Nueva Contraseña",
+    "show": "Mostrar",
+    "hide": "Ocultar"
+  },
+  "modal": {
+    "accept": "Aceptar",
+    "cancel": "Cancelar"
+  },
+  "home": {
+    "title": "Haz crecer tu comunidad fitness",
+    "subtitle": "Gestiona tu negocio fitness con profesionalismo y enfoque.",
+    "getStarted": "Comenzar",
+    "login": "Iniciar sesión",
+    "createAccount": "Crear cuenta"
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "loginButton": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "forgotPassword": "Olvidé mi contraseña",
+    "invalidCredentials": "Credenciales incorrectas. Inténtalo nuevamente."
+  },
+  "register": {
+    "title": "Registrarse",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "phone": "Teléfono",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "selectPlan": "Selecciona Tu Plan",
+    "registerButton": "Registrar",
+    "loading": "Registrando...",
+    "alreadyAccount": "¿Ya tienes una cuenta? Iniciar sesión"
+  },
+  "plans": {
+    "basic": "Básico",
+    "basicDesc": "Hasta 3 clientes",
+    "premium": "Premium",
+    "premiumDesc": "Clientes ilimitados",
+    "premiumYear": "Premium Anual",
+    "premiumYearDesc": "Clientes ilimitados \nPago anual"
+  },
+  "forgotPassword": {
+    "title": "Recuperar Contraseña",
+    "emailLabel": "Ingresa tu correo",
+    "sendButton": "Enviar",
+    "success": "Hemos enviado un enlace de recuperación a tu correo.",
+    "error": "Hubo un problema. Por favor, intenta de nuevo."
+  },
+  "resetPassword": {
+    "title": "Restablecer Contraseña",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "requirements": "La nueva contraseña no cumple con los requisitos de seguridad. Asegúrate de que:\n- Tenga al menos 8 caracteres.\n- Contenga al menos una letra mayúscula.\n- Contenga al menos una letra minúscula.\n- Contenga al menos un número.\n- Incluya al menos un carácter especial (por ejemplo: !@#$%^&*).",
+    "noMatch": "Las contraseñas no coinciden.",
+    "success": "Contraseña restablecida correctamente.",
+    "error": "Hubo un problema. Por favor, intenta de nuevo.",
+    "loading": "Cargando...",
+    "resetButton": "Restablecer"
+  },
+  "success": {
+    "title": "¡Pago Exitoso!",
+    "message": "Gracias por tu registro. Tu cuenta ha sido activada exitosamente.",
+    "goToLogin": "Ir a Iniciar Sesión"
+  },
+  "cancel": {
+    "title": "Pago Cancelado",
+    "message": "Parece que no completaste el pago. Si deseas intentarlo nuevamente, ingresa con tu usuario y contraseña y vuelve a seleccionar tu plan en tu perfil.",
+    "goToRegister": "Iniciar Sesión"
+  },
+  "dashboard": {
+    "title": "Bienvenido al Dashboard",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión"
+  },
+  "addClient": {
+    "title": "Agregar Cliente",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "phone": "Teléfono",
+    "phonePlaceholder": "Ejemplo: 5558887766",
+    "phoneValidation": "Debe tener exactamente 10 dígitos",
+    "gender": "Sexo",
+    "male": "Masculino",
+    "female": "Femenino"
+  },
+  "clientList": {
+    "title": "Lista de Clientes",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "phone": "Teléfono",
+    "gender": "Sexo",
+    "user": "Usuario",
+    "progress": "Progresos",
+    "routines": "Rutinas",
+    "diets": "Dietas",
+    "addClient": "Agregar Cliente",
+    "refresh": "Refrescar Lista",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "add": "Agregar",
+    "show": "Mostrar",
+    "limitReached": "Has alcanzado el límite de clientes para tu plan.",
+    "toAddMore": "para agregar más.",
+    "subscriptionInactive": "Tienes un plan premium, pero tu suscripción no está activa. Por favor, reactiva tu suscripción para poder agregar más clientes.",
+    "updatePlan": "Actualiza tu plan",
+    "manageSubscription": "Gestionar suscripción",
+    "searchPlaceholder": "Buscar por nombre, apellido, email o teléfono..."
+  },
+  "editClient": {
+    "title": "Editar Cliente",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "phone": "Teléfono",
+    "phonePlaceholder": "Ejemplo: 1234567890",
+    "phoneValidation": "Debe tener exactamente 10 dígitos",
+    "gender": "Sexo",
+    "male": "Masculino",
+    "female": "Femenino"
+  },
+  "addDiet": {
+    "title": "Agregar Nueva Dieta",
+    "dietName": "Nombre de la Dieta",
+    "notes": "Notas",
+    "addMeal": "Agregar Comida",
+    "meal": "Comida",
+    "addFood": "Agregar Alimento",
+    "removeMeal": "Quitar Comida",
+    "removeFood": "Quitar Alimento",
+    "mealNamePlaceholder": "Nombre de la comida",
+    "timePlaceholder": "Hora",
+    "foodNamePlaceholder": "Nombre del alimento",
+    "quantityPlaceholder": "Cantidad",
+    "unitPlaceholder": "Unidad (Kg, gr, tazas, etc.)",
+    "saveDiet": "Guardar Dieta"
+  }
 }

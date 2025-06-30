@@ -1,165 +1,181 @@
 {
-    "common": {
-        "back": "Back",
-        "save": "Save",
-        "cancel": "Cancel",
-        "edit": "Edit"
-    },
-    "profile": {
-        "title": "User Profile",
-        "name": "Name",
-        "lastName": "Last Name",
-        "phone": "Phone",
-        "email": "Email",
-        "emailNotEditable": "Email cannot be changed",
-        "changePassword": "Change Password",
-        "changeLogo": "Change Logo",
-        "uploadLogo": "Upload Logo",
-        "uploadLogoButton": "Upload Logo"
-    },
-    "plan": {
-        "currentPlan": "Your Current Plan",
-        "plan": "Plan",
-        "status": "Status",
-        "endDate": "End Date",
-        "paySubscription": "Pay Subscription",
-        "cancelSubscription": "Cancel Subscription",
-        "upgradePlan": "Upgrade Plan",
-        "loading": "Loading plan information...",
-        "chooseNewPlan": "Choose your new plan"
-    },
-    "password": {
-        "changePassword": "Change Password",
-        "current": "Current Password",
-        "new": "New Password",
-        "confirmNew": "Confirm New Password",
-        "show": "Show",
-        "hide": "Hide"
-    },
-    "modal": {
-        "accept": "Accept",
-        "cancel": "Cancel"
-    },
-    "home": {
-        "title": "Grow your fitness community",
-        "subtitle": "Manage your fitness business with professionalism and focus.",
-        "getStarted": "Get Started",
-        "login": "Login",
-        "createAccount": "Create Account"
-    },
-    "login": {
-        "title": "Login",
-        "email": "Email",
-        "password": "Password",
-        "loginButton": "Login",
-        "createAccount": "Create Account",
-        "forgotPassword": "Forgot my password",
-        "invalidCredentials": "Incorrect credentials. Please try again."
-    },
-    "register": {
-        "title": "Register",
-        "name": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "phone": "Phone",
-        "password": "Password",
-        "confirmPassword": "Confirm Password",
-        "show": "Show",
-        "hide": "Hide",
-        "selectPlan": "Select Your Plan",
-        "registerButton": "Register",
-        "loading": "Registering...",
-        "alreadyAccount": "Already have an account? Login"
-    },
-    "plans": {
-        "basic": "Basic",
-        "basicDesc": "Up to 3 clients",
-        "premium": "Premium",
-        "premiumDesc": "Unlimited clients",
-        "premiumYear": "Premium Annual",
-        "premiumYearDesc": "Unlimited clients\nAnnual payment"
-    },
-    "forgotPassword": {
-        "title": "Recover Password",
-        "emailLabel": "Enter your email",
-        "sendButton": "Send",
-        "success": "We have sent a recovery link to your email.",
-        "error": "There was a problem. Please try again."
-    },
-    "resetPassword": {
-        "title": "Reset Password",
-        "newPassword": "New Password",
-        "confirmPassword": "Confirm Password",
-        "show": "Show",
-        "hide": "Hide",
-        "requirements": "The new password does not meet the security requirements. Make sure:\n- It has at least 8 characters.\n- It contains at least one uppercase letter.\n- It contains at least one lowercase letter.\n- It contains at least one number.\n- It includes at least one special character (e.g., !@#$%^&*).",
-        "noMatch": "Passwords do not match.",
-        "success": "Password reset successfully.",
-        "error": "There was a problem. Please try again.",
-        "loading": "Loading...",
-        "resetButton": "Reset"
-    },
-    "success": {
-        "title": "Payment Successful!",
-        "message": "Thank you for registering. Your account has been successfully activated.",
-        "goToLogin": "Go to Login"
-    },
-    "cancel": {
-        "title": "Payment Cancelled",
-        "message": "It seems you did not complete the payment. If you want to try again, log in with your user and password and select your plan again in your profile.",
-        "goToRegister": "Login"
-    },
-    "dashboard": {
-        "title": "Welcome to the Dashboard",
-        "profile": "Profile",
-        "logout": "Logout"
-    },
-    "addClient": {
-        "title": "Add Client",
-        "name": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "phone": "Phone",
-        "phonePlaceholder": "Example: 5558887766",
-        "phoneValidation": "Must be exactly 10 digits",
-        "gender": "Gender",
-        "male": "Male",
-        "female": "Female"
-    },
-    "clientList": {
-        "title": "Client List",
-        "name": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "phone": "Phone",
-        "gender": "Gender",
-        "user": "User",
-        "progress": "Progress",
-        "routines": "Routines",
-        "diets": "Diets",
-        "addClient": "Add Client",
-        "refresh": "Refresh List",
-        "edit": "Edit",
-        "delete": "Delete",
-        "add": "Add",
-        "show": "Show",
-        "limitReached": "You have reached the client limit for your plan.",
-        "toAddMore": "to add more.",
-        "subscriptionInactive": "You have a premium plan, but your subscription is not active. Please reactivate your subscription to add more clients.",
-        "updatePlan": "Update your plan",
-        "manageSubscription": "Manage subscription",
-        "searchPlaceholder": "Search by name, last name, email or phone..."
-    },
-    "editClient": {
-        "title": "Edit Client",
-        "name": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "phone": "Phone",
-        "phonePlaceholder": "Example: 1234567890",
-        "phoneValidation": "Must be exactly 10 digits",
-        "gender": "Gender",
-        "male": "Male",
-        "female": "Female"
-    }
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit"
+  },
+  "profile": {
+    "title": "User Profile",
+    "name": "Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "email": "Email",
+    "emailNotEditable": "Email cannot be changed",
+    "changePassword": "Change Password",
+    "changeLogo": "Change Logo",
+    "uploadLogo": "Upload Logo",
+    "uploadLogoButton": "Upload Logo"
+  },
+  "plan": {
+    "currentPlan": "Your Current Plan",
+    "plan": "Plan",
+    "status": "Status",
+    "endDate": "End Date",
+    "paySubscription": "Pay Subscription",
+    "cancelSubscription": "Cancel Subscription",
+    "upgradePlan": "Upgrade Plan",
+    "loading": "Loading plan information...",
+    "chooseNewPlan": "Choose your new plan"
+  },
+  "password": {
+    "changePassword": "Change Password",
+    "current": "Current Password",
+    "new": "New Password",
+    "confirmNew": "Confirm New Password",
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "modal": {
+    "accept": "Accept",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "title": "Grow your fitness community",
+    "subtitle": "Manage your fitness business with professionalism and focus.",
+    "getStarted": "Get Started",
+    "login": "Login",
+    "createAccount": "Create Account"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "createAccount": "Create Account",
+    "forgotPassword": "Forgot my password",
+    "invalidCredentials": "Incorrect credentials. Please try again."
+  },
+  "register": {
+    "title": "Register",
+    "name": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "show": "Show",
+    "hide": "Hide",
+    "selectPlan": "Select Your Plan",
+    "registerButton": "Register",
+    "loading": "Registering...",
+    "alreadyAccount": "Already have an account? Login"
+  },
+  "plans": {
+    "basic": "Basic",
+    "basicDesc": "Up to 3 clients",
+    "premium": "Premium",
+    "premiumDesc": "Unlimited clients",
+    "premiumYear": "Premium Annual",
+    "premiumYearDesc": "Unlimited clients\nAnnual payment"
+  },
+  "forgotPassword": {
+    "title": "Recover Password",
+    "emailLabel": "Enter your email",
+    "sendButton": "Send",
+    "success": "We have sent a recovery link to your email.",
+    "error": "There was a problem. Please try again."
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "show": "Show",
+    "hide": "Hide",
+    "requirements": "The new password does not meet the security requirements. Make sure:\n- It has at least 8 characters.\n- It contains at least one uppercase letter.\n- It contains at least one lowercase letter.\n- It contains at least one number.\n- It includes at least one special character (e.g., !@#$%^&*).",
+    "noMatch": "Passwords do not match.",
+    "success": "Password reset successfully.",
+    "error": "There was a problem. Please try again.",
+    "loading": "Loading...",
+    "resetButton": "Reset"
+  },
+  "success": {
+    "title": "Payment Successful!",
+    "message": "Thank you for registering. Your account has been successfully activated.",
+    "goToLogin": "Go to Login"
+  },
+  "cancel": {
+    "title": "Payment Cancelled",
+    "message": "It seems you did not complete the payment. If you want to try again, log in with your user and password and select your plan again in your profile.",
+    "goToRegister": "Login"
+  },
+  "dashboard": {
+    "title": "Welcome to the Dashboard",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "addClient": {
+    "title": "Add Client",
+    "name": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "phonePlaceholder": "Example: 5558887766",
+    "phoneValidation": "Must be exactly 10 digits",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female"
+  },
+  "clientList": {
+    "title": "Client List",
+    "name": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "gender": "Gender",
+    "user": "User",
+    "progress": "Progress",
+    "routines": "Routines",
+    "diets": "Diets",
+    "addClient": "Add Client",
+    "refresh": "Refresh List",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "show": "Show",
+    "limitReached": "You have reached the client limit for your plan.",
+    "toAddMore": "to add more.",
+    "subscriptionInactive": "You have a premium plan, but your subscription is not active. Please reactivate your subscription to add more clients.",
+    "updatePlan": "Update your plan",
+    "manageSubscription": "Manage subscription",
+    "searchPlaceholder": "Search by name, last name, email or phone..."
+  },
+  "editClient": {
+    "title": "Edit Client",
+    "name": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "phonePlaceholder": "Example: 1234567890",
+    "phoneValidation": "Must be exactly 10 digits",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female"
+  },
+  "addDiet": {
+    "title": "Add New Diet",
+    "dietName": "Diet Name",
+    "notes": "Notes",
+    "addMeal": "Add Meal",
+    "meal": "Meal",
+    "addFood": "Add Food",
+    "removeMeal": "Remove Meal",
+    "removeFood": "Remove Food",
+    "mealNamePlaceholder": "Meal name",
+    "timePlaceholder": "Time",
+    "foodNamePlaceholder": "Food name",
+    "quantityPlaceholder": "Quantity",
+    "unitPlaceholder": "Unit (Kg, gr, cups, etc.)",
+    "saveDiet": "Save Diet"
+  }
 }
