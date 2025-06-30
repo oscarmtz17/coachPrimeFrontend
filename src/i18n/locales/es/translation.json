@@ -206,5 +206,9 @@
     "unitPlaceholder": "Unidad (Kg, gr, tazas, etc.)",
     "saveChanges": "Guardar Cambios",
     "close": "Cerrar"
+  },
+  "editDietWrapper": {
+    "title": "Editar Dieta",
+    "error": "Error: falta información de cliente o dieta."
   }
 }

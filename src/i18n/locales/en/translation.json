@@ -206,5 +206,9 @@
     "unitPlaceholder": "Unit (Kg, gr, cups, etc.)",
     "saveChanges": "Save Changes",
     "close": "Close"
+  },
+  "editDietWrapper": {
+    "title": "Edit Diet",
+    "error": "Error: Missing client or diet information."
   }
 }
