@@ -317,5 +317,16 @@
     "addExercise": "Agregar Ejercicio",
     "saveChanges": "Guardar Cambios",
     "close": "Cerrar"
+  },
+  "viewRoutine": {
+    "backToDashboard": "Regresar al Dashboard",
+    "downloadPdf": "Descargar PDF",
+    "editRoutine": "Editar Rutina",
+    "deleteRoutine": "Eliminar Rutina",
+    "exerciseName": "Nombre",
+    "series": "Series",
+    "repetitions": "Repeticiones",
+    "image": "Imagen",
+    "imageNotAvailable": "Imagen no disponible"
   }
 }

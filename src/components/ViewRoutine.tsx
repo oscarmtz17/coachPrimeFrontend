@@ -1,9 +1,11 @@
 // src/components/ViewRoutine.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import { useViewRoutine } from "../hooks/useViewRoutine";
 
 const ViewRoutine: React.FC = () => {
+  const { t } = useTranslation();
   const { rutinaId } = useParams<{ rutinaId: string }>();
   const navigate = useNavigate();
 
@@ -17,6 +19,44 @@ const ViewRoutine: React.FC = () => {
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
+  };
+
+  // Traducción de días de la semana y agrupaciones
+  const getDayLabel = (day: string) => {
+    switch (day) {
+      case "Monday":
+        return t("addRoutine.monday");
+      case "Tuesday":
+        return t("addRoutine.tuesday");
+      case "Wednesday":
+        return t("addRoutine.wednesday");
+      case "Thursday":
+        return t("addRoutine.thursday");
+      case "Friday":
+        return t("addRoutine.friday");
+      case "Saturday":
+        return t("addRoutine.saturday");
+      case "Sunday":
+        return t("addRoutine.sunday");
+      default:
+        return day;
+    }
+  };
+  const getGroupLabel = (type: string) => {
+    switch (type) {
+      case "Single Exercise":
+        return t("addRoutine.singleExercise");
+      case "Bi-Set":
+        return t("addRoutine.biSet");
+      case "Tri-Set":
+        return t("addRoutine.triSet");
+      case "Quad-Set":
+        return t("addRoutine.quadSet");
+      case "Circuit":
+        return t("addRoutine.circuit");
+      default:
+        return type;
+    }
   };
 
   return (
@@ -43,7 +83,7 @@ const ViewRoutine: React.FC = () => {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Regresar al Dashboard
+                {t("viewRoutine.backToDashboard")}
               </button>
             </div>
             <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
@@ -57,25 +97,25 @@ const ViewRoutine: React.FC = () => {
                 onClick={handleDownloadPdf}
                 className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
               >
-                Descargar PDF
+                {t("viewRoutine.downloadPdf")}
               </button>
               <button
                 onClick={handleEditRoutine}
                 className="bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition-colors"
               >
-                Editar Rutina
+                {t("viewRoutine.editRoutine")}
               </button>
               <button
                 onClick={handleDeleteRoutine}
                 className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
               >
-                Eliminar Rutina
+                {t("viewRoutine.deleteRoutine")}
               </button>
             </div>
             {routine.diasEntrenamiento.map((dia, diaIndex) => (
               <div key={diaIndex} className="mb-6">
                 <h4 className="text-yellow-400 text-xl font-semibold mb-2">
-                  {dia.diaSemana}
+                  {getDayLabel(dia.diaSemana)}
                 </h4>
                 {dia.agrupaciones.map((agrupacion, groupIndex) => (
                   <div
@@ -83,16 +123,20 @@ const ViewRoutine: React.FC = () => {
                     className="bg-zinc-700 p-4 rounded-lg mb-4"
                   >
                     <h5 className="text-yellow-400 text-lg font-semibold mb-3">
-                      {agrupacion.tipo}
+                      {getGroupLabel(agrupacion.tipo)}
                     </h5>
                     <div className="overflow-x-auto">
                       <table className="w-full border-collapse mb-4">
                         <thead>
                           <tr className="bg-zinc-600 text-yellow-400 text-center">
-                            <th className="p-3">Nombre</th>
-                            <th className="p-3">Series</th>
-                            <th className="p-3">Repeticiones</th>
-                            <th className="p-3">Imagen</th>
+                            <th className="p-3">
+                              {t("viewRoutine.exerciseName")}
+                            </th>
+                            <th className="p-3">{t("viewRoutine.series")}</th>
+                            <th className="p-3">
+                              {t("viewRoutine.repetitions")}
+                            </th>
+                            <th className="p-3">{t("viewRoutine.image")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -119,7 +163,7 @@ const ViewRoutine: React.FC = () => {
                                   />
                                 ) : (
                                   <p className="text-gray-400 italic">
-                                    Imagen no disponible
+                                    {t("viewRoutine.imageNotAvailable")}
                                   </p>
                                 )}
                               </td>
