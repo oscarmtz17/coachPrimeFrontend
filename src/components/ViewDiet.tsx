@@ -1,9 +1,11 @@
 // src/components/ViewDiet.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import { useViewDiet } from "../hooks/useViewDiet";
 
 const ViewDiet: React.FC = () => {
+  const { t } = useTranslation();
   const { clienteId, dietaId } = useParams<{
     clienteId: string;
     dietaId: string;
@@ -39,7 +41,7 @@ const ViewDiet: React.FC = () => {
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Regresar al Dashboard
+              {t("viewDiet.backToDashboard")}
             </button>
           </div>
           <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
@@ -51,19 +53,19 @@ const ViewDiet: React.FC = () => {
               onClick={handleDownloadPdf}
               className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
             >
-              Descargar PDF
+              {t("viewDiet.downloadPdf")}
             </button>
             <button
               onClick={handleEditDiet}
               className="bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300 transition-colors"
             >
-              Editar Dieta
+              {t("viewDiet.editDiet")}
             </button>
             <button
               onClick={handleDeleteDiet}
               className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
             >
-              Eliminar Dieta
+              {t("viewDiet.deleteDiet")}
             </button>
           </div>
           {diet.comidas.map((comida, index) => (
@@ -77,13 +79,13 @@ const ViewDiet: React.FC = () => {
                   <thead>
                     <tr>
                       <th className="bg-zinc-600 text-yellow-400 p-3 text-left">
-                        Alimento
+                        {t("viewDiet.food")}
                       </th>
                       <th className="bg-zinc-600 text-yellow-400 p-3 text-left">
-                        Cantidad
+                        {t("viewDiet.quantity")}
                       </th>
                       <th className="bg-zinc-600 text-yellow-400 p-3 text-left">
-                        Unidad
+                        {t("viewDiet.unit")}
                       </th>
                     </tr>
                   </thead>
@@ -101,7 +103,7 @@ const ViewDiet: React.FC = () => {
             </div>
           ))}
           <h4 className="text-yellow-400 text-xl font-semibold mt-6 mb-3">
-            Notas
+            {t("viewDiet.notes")}
           </h4>
           <p className="text-gray-300">{diet.notas}</p>
         </div>

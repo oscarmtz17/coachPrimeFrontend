@@ -328,5 +328,15 @@
     "repetitions": "Repetitions",
     "image": "Image",
     "imageNotAvailable": "Image not available"
+  },
+  "viewDiet": {
+    "backToDashboard": "Back to Dashboard",
+    "downloadPdf": "Download PDF",
+    "editDiet": "Edit Diet",
+    "deleteDiet": "Delete Diet",
+    "food": "Food",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "notes": "Notes"
   }
 }
