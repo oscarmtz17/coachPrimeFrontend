@@ -240,5 +240,13 @@
     "saveProgress": "Save Progress",
     "saving": "Saving...",
     "cancel": "Cancel"
+  },
+  "editProgress": {
+    "title": "Edit Progress",
+    "existingImages": "Existing Images",
+    "addImages": "Add Images",
+    "image": "Image",
+    "newImage": "New Image",
+    "saveChanges": "Save Changes"
   }
 }

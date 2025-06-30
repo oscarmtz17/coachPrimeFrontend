@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import useEditProgressForm from "../hooks/useEditProgressForm";
 
 interface Progress {
@@ -29,6 +30,7 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
   onSave,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const {
     formData,
     error,
@@ -41,31 +43,35 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
     handleCloseWithConfirmation,
   } = useEditProgressForm(clienteId, progress, onSave, onClose);
 
+  const PROGRESS_FIELDS = [
+    { label: t("addProgress.weight"), name: "pesoKg", value: formData.pesoKg },
+    {
+      label: t("addProgress.height"),
+      name: "estaturaCm",
+      value: formData.estaturaCm,
+    },
+    {
+      label: t("addProgress.waist"),
+      name: "cinturaCm",
+      value: formData.cinturaCm,
+    },
+    { label: t("addProgress.hip"), name: "caderaCm", value: formData.caderaCm },
+    { label: t("addProgress.chest"), name: "pechoCm", value: formData.pechoCm },
+    { label: t("addProgress.arm"), name: "brazoCm", value: formData.brazoCm },
+    { label: t("addProgress.leg"), name: "piernaCm", value: formData.piernaCm },
+  ];
+
   return (
     <div className="bg-zinc-800 text-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
-      <h3 className="text-yellow-400 text-2xl text-center font-semibold mb-4">
-        Editar Progreso
-      </h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-yellow-400 text-2xl text-center font-semibold">
+          {t("editProgress.title")}
+        </h3>
+      </div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
       {/* Campos de datos */}
-      {[
-        { label: "Peso (kg):", name: "pesoKg", value: formData.pesoKg },
-        {
-          label: "Estatura (cm):",
-          name: "estaturaCm",
-          value: formData.estaturaCm,
-        },
-        {
-          label: "Cintura (cm):",
-          name: "cinturaCm",
-          value: formData.cinturaCm,
-        },
-        { label: "Cadera (cm):", name: "caderaCm", value: formData.caderaCm },
-        { label: "Pecho (cm):", name: "pechoCm", value: formData.pechoCm },
-        { label: "Brazo (cm):", name: "brazoCm", value: formData.brazoCm },
-        { label: "Pierna (cm):", name: "piernaCm", value: formData.piernaCm },
-      ].map(({ label, name, value }, index) => (
+      {PROGRESS_FIELDS.map(({ label, name, value }, index) => (
         <div className="flex flex-col gap-2 mb-4" key={index}>
           <label className="text-yellow-400 font-bold">{label}</label>
           <input
@@ -81,27 +87,29 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
 
       {/* Campo de Nivel de Actividad */}
       <div className="flex flex-col gap-2 mb-4">
-        <label className="text-yellow-400 font-bold">Nivel de Actividad:</label>
+        <label className="text-yellow-400 font-bold">
+          {t("addProgress.activityLevel")}:
+        </label>
         <select
           name="nivelActividad"
           value={formData.nivelActividad}
           onChange={(e) => {
-            const nivel = e.target.value;
+            const nivel = e.target.value; // Siempre en inglés
             let factor = formData.factorActividad;
             switch (nivel) {
-              case "Muy ligera":
+              case "Very Light":
                 factor = 1.2;
                 break;
-              case "Ligera":
+              case "Light":
                 factor = 1.375;
                 break;
-              case "Moderada":
+              case "Moderate":
                 factor = 1.55;
                 break;
-              case "Activa":
+              case "Active":
                 factor = 1.725;
                 break;
-              case "Muy activa":
+              case "Very Active":
                 factor = 1.9;
                 break;
               default:
@@ -117,24 +125,23 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
           }}
           className="p-2 rounded border border-gray-300 bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
-          <option value="">Selecciona nivel</option>
-          <option value="Muy ligera">
-            Muy ligera (1.2) - Sentado, tumbado. Poco o nada ejercicio
+          <option value="">{t("addProgress.selectLevel")}</option>
+          <option value="Very Light">
+            {t("addProgress.veryLight")} (1.2) -{" "}
+            {t("addProgress.veryLightDesc")}
           </option>
-          <option value="Ligera">
-            Ligera (1.375) - De pie, conducir, planchar, caminar. Deporte 1-3
-            veces/semana
+          <option value="Light">
+            {t("addProgress.light")} (1.375) - {t("addProgress.lightDesc")}
           </option>
-          <option value="Moderada">
-            Moderada (1.55) - Limpiar, caminar rápido, cargar peso. Deporte 3-5
-            veces/semana
+          <option value="Moderate">
+            {t("addProgress.moderate")} (1.55) - {t("addProgress.moderateDesc")}
           </option>
-          <option value="Activa">
-            Activa (1.725) - Construcción, subir escaleras. Deporte 6-7
-            veces/semana
+          <option value="Active">
+            {t("addProgress.active")} (1.725) - {t("addProgress.activeDesc")}
           </option>
-          <option value="Muy activa">
-            Muy activa (1.9) - Trabajos de fuerza, correr. Deporte 2 horas/día
+          <option value="Very Active">
+            {t("addProgress.veryActive")} (1.9) -{" "}
+            {t("addProgress.veryActiveDesc")}
           </option>
         </select>
       </div>
@@ -142,7 +149,7 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
       {/* Campo de Factor de Actividad */}
       <div className="flex flex-col gap-2 mb-4">
         <label className="text-yellow-400 font-bold">
-          Factor de Actividad:
+          {t("addProgress.activityFactor")}:
         </label>
         <input
           type="number"
@@ -157,7 +164,9 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
 
       {/* Campo de Notas */}
       <div className="flex flex-col gap-2 mb-4">
-        <label className="text-yellow-400 font-bold">Notas:</label>
+        <label className="text-yellow-400 font-bold">
+          {t("addProgress.notes")}:
+        </label>
         <textarea
           name="notas"
           value={formData.notas}
@@ -169,14 +178,14 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
       {/* Sección de imágenes existentes */}
       <div className="mt-6">
         <h4 className="text-yellow-400 font-semibold mb-3">
-          Imágenes Existentes
+          {t("editProgress.existingImages")}
         </h4>
         <div className="flex flex-wrap gap-4">
           {existingImages.map((image, index) => (
             <div key={index} className="relative">
               <img
                 src={image}
-                alt={`Imagen ${index + 1}`}
+                alt={`${t("editProgress.image")} ${index + 1}`}
                 className="w-24 h-24 object-cover rounded border border-gray-300"
               />
               <button
@@ -192,9 +201,12 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
 
       {/* Añadir nuevas imágenes */}
       <div className="flex flex-col gap-2 mb-4">
-        <label className="text-yellow-400 font-bold">Añadir Imágenes:</label>
+        <label className="text-yellow-400 font-bold">
+          {t("editProgress.addImages")}:
+        </label>
         <p className="text-sm text-gray-300">
-          {existingImages.length + newImages.length}/10 imágenes seleccionadas
+          {existingImages.length + newImages.length}/10{" "}
+          {t("addProgress.imagesSelected")}
         </p>
         <input
           type="file"
@@ -210,7 +222,7 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
               <div key={index} className="relative">
                 <img
                   src={URL.createObjectURL(image)}
-                  alt={`Nueva Imagen ${index + 1}`}
+                  alt={`${t("editProgress.newImage")} ${index + 1}`}
                   className="w-24 h-24 object-cover rounded border border-gray-300"
                 />
                 <button
@@ -231,13 +243,13 @@ const EditProgressForm: React.FC<EditProgressFormProps> = ({
           onClick={handleSave}
           className="bg-yellow-400 text-black py-2 px-4 rounded font-semibold flex-1 hover:bg-yellow-300 transition-colors"
         >
-          Guardar Cambios
+          {t("editProgress.saveChanges")}
         </button>
         <button
           onClick={handleCloseWithConfirmation}
           className="bg-gray-300 text-zinc-800 py-2 px-4 rounded font-semibold flex-1 hover:bg-gray-400 transition-colors"
         >
-          Cancelar
+          {t("addProgress.cancel")}
         </button>
       </div>
     </div>
