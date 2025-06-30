@@ -338,5 +338,17 @@
     "quantity": "Quantity",
     "unit": "Unit",
     "notes": "Notes"
+  },
+  "routineList": {
+    "title": "Client Routines",
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start Date",
+    "actions": "Actions",
+    "downloadPdf": "Download PDF",
+    "viewRoutine": "View Routine",
+    "editRoutine": "Edit Routine",
+    "deleteRoutine": "Delete Routine",
+    "close": "Close"
   }
 }

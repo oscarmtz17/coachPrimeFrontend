@@ -338,5 +338,17 @@
     "quantity": "Cantidad",
     "unit": "Unidad",
     "notes": "Notas"
+  },
+  "routineList": {
+    "title": "Rutinas del Cliente",
+    "name": "Nombre",
+    "description": "Descripción",
+    "startDate": "Fecha Inicio",
+    "actions": "Acciones",
+    "downloadPdf": "Descargar PDF",
+    "viewRoutine": "Ver Rutina",
+    "editRoutine": "Editar Rutina",
+    "deleteRoutine": "Eliminar Rutina",
+    "close": "Cerrar"
   }
 }
