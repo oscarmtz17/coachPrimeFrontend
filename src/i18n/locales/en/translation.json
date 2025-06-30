@@ -253,5 +253,28 @@
     "paramError": "Error: missing client or progress information.",
     "loadError": "Could not load the selected progress.",
     "loading": "Loading progress..."
+  },
+  "progressList": {
+    "loading": "Loading progress records...",
+    "title": "Client Progress Records",
+    "date": "Date",
+    "weight": "Weight (kg)",
+    "height": "Height (cm)",
+    "activityLevel": "Activity Level",
+    "activityFactor": "Activity Factor",
+    "waist": "Waist (cm)",
+    "hip": "Hip (cm)",
+    "chest": "Chest (cm)",
+    "arm": "Arm (cm)",
+    "leg": "Leg (cm)",
+    "notes": "Notes",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "viewImages": "View Images",
+    "noRecords": "No progress records available.",
+    "close": "Close",
+    "progressImages": "Progress Images",
+    "image": "Image"
   }
 }

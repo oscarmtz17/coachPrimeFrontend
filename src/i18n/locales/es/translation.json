@@ -253,5 +253,28 @@
     "paramError": "Error: falta información de cliente o progreso.",
     "loadError": "No se pudo cargar el progreso seleccionado.",
     "loading": "Cargando progreso..."
+  },
+  "progressList": {
+    "loading": "Cargando registros de progreso...",
+    "title": "Progresos del Cliente",
+    "date": "Fecha",
+    "weight": "Peso (kg)",
+    "height": "Estatura (cm)",
+    "activityLevel": "Nivel de Actividad",
+    "activityFactor": "Factor Actividad",
+    "waist": "Cintura (cm)",
+    "hip": "Cadera (cm)",
+    "chest": "Pecho (cm)",
+    "arm": "Brazo (cm)",
+    "leg": "Pierna (cm)",
+    "notes": "Notas",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "viewImages": "Ver Imágenes",
+    "noRecords": "No hay registros de progreso disponibles.",
+    "close": "Cerrar",
+    "progressImages": "Imágenes del Progreso",
+    "image": "Imagen"
   }
 }
