@@ -1,6 +1,7 @@
 // src/components/DietList.tsx
 import React from "react";
 import { useDietList } from "../hooks/useDietList";
+import { useTranslation } from "react-i18next";
 
 interface DietListProps {
   clienteId: number;
@@ -17,10 +18,12 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
     handleDeleteDiet,
   } = useDietList(clienteId);
 
+  const { t } = useTranslation();
+
   return (
     <div className="w-full max-w-2xl mx-auto bg-black bg-opacity-90 p-8 rounded-xl shadow-lg">
       <h3 className="text-2xl font-bold text-primary mb-6 text-center">
-        Dietas del Cliente
+        {t("dietList.title")}
       </h3>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {!error && (
@@ -29,10 +32,10 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
             <thead>
               <tr className="bg-secondary text-primary">
                 <th className="hidden">ID</th>
-                <th className="py-3 px-4">Nombre</th>
-                <th className="py-3 px-4">Notas</th>
-                <th className="py-3 px-4">Fecha de Inicio</th>
-                <th className="py-3 px-4">Acciones</th>
+                <th className="py-3 px-4">{t("dietList.name")}</th>
+                <th className="py-3 px-4">{t("dietList.notes")}</th>
+                <th className="py-3 px-4">{t("dietList.startDate")}</th>
+                <th className="py-3 px-4">{t("dietList.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -52,25 +55,25 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
                       onClick={() => handleDownloadPdf(diet.dietaId)}
                       className="bg-info text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
-                      Descargar PDF
+                      {t("dietList.downloadPdf")}
                     </button>
                     <button
                       onClick={() => handleViewDiet(diet.dietaId)}
                       className="bg-success text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
                     >
-                      Ver Dieta
+                      {t("dietList.viewDiet")}
                     </button>
                     <button
                       onClick={() => handleEditDiet(diet.dietaId)}
                       className="bg-primary text-black py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     >
-                      Editar Dieta
+                      {t("dietList.editDiet")}
                     </button>
                     <button
                       onClick={() => handleDeleteDiet(diet.dietaId)}
                       className="bg-danger text-white py-1 px-3 rounded-md text-sm font-semibold transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
                     >
-                      Eliminar Dieta
+                      {t("dietList.deleteDiet")}
                     </button>
                   </td>
                 </tr>
@@ -83,7 +86,7 @@ const DietList: React.FC<DietListProps> = ({ clienteId, onClose }) => {
         onClick={onClose}
         className="w-full mt-4 bg-danger text-white py-3 px-6 rounded-md text-base font-semibold cursor-pointer transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
       >
-        Cerrar
+        {t("dietList.close")}
       </button>
     </div>
   );

@@ -177,5 +177,17 @@
     "quantityPlaceholder": "Quantity",
     "unitPlaceholder": "Unit (Kg, gr, cups, etc.)",
     "saveDiet": "Save Diet"
+  },
+  "dietList": {
+    "title": "Client Diets",
+    "name": "Name",
+    "notes": "Notes",
+    "startDate": "Start Date",
+    "actions": "Actions",
+    "downloadPdf": "Download PDF",
+    "viewDiet": "View Diet",
+    "editDiet": "Edit Diet",
+    "deleteDiet": "Delete Diet",
+    "close": "Close"
   }
 }
