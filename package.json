@@ -1,54 +1,59 @@
 {
-    "name": "coachprime-frontend",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@stripe/react-stripe-js": "^3.0.0",
-        "@stripe/stripe-js": "^5.2.0",
-        "axios": "^1.7.7",
-        "i18next": "^25.2.1",
-        "i18next-browser-languagedetector": "^8.2.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-i18next": "^15.5.3",
-        "react-router-dom": "^6.27.0",
-        "react-scripts": "5.0.1",
-        "typescript": "^4.6.3",
-        "web-vitals": "^4.2.4"
-    },
-    "devDependencies": {
-        "@testing-library/dom": "^10.4.0",
-        "@testing-library/jest-dom": "^6.6.2",
-        "@testing-library/react": "^16.0.1",
-        "@testing-library/user-event": "^14.5.2",
-        "@types/jest": "^29.5.14",
-        "@types/node": "^16.11.26",
-        "@types/react": "^18.0.0",
-        "@types/react-dom": "^18.0.0",
-        "autoprefixer": "^10.4.19",
-        "jest": "^29.5.0",
-        "jest-environment-jsdom": "^29.7.0",
-        "jsdom": "^25.0.1",
-        "postcss": "^8.4.38",
-        "tailwindcss": "^3.4.4",
-        "ts-jest": "^29.2.5"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "jest --coverage",
-        "eject": "react-scripts eject"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "coachprime-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@stripe/react-stripe-js": "^3.0.0",
+    "@stripe/stripe-js": "^5.2.0",
+    "axios": "^1.7.7",
+    "i18next": "^25.2.1",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^15.5.3",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.6.3",
+    "web-vitals": "^4.2.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.2",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^16.11.26",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "autoprefixer": "^10.4.19",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "ts-jest": "^29.2.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build:dev": "REACT_APP_ENVIRONMENT=development react-scripts build",
+    "build:qa": "REACT_APP_ENVIRONMENT=qa react-scripts build",
+    "build:staging": "REACT_APP_ENVIRONMENT=staging react-scripts build",
+    "build:prod": "REACT_APP_ENVIRONMENT=production react-scripts build",
+    "test": "jest --coverage",
+    "eject": "react-scripts eject",
+    "validate:config": "node -e \"console.log('Validando configuración...'); require('./src/config/environment'); console.log('Configuración válida');\""
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

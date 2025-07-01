@@ -19,13 +19,10 @@ import EditProgressFormWrapper from "./components/EditProgressFormWrapper";
 import UserProfile from "./pages/UserProfile";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
+import config from "./config/environment";
 import "./i18n";
 
-console.log("credential", process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
-const stripePromise = loadStripe(
-  "pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH"
-);
+const stripePromise = loadStripe(config.stripePublishableKey);
 
 const App: React.FC = () => (
   <Elements stripe={stripePromise}>
