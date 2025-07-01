@@ -15,7 +15,6 @@ export const loginUser = async (email: string, password: string) => {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("userId", userId); // Guardar el userId
-      console.log("Login exitoso: Tokens y userId almacenados en localStorage");
     } else {
       console.error("Tokens o userId faltantes en la respuesta de login");
     }
@@ -30,17 +29,11 @@ export const loginUser = async (email: string, password: string) => {
 // Interceptor para manejar el refresco de tokens
 api.interceptors.request.use(
   async (config) => {
-    console.log("interceptor"); // Este mensaje debería aparecer en cada petición
-
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (accessToken && isTokenExpiring(accessToken)) {
       try {
-        console.log(
-          "Token expira pronto, solicitando un nuevo access token..."
-        );
-
         const response = await axios.post(
           `${api.defaults.baseURL}/auth/refresh`,
           {
@@ -53,7 +46,6 @@ api.interceptors.request.use(
           response.data;
 
         if (newAccessToken && newRefreshToken) {
-          // console.log("Nuevo access token obtenido:", newAccessToken);
           localStorage.setItem("accessToken", newAccessToken);
           localStorage.setItem("refreshToken", newRefreshToken);
           config.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -102,12 +94,6 @@ function isTokenExpiring(token: string): boolean {
     const tokenData = JSON.parse(atob(token.split(".")[1]));
     const expirationTime = tokenData.exp * 1000;
     const currentTime = Date.now();
-
-    console.log(
-      "Tiempo restante para el token:",
-      expirationTime - currentTime,
-      "ms"
-    );
     return expirationTime - currentTime < 60 * 60 * 1000; // Refrescar si quedan menos de 1 hora
   } catch (error) {
     console.error("Error al decodificar el token:", error);
