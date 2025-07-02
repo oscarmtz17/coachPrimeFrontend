@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAddDietForm } from "../hooks/useAddDietForm";
 import NumberInput from "../theme/NumberInput";
+import AIGenerator from "./AIGenerator";
 import { useTranslation } from "react-i18next";
 
 interface AddDietFormProps {
@@ -33,6 +34,7 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
   } = useAddDietForm(clienteId, onDietAdded, onClose);
 
   const { t } = useTranslation();
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-black bg-opacity-90 p-8 rounded-xl shadow-lg">
@@ -65,12 +67,20 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
         </div>
       </div>
 
-      <button
-        onClick={handleAddComida}
-        className="mb-6 bg-primary text-black py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
-      >
-        {t("addDiet.addMeal")}
-      </button>
+      <div className="flex gap-4 mb-6">
+        <button
+          onClick={handleAddComida}
+          className="flex-1 bg-primary text-black py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
+        >
+          {t("addDiet.addMeal")}
+        </button>
+        <button
+          onClick={() => setShowAIGenerator(true)}
+          className="flex-1 bg-blue-600 text-white py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-dark"
+        >
+          🤖 {t("ai.generar")}
+        </button>
+      </div>
 
       {comidas.map((comida, comidaIndex) => (
         <div key={comidaIndex} className="mb-8 p-4 rounded-lg bg-dark-gray">
@@ -185,6 +195,20 @@ const AddDietForm: React.FC<AddDietFormProps> = ({
           {t("common.cancel")}
         </button>
       </div>
+
+      {showAIGenerator && (
+        <AIGenerator
+          clienteId={clienteId}
+          allowedTypes={["Dieta", "Ambos"]}
+          defaultType="Dieta"
+          onDietaGenerada={(dieta) => {
+            // Aquí podrías pre-llenar el formulario con los datos de la IA
+            console.log("Dieta generada por IA:", dieta);
+            setShowAIGenerator(false);
+          }}
+          onClose={() => setShowAIGenerator(false)}
+        />
+      )}
     </div>
   );
 };

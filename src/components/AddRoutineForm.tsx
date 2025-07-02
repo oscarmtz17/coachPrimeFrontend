@@ -1,8 +1,9 @@
 // src/components/AddRoutineForm.tsx
-import React from "react";
+import React, { useState } from "react";
 import { useAddRoutineForm } from "../hooks/useAddRoutineForm";
 import Modal from "./Modal";
 import ImageSelector from "./ImageSelector";
+import AIGenerator from "./AIGenerator";
 import { useTranslation } from "react-i18next";
 
 interface AddRoutineFormProps {
@@ -19,6 +20,7 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
   const {
     nombre,
     setNombre,
@@ -92,12 +94,20 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
           />
         </div>
       </div>
-      <button
-        onClick={handleAddDay}
-        className="mb-6 bg-primary text-black py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
-      >
-        {t("addRoutine.addDay")}
-      </button>
+      <div className="flex gap-4 mb-6">
+        <button
+          onClick={handleAddDay}
+          className="flex-1 bg-primary text-black py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-dark"
+        >
+          {t("addRoutine.addDay")}
+        </button>
+        <button
+          onClick={() => setShowAIGenerator(true)}
+          className="flex-1 bg-blue-600 text-white py-2 px-6 rounded-md font-semibold cursor-pointer transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-dark"
+        >
+          🤖 {t("ai.generar")}
+        </button>
+      </div>
       {diasEntrenamiento.map((dia, dayIndex) => (
         <div key={dayIndex} className="mb-8 p-4 rounded-lg bg-dark-gray">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 gap-2">
@@ -288,6 +298,20 @@ const AddRoutineForm: React.FC<AddRoutineFormProps> = ({
       <Modal isOpen={isImageSelectorOpen} onClose={closeImageSelector}>
         <ImageSelector onSelect={(key, url) => handleSelectImage(key, url)} />
       </Modal>
+
+      {showAIGenerator && (
+        <AIGenerator
+          clienteId={clienteId}
+          allowedTypes={["Rutina", "Ambos"]}
+          defaultType="Rutina"
+          onRutinaGenerada={(rutina) => {
+            // Aquí podrías pre-llenar el formulario con los datos de la IA
+            console.log("Rutina generada por IA:", rutina);
+            setShowAIGenerator(false);
+          }}
+          onClose={() => setShowAIGenerator(false)}
+        />
+      )}
     </div>
   );
 };
