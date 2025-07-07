@@ -1,0 +1,52 @@
+# Dependencias
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de desarrollo
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de build
+build
+dist
+
+# Archivos de Git
+.git
+.gitignore
+
+# Archivos de documentación
+*.md
+README*
+
+# Archivos de Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Archivos temporales
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de testing
+coverage/
+.nyc_output
+
+# Archivos de logs
+logs
+*.log
+
+# Archivos de cache
+.cache/
+.parcel-cache/ 

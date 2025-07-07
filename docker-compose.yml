@@ -1,0 +1,24 @@
+services:
+  # Frontend para desarrollo local
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_ENVIRONMENT=development
+      - REACT_APP_API_BASE_URL=http://localhost:5267/api
+      - REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH
+      - REACT_APP_APP_NAME=CoachPrime
+      - REACT_APP_VERSION=1.0.0
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - coachprime-network
+    restart: unless-stopped
+
+networks:
+  coachprime-network:
+    driver: bridge
