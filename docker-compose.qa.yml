@@ -1,0 +1,16 @@
+services:
+  frontend-qa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_ENVIRONMENT: qa
+        REACT_APP_API_BASE_URL: https://qa.mytracksnote.com/api
+        REACT_APP_STRIPE_PUBLISHABLE_KEY: pk_test_...   # (tu clave de Stripe de pruebas)
+        REACT_APP_APP_NAME: MyTracksNote QA
+        REACT_APP_VERSION: 1.0.0
+    ports:
+      - "8081:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped 

@@ -21,7 +21,7 @@ const environments: Record<string, EnvironmentSettings> = {
     logLevel: "debug",
   },
   qa: {
-    apiBaseUrl: "https://qa-api.coachprime.com/api",
+    apiBaseUrl: "https://qa.mytracksnote.com/api",
     stripePublishableKey:
       "pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH",
     environment: "qa",
@@ -41,7 +41,7 @@ const environments: Record<string, EnvironmentSettings> = {
     logLevel: "warn",
   },
   production: {
-    apiBaseUrl: "https://api.coachprime.com/api",
+    apiBaseUrl: "https://mytracksnote.com/api",
     stripePublishableKey: "pk_live_...", // Reemplazar con la clave de producción real
     environment: "production",
     appName: "CoachPrime",

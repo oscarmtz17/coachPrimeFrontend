@@ -1,0 +1,16 @@
+services:
+  frontend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_ENVIRONMENT: production
+        REACT_APP_API_BASE_URL: https://mytracksnote.com/api
+        REACT_APP_STRIPE_PUBLISHABLE_KEY: pk_live_...   # (tu clave de Stripe real)
+        REACT_APP_APP_NAME: MyTracksNote
+        REACT_APP_VERSION: 1.0.0
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped 
