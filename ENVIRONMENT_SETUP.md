@@ -38,7 +38,7 @@ Crear archivo `.env.local` en la raíz del proyecto:
 
 ```bash
 # API Configuration
-REACT_APP_API_BASE_URL=http://localhost:5267/api
+REACT_APP_API_BASE_URL=http://localhost:5000/api
 
 # Stripe Configuration
 REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH
@@ -128,7 +128,7 @@ Salida esperada:
 ```
 🔧 Configuración de entorno: {
   environment: 'development',
-  apiBaseUrl: 'http://localhost:5267/api',
+  apiBaseUrl: 'http://localhost:5000/api',
   appName: 'CoachPrime',
   version: '1.0.0',
   debug: true,
@@ -186,7 +186,7 @@ Si tienes una configuración anterior con valores hardcodeados:
 
    ```typescript
    // Antes
-   baseURL: "http://localhost:5267/api";
+   baseURL: "http://localhost:5000/api";
 
    // Después
    baseURL: config.apiBaseUrl;

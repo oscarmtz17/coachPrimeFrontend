@@ -11,7 +11,7 @@ export interface EnvironmentSettings {
 
 const environments: Record<string, EnvironmentSettings> = {
   development: {
-    apiBaseUrl: "http://localhost:5267/api",
+    apiBaseUrl: "http://localhost:5000/api",
     stripePublishableKey:
       "pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH",
     environment: "development",

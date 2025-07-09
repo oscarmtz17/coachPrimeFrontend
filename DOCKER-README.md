@@ -40,7 +40,7 @@ docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules coachprime-frontend
 ## 🌐 Acceso
 
 - **URL**: http://localhost:3000
-- **API Backend**: http://localhost:5267/api (asegúrate de que el backend esté corriendo)
+- **API Backend**: http://localhost:5000/api (asegúrate de que el backend esté corriendo)
 
 ## 📊 Comandos Útiles
 
@@ -80,7 +80,7 @@ docker-compose exec frontend sh
 Las variables de entorno están configuradas en `docker-compose.yml`:
 
 - `REACT_APP_ENVIRONMENT=development`
-- `REACT_APP_API_BASE_URL=http://localhost:5267/api`
+- `REACT_APP_API_BASE_URL=http://localhost:5000/api`
 - `REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...`
 
 ## 🐛 Troubleshooting
@@ -122,5 +122,5 @@ docker volume prune
 
 - El frontend se ejecuta en modo desarrollo con hot reload
 - Los cambios en el código se reflejan automáticamente
-- El backend debe estar corriendo en el puerto 5267
+- El backend debe estar corriendo en el puerto 5000
 - Para producción, usar configuración diferente

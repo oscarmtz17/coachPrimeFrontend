@@ -7,7 +7,7 @@
 Crear archivo `.env.local` en la raíz del proyecto:
 
 ```bash
-REACT_APP_API_BASE_URL=http://localhost:5267/api
+REACT_APP_API_BASE_URL=http://localhost:5000/api
 REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH
 REACT_APP_ENVIRONMENT=development
 REACT_APP_APP_NAME=CoachPrime
