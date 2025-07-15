@@ -1,21 +1,15 @@
-# Dockerfile para desarrollo local - CoachPrime Frontend
-FROM node:18-alpine
-
-# Establecer directorio de trabajo
+# Build stage
+FROM node:18-alpine AS build
 WORKDIR /app
-
-# Copiar archivos de dependencias
 COPY package*.json ./
 COPY yarn.lock ./
-
-# Instalar dependencias
-RUN yarn install
-
-# Copiar código fuente
+RUN yarn install --frozen-lockfile
 COPY . .
+RUN yarn build
 
-# Exponer puerto
-EXPOSE 3000
-
-# Comando de inicio para desarrollo
-CMD ["yarn", "start"] 
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"] 

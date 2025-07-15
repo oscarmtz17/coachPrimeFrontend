@@ -1,0 +1,53 @@
+name: CI/CD Frontend - QA Deployment
+
+on:
+  push:
+    branches: [qa]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: oscarmtz17/coachprime-frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy-qa:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to QA Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USERNAME }}
+          key: ${{ secrets.QA_SSH_KEY }}
+          port: ${{ secrets.QA_PORT }}
+          script: |
+            cd /opt/coachprime-qa-frontend
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            docker-compose -f docker-compose.qa.yml down
+            docker-compose -f docker-compose.qa.yml up -d
+
+      - name: Health Check
+        run: |
+          sleep 20
+          curl -f http://${{ secrets.QA_HOST }}:3000 || exit 1
