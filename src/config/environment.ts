@@ -12,7 +12,10 @@ const baseConfig = environments[currentEnvironment] || environments.development;
 
 // Crear la configuración final, permitiendo override con variables de entorno
 const config: EnvironmentConfig = {
-  apiBaseUrl: process.env.REACT_APP_API_BASE_URL || baseConfig.apiBaseUrl,
+  apiBaseUrl:
+    process.env.REACT_APP_API_BASE_URL ||
+    process.env.REACT_APP_API_URL ||
+    baseConfig.apiBaseUrl,
   stripePublishableKey:
     process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY ||
     baseConfig.stripePublishableKey,
