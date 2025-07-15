@@ -15,20 +15,21 @@ permissions:
 jobs:
   deploy-qa:
     runs-on: ubuntu-latest
-    environment: qa
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug SSH secrets
+      - name: Debug environment and secrets
         run: |
+          echo "Environment: ${{ github.event.deployment.environment }}"
+          echo "Job environment: ${{ vars.ENVIRONMENT }}"
+          echo "QA_HOST from secrets: ${{ secrets.QA_HOST }}"
+          echo "QA_USERNAME from secrets: ${{ secrets.QA_USERNAME }}"
+          echo "QA_PORT from secrets: ${{ secrets.QA_PORT }}"
           echo "QA_HOST length: ${#QA_HOST}"
           echo "QA_USERNAME length: ${#QA_USERNAME}"
           echo "QA_SSH_KEY length: ${#QA_SSH_KEY}"
           echo "QA_PORT length: ${#QA_PORT}"
-          echo "QA_HOST: ${{ secrets.QA_HOST }}"
-          echo "QA_USERNAME: ${{ secrets.QA_USERNAME }}"
-          echo "QA_PORT: ${{ secrets.QA_PORT }}"
 
       - name: Deploy to QA Server
         uses: appleboy/ssh-action@v1.0.3
@@ -38,22 +39,17 @@ jobs:
           key: ${{ secrets.QA_SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
           script: |
-            # Crear directorio si no existe
+            # Limpiar directorio si existe
+            rm -rf /opt/coachprime-qa-frontend
             mkdir -p /opt/coachprime-qa-frontend
-
-            # Ir al directorio
             cd /opt/coachprime-qa-frontend
 
-            # Clonar repositorio si no existe
-            if [ ! -d ".git" ]; then
-              git clone https://github.com/oscarmtz17/coachPrimeFrontend.git .
-              git checkout qa
-            else
-              git pull origin qa
-            fi
+            # Clonar repositorio
+            git clone https://github.com/oscarmtz17/coachPrimeFrontend.git .
+            git checkout qa
 
             # Construir y ejecutar
-            docker-compose -f docker-compose.qa.yml down
+            docker-compose -f docker-compose.qa.yml down || true
             docker-compose -f docker-compose.qa.yml build --no-cache
             docker-compose -f docker-compose.qa.yml up -d
 
