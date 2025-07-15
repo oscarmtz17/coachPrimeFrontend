@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   frontend:
-    image: ghcr.io/oscarmtz17/coachprime-frontend:latest
+    image: ghcr.io/oscarmtz17/coachprime-frontend-qa:latest
     container_name: coachprime-qa-frontend
     ports:
       - "3000:80"
