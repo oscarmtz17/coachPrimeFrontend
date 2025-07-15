@@ -27,8 +27,21 @@ jobs:
           key: ${{ secrets.QA_SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
           script: |
+            # Crear directorio si no existe
+            mkdir -p /opt/coachprime-qa-frontend
+
+            # Ir al directorio
             cd /opt/coachprime-qa-frontend
-            git pull origin qa
+
+            # Clonar repositorio si no existe
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/oscarmtz17/coachPrimeFrontend.git .
+              git checkout qa
+            else
+              git pull origin qa
+            fi
+
+            # Construir y ejecutar
             docker-compose -f docker-compose.qa.yml down
             docker-compose -f docker-compose.qa.yml build --no-cache
             docker-compose -f docker-compose.qa.yml up -d
