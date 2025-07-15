@@ -7,14 +7,15 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: oscarmtz17-coachprime-frontend-qa
+  IMAGE_NAME: oscarmtz17/coachprime-frontend-qa
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,7 +25,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.PAT_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -36,8 +37,6 @@ jobs:
   deploy-qa:
     needs: build-and-push
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Deploy to QA Server
         uses: appleboy/ssh-action@v1.0.3
