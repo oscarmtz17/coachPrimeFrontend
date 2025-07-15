@@ -38,6 +38,8 @@ jobs:
           username: ${{ secrets.QA_USERNAME }}
           key: ${{ secrets.QA_SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
+          timeout: 30m
+          command_timeout: 30m
           script: |
             # Limpiar directorio si existe
             rm -rf /opt/coachprime-qa-frontend
@@ -57,9 +59,12 @@ jobs:
             REACT_APP_VERSION=1.0.0
             EOF
 
+            # Limpiar imágenes Docker no utilizadas para liberar espacio
+            docker system prune -f
+
             # Construir y ejecutar
             docker-compose -f docker-compose.qa.yml down || true
-            docker-compose -f docker-compose.qa.yml build --no-cache
+            docker-compose -f docker-compose.qa.yml build
             docker-compose -f docker-compose.qa.yml up -d
 
       - name: Health Check

@@ -1,10 +1,19 @@
 # Build stage
 FROM node:18-alpine AS build
 WORKDIR /app
+
+# Copiar archivos de dependencias primero para aprovechar el cache
 COPY package*.json ./
 COPY yarn.lock ./
-RUN yarn config set registry https://registry.npmjs.org/ && yarn install --frozen-lockfile
+
+# Configurar yarn y instalar dependencias
+RUN yarn config set registry https://registry.npmjs.org/ && \
+    yarn install --frozen-lockfile --production=false
+
+# Copiar el resto del código
 COPY . .
+
+# Build de la aplicación
 RUN yarn build
 
 # Production stage
