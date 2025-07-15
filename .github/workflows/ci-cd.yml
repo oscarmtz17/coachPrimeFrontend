@@ -7,37 +7,18 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: oscarmtz17/coachprime-frontend-qa
+  IMAGE_NAME: oscarmtz17-coachprime-frontend-qa
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
-  build-and-push:
+  deploy-qa:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.PAT_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
-
-  deploy-qa:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to QA Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -47,11 +28,12 @@ jobs:
           port: ${{ secrets.QA_PORT }}
           script: |
             cd /opt/coachprime-qa-frontend
-            docker pull ghcr.io/${{ env.IMAGE_NAME }}:latest
+            git pull origin qa
             docker-compose -f docker-compose.qa.yml down
+            docker-compose -f docker-compose.qa.yml build --no-cache
             docker-compose -f docker-compose.qa.yml up -d
 
       - name: Health Check
         run: |
-          sleep 20
+          sleep 30
           curl -f http://${{ secrets.QA_HOST }}:3000 || exit 1
