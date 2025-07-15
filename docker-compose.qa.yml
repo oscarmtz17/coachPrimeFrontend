@@ -16,3 +16,4 @@ services:
 networks:
   coachprime-qa-network:
     external: true
+    name: coachprime-qa_coachprime-qa-network
