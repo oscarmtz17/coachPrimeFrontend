@@ -7,11 +7,14 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: oscarmtz17/coachprime-frontend-qa
+  IMAGE_NAME: oscarmtz17-coachprime-frontend-qa
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,6 +36,8 @@ jobs:
   deploy-qa:
     needs: build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Deploy to QA Server
         uses: appleboy/ssh-action@v1.0.3

@@ -3,7 +3,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 COPY yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn config set registry https://registry.npmjs.org/ && yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
 
