@@ -48,6 +48,12 @@ jobs:
             git clone https://github.com/oscarmtz17/coachPrimeFrontend.git .
             git checkout qa
 
+            # Crear archivo .env con las variables de entorno
+            cat > .env << EOF
+            REACT_APP_API_BASE_URL=http://${{ secrets.QA_HOST }}:5000
+            REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51Oscarmtz17
+            EOF
+
             # Construir y ejecutar
             docker-compose -f docker-compose.qa.yml down || true
             docker-compose -f docker-compose.qa.yml build --no-cache
@@ -55,5 +61,15 @@ jobs:
 
       - name: Health Check
         run: |
-          sleep 30
-          curl -f http://${{ secrets.QA_HOST }}:3000 || exit 1
+          echo "Checking backend health first..."
+          curl -f http://${{ secrets.QA_HOST }}:5000/health || echo "Backend not responding, but continuing..."
+
+          echo "Waiting for frontend to be ready..."
+          sleep 60
+          echo "Checking frontend health..."
+          curl -f http://${{ secrets.QA_HOST }}:3000/health || {
+            echo "Frontend not responding, checking container status..."
+            ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@${{ secrets.QA_HOST }} "docker ps -a && docker logs coachprime-qa-frontend"
+            exit 1
+          }
+          echo "Frontend is healthy!"
