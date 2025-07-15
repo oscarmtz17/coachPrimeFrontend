@@ -19,6 +19,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug SSH secrets
+        run: |
+          echo "QA_HOST length: ${#QA_HOST}"
+          echo "QA_USERNAME length: ${#QA_USERNAME}"
+          echo "QA_SSH_KEY length: ${#QA_SSH_KEY}"
+          echo "QA_PORT length: ${#QA_PORT}"
+          echo "QA_HOST: ${{ secrets.QA_HOST }}"
+          echo "QA_USERNAME: ${{ secrets.QA_USERNAME }}"
+          echo "QA_PORT: ${{ secrets.QA_PORT }}"
+
       - name: Deploy to QA Server
         uses: appleboy/ssh-action@v1.0.3
         with:
