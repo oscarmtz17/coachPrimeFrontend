@@ -15,6 +15,7 @@ permissions:
 jobs:
   deploy-qa:
     runs-on: ubuntu-latest
+    environment: qa
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
