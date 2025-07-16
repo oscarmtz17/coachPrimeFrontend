@@ -21,7 +21,7 @@ const environments: Record<string, EnvironmentSettings> = {
     logLevel: "debug",
   },
   qa: {
-    apiBaseUrl: "http://67.205.163.100:5000/api",
+    apiBaseUrl: "https://qa.mytracksnote.com/api",
     stripePublishableKey:
       "pk_test_51QQIQmBZAdKqouiVzQTmjaEecyel6ffPBbP67sDdiX2HKbMVVCWiPLTAFtTQ5l68cBXYeDpMCLgmD5QgO7fc6uqo000f9sq9mH",
     environment: "qa",
